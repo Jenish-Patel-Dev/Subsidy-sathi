@@ -1,0 +1,970 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Subsidy Sathi (Copy)</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'%3E%3Crect width='128' height='128' rx='30' fill='%230E4B47'/%3E%3Cpath d='M20 100 V80 L44 68 V80 L68 58 V80 L92 48 V100 Z' fill='%23fff'/%3E%3Ccircle cx='98' cy='30' r='15' fill='%23E2A445'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Gujarati:wght@400;500;600;700&family=Noto+Serif+Gujarati:wght@600;800&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+:root{
+  --paper:#F2F6F5; --surface:#FFFFFF; --sunk:#E7EFED; --ink:#17302E; --mute:#587370; --line:#D6E2DF;
+  --mast:#0E4B47; --mast-eyebrow:#F3D08E; --mast-text:#CFE5E1; --mast-chip:#E2F0ED;
+  --navy:#136B65; --navy-ink:#0F5C57; --saffron:#D99A36; --saffron-ink:#8F5A0C; --saffron-soft:#FBF1DE;
+  --c-cap:#136B65; --c-int:#E2A445; --c-pow:#6F8FC7;
+  --ok:#1D7A4E; --ok-soft:#E2F2E8; --warn:#8F5A0C; --warn-soft:#FBF1DE; --bad:#B0392E; --bad-soft:#F9E6E3;
+  --focus:#D99A36;
+  --f-body:"Noto Sans Gujarati","Shruti","Nirmala UI",system-ui,sans-serif;
+  --f-disp:"Noto Serif Gujarati","Noto Sans Gujarati",Georgia,serif;
+  --f-num:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --paper:#0D1716; --surface:#142220; --sunk:#1B2D2A; --ink:#E3EEEB; --mute:#94ADA8; --line:#26403C;
+    --mast:#10312E; --mast-eyebrow:#EDC47A; --mast-text:#B9D4CF; --mast-chip:#D3E7E3;
+    --navy:#1E7E77; --navy-ink:#7ED2C7; --saffron:#EDB65C; --saffron-ink:#EDB65C; --saffron-soft:#352A16;
+    --c-cap:#5CC2B6; --c-int:#EDB65C; --c-pow:#94AFE3;
+    --ok:#6FCF9A; --ok-soft:#153024; --warn:#EDB65C; --warn-soft:#352A16; --bad:#F08A7E; --bad-soft:#381D1A;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --paper:#0D1716; --surface:#142220; --sunk:#1B2D2A; --ink:#E3EEEB; --mute:#94ADA8; --line:#26403C;
+  --mast:#10312E; --mast-eyebrow:#EDC47A; --mast-text:#B9D4CF; --mast-chip:#D3E7E3;
+  --navy:#1E7E77; --navy-ink:#7ED2C7; --saffron:#EDB65C; --saffron-ink:#EDB65C; --saffron-soft:#352A16;
+  --c-cap:#5CC2B6; --c-int:#EDB65C; --c-pow:#94AFE3;
+  --ok:#6FCF9A; --ok-soft:#153024; --warn:#EDB65C; --warn-soft:#352A16; --bad:#F08A7E; --bad-soft:#381D1A;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.6;margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:16px}
+h1,h2,h3{font-family:var(--f-disp);text-wrap:balance;margin:0;line-height:1.3}
+.num{font-family:var(--f-num);font-variant-numeric:tabular-nums}
+a{color:var(--navy-ink)}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+
+/* masthead */
+.mast{background:var(--mast);color:#fff;padding-block:22px 18px}
+.mast .eyebrow{font-size:12px;letter-spacing:.08em;color:var(--mast-eyebrow);font-weight:600}
+.mast h1{font-size:clamp(26px,4.4vw,38px);font-weight:800;margin-top:4px}
+.mast p{margin:6px 0 0;max-width:62ch;color:var(--mast-text);font-size:14px}
+.grs{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.grs span{font-size:12px;border:1px solid rgba(255,255,255,.22);border-radius:4px;padding:3px 8px;color:var(--mast-chip)}
+
+/* tabs */
+.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+.tabs .wrap{display:flex;overflow-x:auto;gap:2px}
+.tabs button{appearance:none;border:0;background:none;color:var(--mute);font:600 14px var(--f-body);padding:12px 14px;border-bottom:3px solid transparent;white-space:nowrap;cursor:pointer}
+.tabs button[aria-selected="true"]{color:var(--navy-ink);border-bottom-color:var(--saffron)}
+main{padding-block:22px 40px}
+
+/* checker layout */
+.checker{display:grid;grid-template-columns:minmax(0,400px) minmax(0,1fr);gap:22px;align-items:start}
+@media (max-width:900px){.checker{grid-template-columns:minmax(0,1fr)}}
+.form{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:4px 0}
+fieldset{border:0;margin:0;padding:14px 18px;border-bottom:1px solid var(--line);display:grid;gap:10px}
+fieldset:last-child{border-bottom:0}
+legend{font:700 13px var(--f-body);color:var(--navy-ink);padding:0;margin-bottom:2px;float:left;width:100%}
+legend small{font-weight:500;color:var(--mute)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:end}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;align-items:end}
+label.f{display:grid;gap:3px;font-size:12.5px;color:var(--mute);font-weight:500}
+input[type=number],input[type=month],input[type=search],select{width:100%;font:500 14px var(--f-body);color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:7px 9px;min-width:0}
+input[type=number]{font-family:var(--f-num)}
+.seg{display:flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.seg label{flex:1;text-align:center;font-size:13px;padding:7px 4px;cursor:pointer;color:var(--mute);border-left:1px solid var(--line)}
+.seg label:first-child{border-left:0}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg label:has(input:checked){background:var(--navy);color:#fff;font-weight:600}
+.seg label:has(input:focus-visible){outline:2px solid var(--focus);outline-offset:-2px}
+.chk{display:flex;gap:8px;align-items:flex-start;font-size:13.5px;cursor:pointer}
+.chk input{margin-top:4px;accent-color:var(--navy)}
+.hint{font-size:12px;color:var(--mute);margin:0}
+.catpill{font-size:12px;font-weight:700;border-radius:4px;padding:2px 7px;display:inline-block}
+.catA{background:var(--saffron-soft);color:var(--saffron-ink)}
+.catB{background:var(--sunk);color:var(--navy-ink)}
+.lh{display:flex;align-items:center;gap:6px;justify-content:space-between}
+.ib{flex:none;width:22px;height:22px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--navy-ink);font:700 italic 12px Georgia,serif;cursor:pointer;display:inline-grid;place-items:center;padding:0;line-height:1}
+.ib[aria-expanded="true"]{background:var(--navy);color:#fff;border-color:var(--navy)}
+.ib:hover{border-color:var(--navy-ink)}
+.help{display:block;font-size:12.5px;line-height:1.55;color:var(--ink);background:var(--sunk);border-radius:6px;padding:8px 10px;font-weight:400}
+.help b{font-weight:600}
+.chk .ib{margin-left:auto}
+.seghead{display:flex;align-items:center;justify-content:space-between;font-size:12.5px;color:var(--mute);font-weight:500}
+.example{font-size:12px;color:var(--warn);background:var(--warn-soft);border-radius:6px;padding:6px 10px;margin:12px 18px 0}
+
+/* result */
+.res{display:grid;gap:16px;grid-template-columns:minmax(0,1fr);min-width:0}
+.panel{min-width:0;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px}
+.panel h3{font-size:17px;color:var(--navy-ink);margin-bottom:10px}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-size:12px;font-weight:600;border-radius:4px;padding:3px 8px;background:var(--sunk);color:var(--ink)}
+.tag.acc{background:var(--navy);color:#fff}
+.hero-num{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;margin-top:12px}
+.hero-num .big{font:600 clamp(28px,4.6vw,40px) var(--f-num);color:var(--ink);letter-spacing:-.01em}
+.hero-num .of{color:var(--mute);font-size:13.5px}
+
+/* signature: ceiling meter */
+.meter{margin-top:14px}
+.meter .bar{position:relative;height:26px;background:var(--sunk);border-radius:5px;overflow:hidden;display:flex}
+.meter .seg-c{height:100%}
+.meter .cap{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--ink)}
+.meter .scale{display:flex;justify-content:space-between;font:500 11px var(--f-num);color:var(--mute);margin-top:4px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:10px;font-size:13px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.comp{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
+@media (max-width:560px){.comp{grid-template-columns:minmax(0,1fr)}}
+.comp div{border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.comp b{display:block;font:600 17px var(--f-num);margin-top:2px}
+.comp small{color:var(--mute);font-size:12px;display:block;line-height:1.45}
+.comp .k{font-size:12.5px;font-weight:600}
+
+.checks{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.checks li{display:grid;grid-template-columns:22px 1fr;gap:8px;font-size:13.5px;align-items:start}
+.dot{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:700;margin-top:1px}
+.d-ok{background:var(--ok-soft);color:var(--ok)} .d-warn{background:var(--warn-soft);color:var(--warn)} .d-bad{background:var(--bad-soft);color:var(--bad)} .d-info{background:var(--sunk);color:var(--navy-ink)}
+
+.tbl-wrap{overflow-x:auto;margin-top:6px}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{text-align:left;padding:7px 9px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-weight:600;color:var(--mute);font-size:12px;background:var(--sunk)}
+td.n,th.n{text-align:right;font-family:var(--f-num);font-variant-numeric:tabular-nums;white-space:nowrap}
+tr.tot td{font-weight:700;border-top:2px solid var(--ink)}
+.chart{width:100%;height:auto;display:block;margin-top:8px}
+.chart text{fill:var(--mute);font:500 10px var(--f-num)}
+
+.alist{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.aitem{border:1px solid var(--line);border-radius:8px;padding:10px 12px;display:grid;gap:3px;align-content:start}
+.aitem .t{font-weight:600;font-size:14px}
+.aitem .v{font-size:13px;color:var(--ink)}
+.aitem .c{font-size:12px;color:var(--mute)}
+.aitem .amt{font:600 14px var(--f-num);color:var(--ok)}
+ol.steps{margin:0;padding-left:20px;display:grid;gap:6px;font-size:13.5px}
+.note{font-size:12.5px;color:var(--mute);margin:10px 0 0}
+
+/* reference tabs */
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));gap:16px}
+.sec-h{font-size:22px;color:var(--ink);margin:6px 0 4px}
+.sec-p{color:var(--mute);margin:0 0 14px;max-width:70ch}
+dl.defs{margin:0;display:grid;gap:10px}
+dl.defs dt{font-weight:600;font-size:14px}
+dl.defs dd{margin:0;color:var(--mute);font-size:13.5px}
+.tal{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:12px}
+.tal .panel{padding:14px}
+.tal h4{margin:0 0 8px;font:700 14px var(--f-body);color:var(--navy-ink)}
+.tal .cols{display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:13px}
+.tal ul{list-style:none;padding:0;margin:4px 0 0;display:grid;gap:1px}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.toolbar input{flex:1 1 220px}
+.filt{display:flex;gap:6px}
+.filt button{font:600 13px var(--f-body);border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:6px;padding:6px 10px;cursor:pointer}
+.filt button[aria-pressed="true"]{background:var(--navy);color:#fff;border-color:var(--navy)}
+footer{color:var(--mute);font-size:12px;border-top:1px solid var(--line);padding-block:16px 30px}
+@media (prefers-reduced-motion:no-preference){.meter .seg-c{transition:width .35s ease}}
+</style>
+
+<header class="mast">
+  <div class="wrap">
+    <div class="eyebrow">વિકસિત ગુજરાત ઔદ્યોગિક નીતિ 2026 · ઉદ્યોગ અને ખાણ વિભાગ</div>
+    <h1 style="display:flex;align-items:center;gap:14px;flex-wrap:wrap"><svg viewBox="0 0 128 128" width="52" height="52" aria-hidden="true" style="flex:none"><rect width="128" height="128" rx="30" fill="#FFFFFF"/><path d="M20 100 V80 L44 68 V80 L68 58 V80 L92 48 V100 Z" fill="#0E4B47"/><rect x="20" y="100" width="88" height="6" rx="3" fill="#136B65"/><circle cx="98" cy="30" r="15" fill="#E2A445"/><path d="M90.5 30.5 L96 36 L106 25.5" fill="none" stroke="#FFFFFF" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/></svg>સબસિડી સાથી <span style="font:600 clamp(14px,2vw,18px) var(--f-body);color:var(--mast-text);letter-spacing:.02em;vertical-align:middle">Subsidy Sathi</span></h1>
+    <p>તમારા પ્રોજેક્ટની વિગત ભરો: કઈ યોજના લાગુ પડે, કેટલી સહાય મળે, અને કઈ શરતો પૂરી કરવી પડે તે ત્રણ GR મુજબ ગણાય છે.</p>
+    <div class="grs">
+      <span>MSME સહાય GR · IMD/WRT/e-file/9/2026/2630/CH · 25.09.2026</span>
+      <span>Large, Mega, Ultra Mega GR · IMD/WRT/e-file/9/2026/2320/I</span>
+      <span>તાલુકા વર્ગીકરણ GR · IMD/HMR/e-file/9/2026/2211/I · 08.09.2026</span>
+    </div>
+  </div>
+</header>
+
+<nav class="tabs" aria-label="વિભાગો">
+  <div class="wrap" role="tablist">
+    <button role="tab" id="t-check" aria-selected="true" data-tab="check">મારી પાત્રતા</button>
+    <button role="tab" id="t-rates" aria-selected="false" data-tab="rates">સહાયના દર</button>
+    <button role="tab" id="t-other" aria-selected="false" data-tab="other">અન્ય સહાય</button>
+    <button role="tab" id="t-taluka" aria-selected="false" data-tab="taluka">તાલુકા શ્રેણી</button>
+    <button role="tab" id="t-rules" aria-selected="false" data-tab="rules">નિયમો અને શરતો</button>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<!-- ===================== CHECKER ===================== -->
+<section id="p-check" data-panel="check">
+  <div class="checker">
+    <form class="form" id="frm" autocomplete="off">
+      <div class="example" id="exNote">ઉદાહરણ વિગતો ભરેલી છે (બોટાદ, સ્મોલ MSME). તમારી વિગતો નાખો.</div>
+      <p class="hint" style="margin:10px 18px 0">કયા ખાનામાં શું લખવું તે ખબર ન હોય તો તેની બાજુનું <b style="color:var(--navy-ink)">i</b> દબાવો.</p>
+
+      <fieldset>
+        <legend>સ્થળ</legend>
+        <div class="row">
+          <label class="f">જિલ્લો<select id="dist"></select></label>
+          <label class="f">તાલુકા<select id="tal"></select></label>
+        </div>
+        <p class="hint" id="catLine"></p>
+      </fieldset>
+
+      <fieldset>
+        <legend>પ્રોજેક્ટ</legend>
+        <label class="f">ઉત્પાદન ક્ષેત્ર (Annexure-A)<select id="sector"></select></label>
+        <div class="seghead" id="ptypeHead">પ્રોજેક્ટનો પ્રકાર</div>
+        <div class="seg" role="radiogroup" aria-label="પ્રોજેક્ટ પ્રકાર">
+          <label><input type="radio" name="ptype" value="new" id="pt-new" checked>નવો એકમ</label>
+          <label><input type="radio" name="ptype" value="exp" id="pt-exp">વિસ્તરણ</label>
+          <label><input type="radio" name="ptype" value="div" id="pt-div">ડાયવર્સિફિકેશન</label>
+        </div>
+        <label class="f" id="exWrap" hidden>હાલના પ્રોજેક્ટનું GFCI, જમીન સિવાય (₹ કરોડ)<input type="number" id="exist" min="0" step="0.01" value="10"></label>
+        <label class="f">વાણિજ્યિક ઉત્પાદન શરૂ થવાની અપેક્ષિત તારીખ (DoCP)<input type="month" id="docp" value="2027-03"></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>રોકાણ <small>(₹ કરોડમાં · 1 લાખ = 0.01)</small></legend>
+        <div class="row">
+          <label class="f">પ્લાન્ટ અને મશીનરી<input type="number" id="pm" min="0" step="0.01" value="6"></label>
+          <label class="f">નવું બિલ્ડિંગ + અન્ય બાંધકામ<input type="number" id="bld" min="0" step="0.01" value="2"></label>
+        </div>
+        <div class="row">
+          <label class="f">પ્રોજેક્ટ સંબંધિત ઇન્ફ્રા<input type="number" id="infra" min="0" step="0.01" value="0.2"></label>
+          <label class="f">જમીન<input type="number" id="land" min="0" step="0.01" value="0.5"></label>
+        </div>
+        <label class="chk"><input type="checkbox" id="infraIn" checked>ઇન્ફ્રા પ્રોજેક્ટ પરિસરની અંદર છે</label>
+        <p class="hint">MSME નો વર્ગ દેશભરના તમામ એકમોના કુલ P&amp;M રોકાણ પરથી નક્કી થાય છે.</p>
+      </fieldset>
+
+      <fieldset>
+        <legend>ટર્મ લોન અને વીજળી</legend>
+        <div class="row3">
+          <label class="f">લોન (₹ કરોડ)<input type="number" id="loan" min="0" step="0.01" value="6"></label>
+          <label class="f">વ્યાજ દર %<input type="number" id="rate" min="0" step="0.05" value="10"></label>
+          <label class="f">મુદત (વર્ષ)<input type="number" id="tenure" min="1" step="1" value="7"></label>
+        </div>
+        <label class="f">વાર્ષિક વીજ વપરાશ, નવો/વધારાનો (યુનિટ)<input type="number" id="units" min="0" step="1000" value="800000"></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>રોજગારી</legend>
+        <div class="row">
+          <label class="f">કુલ સીધી રોજગારી<input type="number" id="jobs" min="0" step="1" value="40"></label>
+          <label class="f">સરેરાશ બેઝિક + DA (₹/માસ)<input type="number" id="wage" min="0" step="500" value="15000"></label>
+        </div>
+        <div class="row3">
+          <label class="f">નવા પુરુષ કર્મચારી<input type="number" id="em" min="0" step="1" value="30"></label>
+          <label class="f">નવા મહિલા કર્મચારી<input type="number" id="ef" min="0" step="1" value="10"></label>
+          <label class="f">નવા દિવ્યાંગ કર્મચારી<input type="number" id="ed" min="0" step="1" value="0"></label>
+        </div>
+        <p class="hint">“નવો કર્મચારી” એટલે જોડાતા પહેલાં UAN ન હોય તેવો કર્મચારી.</p>
+      </fieldset>
+
+      <fieldset>
+        <legend>ઉદ્યમી અને સ્થળ વિશે</legend>
+        <label class="chk"><input type="checkbox" id="women">મહિલા ઉદ્યમી</label>
+        <label class="chk"><input type="checkbox" id="women100">100% ઇક્વિટી મહિલાની માલિકીની</label>
+        <label class="chk"><input type="checkbox" id="startup">ઉત્પાદન ક્ષેત્રનું રજિસ્ટર્ડ સ્ટાર્ટઅપ</label>
+        <label class="chk"><input type="checkbox" id="firstgen">પ્રથમ પેઢીના ઉદ્યમી</label>
+        <label class="chk"><input type="checkbox" id="outGidc" checked>GIDC / માન્ય ઔદ્યોગિક પાર્કની બહાર</label>
+        <div class="row">
+          <label class="f">ભાડાના શેડનું માસિક ભાડું (₹)<input type="number" id="rent" min="0" step="1000" value="0"></label>
+          <span></span>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>પસંદ કરેલા ઘટક <small>(GR: કોઈ એક કે સંયોજન)</small></legend>
+        <label class="chk"><input type="checkbox" id="useCap" checked>ઘટક 1 · કેપિટલ સબસિડી</label>
+        <label class="chk"><input type="checkbox" id="useInt" checked>ઘટક 2 · વ્યાજ સબસિડી</label>
+        <label class="chk"><input type="checkbox" id="usePow" checked>ઘટક 3 · પાવર ટેરિફ</label>
+      </fieldset>
+    </form>
+
+    <div class="res" id="res" aria-live="polite"></div>
+  </div>
+</section>
+
+<!-- ===================== RATES ===================== -->
+<section id="p-rates" data-panel="rates" hidden>
+  <h2 class="sec-h">સહાયના દર: ઘટક 1, 2 અને 3</h2>
+  <p class="sec-p">દરેક યોજનામાં એકમ કેપિટલ, વ્યાજ અને પાવર ટેરિફમાંથી કોઈ એક કે સંયોજન લઈ શકે. દરેક ઘટકની અલગ મર્યાદા, વાર્ષિક મર્યાદા અને કુલ મર્યાદા લાગુ પડે. વાર્ષિક મર્યાદાને કારણે ન મળેલી રકમ આગળના વર્ષમાં લઈ જવાતી નથી.</p>
+  <div class="grid2" id="rateTables"></div>
+</section>
+
+<!-- ===================== OTHER ===================== -->
+<section id="p-other" data-panel="other" hidden>
+  <h2 class="sec-h">અન્ય સહાય</h2>
+  <p class="sec-p">કેપિટલ-વ્યાજ-પાવર ઉપરાંતની સહાય. દરેક માટે અરજીની મુદત નક્કી છે: MSME માટે સામાન્ય રીતે 6 મહિના અને લાર્જ/મેગા/અલ્ટ્રા-મેગા માટે 3 મહિના.</p>
+  <div id="otherAll" style="display:grid;gap:16px"></div>
+</section>
+
+<!-- ===================== TALUKA ===================== -->
+<section id="p-taluka" data-panel="taluka" hidden>
+  <h2 class="sec-h">તાલુકા શ્રેણી (Annexure-A)</h2>
+  <p class="sec-p">34 જિલ્લા · 130 Category-A અને 138 Category-B તાલુકા. પ્રોજેક્ટ એકથી વધુ તાલુકામાં હોય તો જમીનનો સૌથી મોટો ભાગ જે તાલુકામાં હોય તેની શ્રેણી ગણાય.</p>
+  <div class="toolbar">
+    <input type="search" id="tq" placeholder="તાલુકા કે જિલ્લો શોધો, દા.ત. Botad" aria-label="તાલુકા શોધો">
+    <div class="filt" id="tf">
+      <button type="button" data-f="all" aria-pressed="true">બધા</button>
+      <button type="button" data-f="A" aria-pressed="false">Category A</button>
+      <button type="button" data-f="B" aria-pressed="false">Category B</button>
+    </div>
+  </div>
+  <div class="tal" id="talGrid"></div>
+</section>
+
+<!-- ===================== RULES ===================== -->
+<section id="p-rules" data-panel="rules" hidden>
+  <h2 class="sec-h">નિયમો અને શરતો</h2>
+  <p class="sec-p">યોજનાનો અમલ 01.06.2026 થી 31.05.2031 (5 વર્ષ). આ સમયગાળામાં વાણિજ્યિક ઉત્પાદન શરૂ થવું જરૂરી છે.</p>
+  <div class="grid2" id="rulesGrid"></div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">આ સાધન ત્રણ GR ના લખાણ પર આધારિત સૂચક અંદાજ આપે છે. અંતિમ પાત્રતા અને રકમ Asset Verification, PEC/FEC અને મંજૂરી સત્તાધિકારીના નિર્ણય મુજબ રહેશે. અર્થઘટનમાં મતભેદ હોય તો MSME માટે SLEC અને લાર્જ એકમો માટે para 12(c) ની સમિતિનો નિર્ણય આખરી ગણાય.</div>
+</footer>
+
+<script>
+/* ======================= DATA: Taluka GR Annexure-A ======================= */
+const TALUKAS = [
+ ["Ahmedabad","અમદાવાદ",["Dholera","Detroj-Rampura","Dhandhuka"],["Viramgam","Daskroi","Bavla","Dholka","Sanand","Mandal","Ahmedabad City"]],
+ ["Amreli","અમરેલી",["Khambha","Dhari","Lilia","Savar Kundla","Babra","Kunkavav Vadia","Lathi"],["Jafrabad","Rajula","Bagasara","Amreli"]],
+ ["Anand","આણંદ",["Tarapur","Anklav","Sojitra"],["Anand","Umreth","Khambhat","Petlad","Borsad"]],
+ ["Arvalli","અરવલ્લી",["Dhansura","Malpur"],["Meghraj","Bayad","Bhiloda","Modasa","Shamalaji (Bhiloda)","Sathamba (Bayad)"]],
+ ["Banas Kantha","બનાસકાંઠા",["Amirgadh","Danta","Dhanera","Kankrej","Vadgam","Dantiwada","Hadad (Danta)","Ogad (Kankrej)"],["Deesa","Palanpur"]],
+ ["Bharuch","ભરૂચ",["Netrang"],["Bharuch","Jhagadia","Vagra","Anklesvar","Hansot","Valia","Jambusar","Amod"]],
+ ["Bhavnagar","ભાવનગર",["Jesar","Umrala","Vallabhipur","Gariadhar","Palitana","Talaja","Ghogha"],["Bhavnagar","Mahuva","Sihor"]],
+ ["Botad","બોટાદ",["Ranpur","Gadhada","Barwala","Botad"],[]],
+ ["Chhota Udepur","છોટા ઉદેપુર",["Chhota Udepur","Kavant","Nasvadi","Sankheda","Bodeli","Jetpur Pavi","Kadval (Jetpur Pavi)"],[]],
+ ["Devbhumi Dwarka","દેવભૂમિ દ્વારકા",["Kalyanpur","Bhanvad"],["Khambhalia","Okhamandal"]],
+ ["Dahod","દાહોદ",["Dhanpur","Sanjeli","Limkheda","Dahod","Fatepura","Jhalod","Singvad","Garbada","Devgadbaria","Sukhasar (Fatehpura)","Guru Govind Limbdi (Jhalod)"],[]],
+ ["Gandhinagar","ગાંધીનગર",[],["Kalol","Dehgam","Gandhinagar","Mansa"]],
+ ["Gir Somnath","ગીર સોમનાથ",["Gir Gadhada","Talala"],["Una","Kodinar","Sutrapada","Veraval"]],
+ ["Jamnagar","જામનગર",["Jodiya"],["Lalpur","Jamnagar","Jamjodhpur","Kalavad","Dhrol"]],
+ ["Junagadh","જૂનાગઢ",["Bhesan","Mendarda"],["Junagadh","Junagadh City","Visavadar","Malia Hatina","Mangrol","Vanthali","Manavadar","Keshod"]],
+ ["Kachchh","કચ્છ",["Rapar","Nakhatrana","Lakhpat","Mandvi"],["Mundra","Anjar","Gandhidham","Abdasa","Bhachau","Bhuj"]],
+ ["Kheda","ખેડા",["Galteshwar","Matar","Vaso","Mahudha"],["Kheda","Nadiad","Mehmedabad","Kathlal","Thasra","Kapadvanj","Fagvel (Kathlal & Kapadvanj)"]],
+ ["Mehsana","મહેસાણા",["Satlasana","Jotana","Kheralu","Becharaji","Vadnagar"],["Kadi","Mehsana","Unjha","Vijapur","Visnagar"]],
+ ["Mahisagar","મહીસાગર",["Khanpur","Kadana","Virpur"],["Lunawada","Balasinor","Santrampur","Godhar (Santrampur, Shehra)","Kothamba (Lunavada)"]],
+ ["Morbi","મોરબી",["Maliya"],["Wankaner","Morbi","Tankara","Halvad"]],
+ ["Narmada","નર્મદા",["Garudeshwar","Dediapada","Tilakwada","Sagbara","Chikda (Dediapada)"],["Nandod"]],
+ ["Navsari","નવસારી",["Khergam"],["Navsari","Bansda","Chikhli","Jalalpore","Gandevi"]],
+ ["Panch Mahals","પંચમહાલ",["Ghoghamba","Morwa (Hadaf)","Jambughoda","Shehera"],["Halol","Kalol","Godhra"]],
+ ["Patan","પાટણ",["Sarasvati","Santalpur","Shankheshwar","Sami","Radhanpur","Harij"],["Sidhpur","Chanasma","Patan"]],
+ ["Porbandar","પોરબંદર",["Kutiyana"],["Porbandar","Ranavav"]],
+ ["Rajkot","રાજકોટ",["Vinchhiya","Jamkandorna"],["Paddhari","Lodhika","Rajkot","Kotda Sangani","Jasdan","Upleta","Dhoraji","Jetpur","Gondal"]],
+ ["Sabar Kantha","સાબરકાંઠા",["Poshina","Vijaynagar","Khedbrahma"],["Talod","Vadali","Idar","Prantij","Himatnagar"]],
+ ["Surat","સુરત",["Umarpada","Mahuva","Ambika (Mahuva)"],["Mangrol","Kamrej","Palsana","Chorasi","Olpad","Surat City","Mandvi","Bardoli","Areth (Mandvi)"]],
+ ["Surendranagar","સુરેન્દ્રનગર",["Lakhtar","Chuda","Muli","Sayla","Limbdi","Dasada","Chotila"],["Wadhwan","Thangadh","Dhrangadhra"]],
+ ["Tapi","તાપી",["Kukarmunda","Uchchhal","Nizar","Dolvan","Songadh","Ukai (Songadh)"],["Vyara","Valod"]],
+ ["The Dangs","ડાંગ",["Subir","Waghai","Aahva"],[]],
+ ["Vadodara","વડોદરા",["Sinor","Desar"],["Vaghodia","Karjan","Padra","Savli","Vadodara","Dabhoi"]],
+ ["Valsad","વલસાડ",["Kaprada","Dharampur","Nanapodha (Kaprada, Vapi, Pardi)"],["Valsad","Pardi","Vapi","Umbergaon"]],
+ ["Vav-Tharad","વાવ-થરાદ",["Lakhani","Suigam","Vav","Tharad","Deodar","Dharnidhar (Vav)","Rah (Tharad)"],["Bhabhar"]],
+];
+
+/* ======================= DATA: sectors (Large GR Annexure-A, 1.7; MSME GR 1.15) ======================= */
+const SECTORS = [
+ {id:"gen", kind:"general", g:"અન્ય ઉત્પાદન (સામાન્ય સેક્ટર)"},
+ {id:"t1", kind:"thrust", g:"ગ્રીન એનર્જી ઇકોસિસ્ટમ", d:"ગ્રીન હાઇડ્રોજન/એમોનિયા, RE સાધનો અને ભાગો, બેટરી સ્ટોરેજ, ફ્યુઅલ સેલ"},
+ {id:"t2", kind:"thrust", g:"મોબિલિટી", d:"ઇલેક્ટ્રિક વાહન, ઓટો અને ઓટો કમ્પોનન્ટ"},
+ {id:"t3", kind:"thrust", g:"કેપિટલ ઇક્વિપમેન્ટ", d:"ઇલેક્ટ્રિકલ/ઇન્ડસ્ટ્રિયલ/ટેલિકોમ મશીનરી, વાયર-કેબલ, ઇલેક્ટ્રોલાઇઝર, તમામ પ્રકારની મશીનરી"},
+ {id:"t4", kind:"thrust", g:"મેટલ્સ અને મિનરલ્સ", d:"ફેરસ/નોન-ફેરસ મેટલ પ્રોસેસિંગ-રિસાયક્લિંગ, ક્રિટિકલ મિનરલ, સિરામિક્સ, રિફ્રેક્ટરી, ગ્લાસ (સોલાર ગ્લાસ સહિત), સિમેન્ટ, ગ્રેનાઇટ, માર્બલ"},
+ {id:"t5", kind:"thrust", g:"ટેક્સટાઇલ અને એપેરલ", d:"ટેક્સટાઇલ વેલ્યુ ચેઇન, ટેક્નિકલ ટેક્સટાઇલ, એપેરલ, ગારમેન્ટ, મેડ-અપ્સ"},
+ {id:"t6", kind:"thrust", g:"સસ્ટેનેબિલિટી", d:"કચરા રિસાયક્લિંગ સાધનો, ગ્રીન ટેક્નોલોજી, ઊર્જા-કાર્યક્ષમ મશીનરી, ETP/STP સાધનો"},
+ {id:"t7", kind:"thrust", g:"એગ્રો પ્રોસેસિંગ", d:"ફૂડ, ડેરી, અનાજ, ફળ-શાકભાજી, તેલીબિયાં અને ખાદ્ય તેલ, મસાલા, RTE/RTC"},
+ {id:"t8", kind:"thrust", g:"કેમિકલ્સ અને પેટ્રોકેમિકલ્સ", d:"સ્પેશિયાલિટી, એગ્રો, ડાઇ-પિગમેન્ટ, પોલિમર, પ્લાસ્ટિક, ઔદ્યોગિક ગેસ, પેઇન્ટ, ડિટર્જન્ટ", etp:true},
+ {id:"t9", kind:"thrust", g:"હેલ્થકેર", d:"મેડિકલ ડિવાઇસ, API, બલ્ક ડ્રગ, KSM, ફાર્મા, વેક્સિન, સર્જિકલ, PPE", etp:true},
+ {id:"t10", kind:"thrust", g:"સેમિકન્ડક્ટર આનુષંગિક એકમો", d:"અલ્ટ્રા-હાઇ-પ્યોરિટી કેમિકલ/ગેસ, વેફર, PCB, IC એસેમ્બલી"},
+ {id:"t11", kind:"thrust", g:"ન્યુક્લિયર પાવર ઇક્વિપમેન્ટ (SMR સહિત)", d:"રિએક્ટર કમ્પોનન્ટ, NSSS, રેડિએશન સાધનો"},
+ {id:"t12", kind:"thrust", g:"વ્હીકલ સ્ક્રેપિંગ ફેસિલિટી", d:"શ્રેડર, બેલર, સેપરેટર વગેરે"},
+ {id:"t13", kind:"thrust", g:"ઇ-વેસ્ટ રિસાયક્લિંગ યુનિટ", d:"ઇ-વેસ્ટ શ્રેડિંગ, PCB રિસાયક્લિંગ, Li-ion બેટરી રિસાયક્લિંગ મશીન"},
+ {id:"t14", kind:"thrust", g:"ટેક્સટાઇલ વેસ્ટ રિસાયક્લિંગ યુનિટ", d:"ટેક્સટાઇલ વેસ્ટ શ્રેડિંગ, ફાઇબર રિકવરી, કોટન વેસ્ટ રિસાયક્લિંગ મશીન"},
+ {id:"t15", kind:"thrust", g:"શિપિંગ કન્ટેનર ઉત્પાદન", d:"ડ્રાય, રીફર, ટેન્ક, ઓપન-ટોપ, ફ્લેટ-રેક કન્ટેનર"},
+ {id:"t16", kind:"thrust", g:"હેવી અર્થ મૂવિંગ ઇક્વિપમેન્ટ", d:"એક્સકેવેટર, બુલડોઝર, લોડર, ગ્રેડર, માઇનિંગ ટ્રક"},
+ {id:"s1", kind:"selected", g:"સ્પોર્ટ્સ ગુડ્સ અને સાધનો"},
+ {id:"s2", kind:"selected", g:"રમકડાં (Toys)"},
+ {id:"s3", kind:"selected", g:"ફૂટવેર"},
+ {id:"s4", kind:"selected", g:"રોબોટ"},
+ {id:"s5", kind:"selected", g:"ડ્રોન"},
+];
+
+/* ======================= DATA: rate tables, straight from the GRs =======================
+ years: disbursement period · cap: capital % EFCI · capMode: 'micro1' = in year 1, else equal annual instalments
+ int: interest rate on term loan · intCap: % EFCI · pow: ₹/unit · powCap: % EFCI · total: overall % EFCI
+ ann: annual ceiling % EFCI (micro: [year1, later]) · abs: absolute annual ceiling ₹ Cr · epf: EPF years
+*/
+const SCHEMES = {
+ msme_gen: {name:"MSME · સામાન્ય", ref:"MSME GR para 4.2", years:5, epf:5,
+   A:{cap:35,int:7,intCap:10,pow:2,powCap:25,total:45,ann:9,annMicro:[37,2]},
+   B:{cap:25,int:7,intCap:10,pow:1,powCap:25,total:35,ann:7,annMicro:[27,2]}},
+ msme_sel: {name:"MSME · પસંદગીનું થ્રસ્ટ સેક્ટર", ref:"MSME GR para 4.3", years:5, epf:5,
+   A:{cap:35,int:7,intCap:20,pow:2,powCap:20,total:50,ann:10,annMicro:[38,3]},
+   B:{cap:30,int:7,intCap:20,pow:1,powCap:20,total:45,ann:9,annMicro:[33,3]}},
+ large_gen: {name:"લાર્જ · સામાન્ય સેક્ટર", ref:"Large GR para 4-B", years:10, epf:10, abs:150,
+   A:{cap:15,int:7,intCap:15,pow:2,powCap:15,total:20,ann:2.0},
+   B:{cap:10,int:7,intCap:10,pow:1,powCap:10,total:15,ann:1.5}},
+ large_thr: {name:"લાર્જ · થ્રસ્ટ સેક્ટર", ref:"Large GR para 4-C", years:8, epf:8, abs:300,
+   A:{cap:25,int:7,intCap:20,pow:2,powCap:20,total:35,ann:4.5},
+   B:{cap:15,int:7,intCap:15,pow:1,powCap:15,total:25,ann:3.5}},
+ mega_thr: {name:"મેગા · થ્રસ્ટ સેક્ટર", ref:"Large GR para 4-D", years:10, epf:10, abs:750, hpc:true,
+   A:{cap:25,int:7,intCap:25,pow:2,powCap:25,total:35,ann:3.5},
+   B:{cap:20,int:7,intCap:20,pow:1,powCap:20,total:30,ann:3.0}},
+ ultra_thr: {name:"અલ્ટ્રા-મેગા · થ્રસ્ટ સેક્ટર", ref:"Large GR para 4-E", years:12, epf:10, abs:1250, hpc:true,
+   A:{cap:30,int:7,intCap:25,pow:2,powCap:25,total:40,ann:3.5},
+   B:{cap:25,int:7,intCap:20,pow:1,powCap:20,total:35,ann:3.0}},
+ large_sel: {name:"લાર્જ · પસંદગીનું થ્રસ્ટ સેક્ટર", ref:"Large GR para 4-F", years:8, epf:10, abs:300,
+   A:{cap:35,int:7,intCap:20,pow:2,powCap:20,total:50,ann:6.5},
+   B:{cap:30,int:7,intCap:20,pow:1,powCap:20,total:45,ann:6.0}},
+ mega_sel: {name:"મેગા · પસંદગીનું થ્રસ્ટ સેક્ટર", ref:"Large GR para 4-G", years:10, epf:10, abs:750, hpc:true,
+   A:{cap:35,int:7,intCap:20,pow:2,powCap:20,total:50,ann:5.0},
+   B:{cap:30,int:7,intCap:20,pow:1,powCap:20,total:45,ann:4.5}},
+ ultra_sel: {name:"અલ્ટ્રા-મેગા · પસંદગીનું થ્રસ્ટ સેક્ટર", ref:"Large GR para 4-H", years:12, epf:10, abs:1250, hpc:true,
+   A:{cap:35,int:7,intCap:20,pow:2,powCap:20,total:50,ann:4.5},
+   B:{cap:30,int:7,intCap:20,pow:1,powCap:20,total:45,ann:4.0}},
+};
+
+/* ======================= helpers ======================= */
+const $ = s => document.querySelector(s);
+const num = id => { const v = parseFloat($("#"+id).value); return isFinite(v) && v > 0 ? v : 0; };
+const on = id => $("#"+id).checked;
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function money(cr){
+  if(!isFinite(cr)) return "—";
+  if(Math.abs(cr) < 1) return "₹" + (cr*100).toLocaleString("en-IN",{maximumFractionDigits:2}) + " લાખ";
+  return "₹" + cr.toLocaleString("en-IN",{maximumFractionDigits:2}) + " કરોડ";
+}
+const rupees = r => "₹" + Math.round(r).toLocaleString("en-IN");
+const pct = x => (Math.round(x*100)/100).toString() + "%";
+function catOf(taluka){
+  for(const d of TALUKAS){ if(d[2].includes(taluka)) return "A"; if(d[3].includes(taluka)) return "B"; }
+  return null;
+}
+
+/* ======================= classification ======================= */
+function classify(inp){
+  const s = SECTORS.find(x => x.id === inp.sector);
+  const pm = inp.pm;
+  const gfciLarge = inp.land + inp.bld + inp.pm + inp.infra;     // Large GR 1.14: includes land
+  let size, key, notes = [];
+  if(pm <= 2.5) size = "micro"; else if(pm <= 25) size = "small"; else if(pm <= 125) size = "medium"; else size = "large";
+
+  if(size !== "large"){
+    key = s.kind === "selected" ? "msme_sel" : "msme_gen";
+    if(s.kind === "thrust") notes.push(["info","MSME યોજનામાં થ્રસ્ટ સેક્ટર માટે અલગ દર નથી; ફક્ત 5 પસંદગીના થ્રસ્ટ સેક્ટરને ઊંચા દર મળે છે. તેથી સામાન્ય MSME દર લાગુ."]);
+    return {size, key, sector:s, gfciLarge};
+  }
+  const megaReq = gfciLarge >= 1000 ? 250 + 50*Math.floor((gfciLarge-1000)/200) : null;
+  const ultraReq = gfciLarge >= 10000 ? 3000 + 500*Math.floor((gfciLarge-10000)/5000) : null;
+  if(s.kind === "general"){
+    key = "large_gen";
+    if(gfciLarge >= 1000) notes.push(["info","મેગા/અલ્ટ્રા-મેગા દરજ્જો ફક્ત થ્રસ્ટ અથવા પસંદગીના થ્રસ્ટ સેક્ટર માટે છે. ₹1,000 કરોડથી વધુ રોકાણ પણ સામાન્ય સેક્ટરમાં લાર્જ શ્રેણીમાં જ ગણાય (para 4-B v)."]);
+  } else {
+    const sel = s.kind === "selected";
+    if(ultraReq !== null && inp.jobs >= ultraReq){ size = "ultra"; key = sel ? "ultra_sel" : "ultra_thr"; }
+    else if(megaReq !== null && inp.jobs >= megaReq){ size = "mega"; key = sel ? "mega_sel" : "mega_thr";
+      if(ultraReq !== null) notes.push(["warn",`અલ્ટ્રા-મેગા માટે ${ultraReq.toLocaleString("en-IN")} સીધી રોજગારી જોઈએ; તમારી ${inp.jobs.toLocaleString("en-IN")} છે. તેથી મેગા દર લાગુ.`]);
+    }
+    else { key = sel ? "large_sel" : "large_thr";
+      if(megaReq !== null) notes.push(["warn",`મેગા દરજ્જા માટે ${money(gfciLarge)} રોકાણ પર ઓછામાં ઓછી ${megaReq.toLocaleString("en-IN")} સીધી રોજગારી જોઈએ (₹1,000 કરોડ પર 250, પછી દર ₹200 કરોડે +50). તમારી ${inp.jobs.toLocaleString("en-IN")} હોવાથી લાર્જ-${sel?"પસંદગીના ":""}થ્રસ્ટ દર લાગુ.`]);
+    }
+  }
+  return {size, key, sector:s, gfciLarge, megaReq, ultraReq, notes};
+}
+
+const SIZE_G = {micro:"માઇક્રો એન્ટરપ્રાઇઝ", small:"સ્મોલ એન્ટરપ્રાઇઝ", medium:"મીડિયમ એન્ટરપ્રાઇઝ", large:"લાર્જ ઔદ્યોગિક એકમ", mega:"મેગા ઔદ્યોગિક એકમ", ultra:"અલ્ટ્રા-મેગા ઔદ્યોગિક એકમ"};
+const isMSME = sz => ["micro","small","medium"].includes(sz);
+
+/* ======================= main computation ======================= */
+function compute(){
+  const inp = {
+    dist: $("#dist").value, tal: $("#tal").value, sector: $("#sector").value,
+    ptype: document.querySelector('input[name="ptype"]:checked').value,
+    exist: num("exist"), docp: $("#docp").value,
+    pm: num("pm"), bld: num("bld"), infra: num("infra"), land: num("land"), infraIn: on("infraIn"),
+    loan: num("loan"), rate: num("rate"), tenure: Math.max(1, Math.round(num("tenure")||1)), units: num("units"),
+    jobs: num("jobs"), wage: num("wage"), em: num("em"), ef: num("ef"), ed: num("ed"),
+    women: on("women"), women100: on("women100"), startup: on("startup"), firstgen: on("firstgen"),
+    outGidc: on("outGidc"), rent: num("rent"),
+    useCap: on("useCap"), useInt: on("useInt"), usePow: on("usePow"),
+  };
+  const cat = catOf(inp.tal);
+  const cl = classify(inp);
+  const msme = isMSME(cl.size);
+  const S = SCHEMES[cl.key];
+  const R = S[cat || "B"];
+
+  // EFCI — MSME GR 1.11 (infra at 50%) · Large GR 1.15 (infra 100% inside premises, 20% outside)
+  const infraFactor = msme ? 0.5 : (inp.infraIn ? 1 : 0.2);
+  const efci = inp.bld + inp.pm + inp.infra * infraFactor;
+
+  // bonus interest (MSME only: women / startup / first-generation)
+  const bonus = msme && (inp.women || inp.startup || inp.firstgen) ? 1 : 0;
+  const loanElig = Math.min(inp.loan, efci);
+  const subRate = Math.max(0, Math.min(R.int + bonus, inp.rate - 2)) / 100;   // unit bears ≥2%
+
+  const N = S.years;
+  const capTotal = inp.useCap ? R.cap/100 * efci : 0;
+  const intCeil = R.intCap/100 * efci, powCeil = R.powCap/100 * efci, totCeil = R.total/100 * efci;
+  let cumI = 0, cumP = 0, cumT = 0;
+  const rows = [];
+  for(let y = 1; y <= N; y++){
+    let c = 0;
+    if(inp.useCap){ c = cl.size === "micro" ? (y === 1 ? capTotal : 0) : capTotal / N; }
+    let i = 0;
+    if(inp.useInt && y <= inp.tenure){ const out = loanElig * (1 - (y - 0.5)/inp.tenure); i = out * subRate; }
+    i = Math.min(i, Math.max(0, intCeil - cumI));
+    let p = inp.usePow ? inp.units * R.pow / 1e7 : 0;
+    p = Math.min(p, Math.max(0, powCeil - cumP));
+
+    let annPct = cl.size === "micro" ? (y === 1 ? R.annMicro[0] : R.annMicro[1]) : R.ann;
+    let annCap = annPct/100 * efci;
+    if(S.abs) annCap = Math.min(annCap, S.abs);
+    const allowed = Math.max(0, Math.min(annCap, totCeil - cumT));
+    // apply ceilings in order capital → interest → power; no carry forward
+    let room = allowed;
+    const c2 = Math.min(c, room); room -= c2;
+    const i2 = Math.min(i, room); room -= i2;
+    const p2 = Math.min(p, room); room -= p2;
+    cumI += i2; cumP += p2; cumT += c2 + i2 + p2;
+    rows.push({y, c:c2, i:i2, p:p2, annCap, lost:(c+i+p)-(c2+i2+p2)});
+  }
+  const tot = rows.reduce((a,r)=>({c:a.c+r.c,i:a.i+r.i,p:a.p+r.p,lost:a.lost+r.lost}),{c:0,i:0,p:0,lost:0});
+  tot.all = tot.c + tot.i + tot.p;
+
+  // EPF — MSME GR 7.2 · Large GR 4 (iv) + 6-D
+  const epfEach = (cap) => Math.min(0.12 * inp.wage, cap);
+  const epfMonth = inp.em*epfEach(1800) + inp.ef*epfEach(2500) + inp.ed*epfEach(3000);
+  const epfYears = S.epf;
+  const epfTotal = epfMonth * 12 * epfYears / 1e7;
+
+  return {inp, cat, cl, msme, S, R, efci, infraFactor, bonus, loanElig, subRate, rows, tot, totCeil, intCeil, powCeil, epfMonth, epfYears, epfTotal};
+}
+
+/* ======================= eligibility checks ======================= */
+function checks(r){
+  const {inp, cl, msme} = r, out = [];
+  const [yy, mm] = (inp.docp || "2027-03").split("-").map(Number);
+  const d = new Date(yy, (mm||1)-1, 1);
+  const START = new Date(2026,5,1), END = new Date(2031,4,31), PREV = new Date(2027,9,4);
+  if(d < START) out.push(["bad","01.06.2026 પહેલાં ઉત્પાદન શરૂ થયું હોય તો ફક્ત અગાઉની (આત્મનિર્ભર ગુજરાત) યોજના લાગુ પડે; આ યોજના પસંદ કરી શકાય નહીં."]);
+  else if(d > END) out.push(["bad","વાણિજ્યિક ઉત્પાદન 31.05.2031 સુધીમાં શરૂ થવું જરૂરી છે."]);
+  else {
+    out.push(["ok","DoCP યોજનાના અમલ સમયગાળા (01.06.2026 થી 31.05.2031) માં છે."]);
+    if(d <= PREV) out.push(["info","તમે અગાઉની યોજના પણ પસંદ કરી શકો, પરંતુ તે માટે GR તારીખથી 6 મહિનામાં વિકલ્પ આપવો પડે અને 04.10.2027 સુધીમાં ઉત્પાદન શરૂ થવું જોઈએ. પસંદગી અફર છે."]);
+  }
+  if(!r.cat) out.push(["warn","તાલુકા પસંદ કરો. હાલ Category-B ના દર બતાવ્યા છે."]);
+
+  if(inp.ptype !== "new"){
+    const add = inp.bld + inp.pm + inp.infra;
+    const ratio = inp.exist > 0 ? add / inp.exist * 100 : 0;
+    const need = inp.ptype === "exp" ? 50 : (msme && cl.size !== "medium" ? 25 : 50);
+    const pmShare = add > 0 ? inp.pm / add * 100 : 0;
+    out.push([ratio >= need ? "ok" : "bad", `${inp.ptype==="exp"?"વિસ્તરણ":"ડાયવર્સિફિકેશન"} માટે હાલના GFCI ના ઓછામાં ઓછા ${need}% નવું રોકાણ જોઈએ; તમારું ${pct(ratio)} છે.`]);
+    out.push([pmShare >= 60 ? "ok" : "bad", `નવા રોકાણમાંથી ઓછામાં ઓછું 60% પ્લાન્ટ-મશીનરીમાં જોઈએ; તમારું ${pct(pmShare)} છે.`]);
+    if(inp.ptype === "exp") out.push(["info","વિસ્તરણમાં સ્થાપિત ક્ષમતા ઓછામાં ઓછી 50% વધવી જોઈએ, અને છેલ્લાં 3 નાણાકીય વર્ષમાંથી કોઈ એકમાં હાલની ક્ષમતાનો 75% ઉપયોગ થયેલો હોવો જોઈએ."]);
+    out.push(["info","પાવર ટેરિફ ફક્ત વધારાના વપરાશ પર મળે; સબ-મીટર લગાવવું પડે. EPF ફક્ત વધારાના કર્મચારીઓ પર."]);
+  }
+  if(!msme && cl.sector.etp) out.push(["warn","કેમિકલ અને ફાર્મા એકમો માટે પૂર્વશરત: પોતાનો ETP અથવા CETP ની સુવિધા હોવી જરૂરી."]);
+  (cl.notes||[]).forEach(n => out.push(n));
+  if(r.S.hpc) out.push(["info","મેગા/અલ્ટ્રા-મેગા પ્રોજેક્ટ માટે મુખ્યમંત્રીના અધ્યક્ષપદ હેઠળની High Power Committee કસ્ટમાઇઝ્ડ પેકેજ નક્કી કરી શકે."]);
+  if(inp.loan > r.efci && inp.useInt) out.push(["info",`વ્યાજ સબસિડી ફક્ત EFCI માટે વિતરિત લોન પર મળે; ગણતરીમાં લોન ${money(r.efci)} સુધી લીધી છે.`]);
+  if(inp.useInt && inp.rate - 2 < r.R.int + r.bonus) out.push(["info",`એકમે ઓછામાં ઓછું 2% વ્યાજ ભોગવવું પડે, તેથી અસરકારક વ્યાજ સબસિડી ${pct(r.subRate*100)} ગણી છે.`]);
+  out.push(["info","કુલ કર્મચારીઓમાં ઓછામાં ઓછા 85% અને મેનેજર/સુપરવાઇઝરમાં 60% ગુજરાતના નિવાસી હોવા જોઈએ."]);
+  out.push(["info","આ જ GFCI પર રાજ્યની બીજી કોઈ યોજનામાંથી સહાય લીધી હોય તો પાત્ર નથી. કેન્દ્ર + રાજ્યની કુલ સહાય EFCI થી વધવી ન જોઈએ."]);
+  return out;
+}
+
+/* ======================= other assistance (filtered) ======================= */
+function otherList(r){
+  const {inp, cl, msme} = r, sel = cl.sector.kind === "selected", L = [];
+  if(msme){
+    L.push(["ERP સહાય","ERP ના મૂડી ખર્ચના 65% (હાર્ડવેર સિવાય, SaaS સબ્સ્ક્રિપ્શન માન્ય)","મહત્તમ ₹1 લાખ","સ્થાપનાથી 6 મહિનામાં અરજી"]);
+    L.push(["ક્વોલિટી સર્ટિફિકેશન","BIS/ISI/હોલમાર્ક વગેરેની ફીના 50% + જરૂરી ટેસ્ટિંગ સાધનોના 50%","કુલ મહત્તમ ₹10 લાખ","કાયદેસર ફરજિયાત સર્ટિફિકેશન અને રિન્યુઅલ પાત્ર નથી"]);
+    L.push(["ZED સર્ટિફિકેશન","કેન્દ્રની સહાય બાદ કર્યા પછી તમામ ચાર્જના 50%","મહત્તમ ₹50,000","સર્ટિફિકેટથી 6 મહિનામાં"]);
+    L.push(["ICT / Industry 4.0 / AI","ICT સુવિધાના મૂડી ખર્ચના 65%","મહત્તમ ₹5 લાખ","સ્થાપનાથી 6 મહિનામાં"]);
+    L.push(["ટેક્નોલોજી એક્વિઝિશન","માન્ય સંસ્થા પાસેથી ટેક્નોલોજીના ખર્ચના 65% (પહેલાં 2 વર્ષની રોયલ્ટી સહિત)","મહત્તમ ₹50 લાખ","MoU થી 6 મહિનામાં · મશીનરી ખરીદી પાત્ર નથી"]);
+    L.push(["પેટન્ટ નોંધણી","ખર્ચના 75% (એટર્ની ફી: દેશમાં ₹50,000, વિદેશમાં દેશદીઠ ₹2 લાખ મર્યાદા)","મહત્તમ ₹25 લાખ","પ્રકાશનથી 6 મહિનામાં · 50% પ્રકાશન પછી, 50% પેટન્ટ મળ્યે"]);
+    L.push(["ઊર્જા અને પાણી બચત","ઓડિટ ખર્ચના 75% (દરેક માટે ₹50,000 સુધી) + ભલામણ કરેલાં સાધનોના 25%","સાધનો: મહત્તમ ₹20 લાખ, એક વાર","ઓછામાં ઓછી 10% બચત જરૂરી"]);
+    L.push(["SME એક્સચેન્જ દ્વારા મૂડી","ફંડ ઊભું કરવાના ખર્ચના 25%","મહત્તમ ₹5 લાખ, એક વાર","લિસ્ટિંગથી 6 મહિનામાં"]);
+    if(cl.size !== "medium") L.push(["CGTMSE ફી વળતર","કોલેટરલ-ફ્રી ટર્મ લોન પરની વાર્ષિક સર્વિસ ફીના 100%","5 વર્ષ સુધી","MSE (માઇક્રો-સ્મોલ) માટે · વ્યાજ સબસિડી સાથે વર્ષમાં એક વાર"]);
+    if(inp.outGidc) L.push(["પાવર કનેક્શન ચાર્જ","નવા કનેક્શન/વધારાના લોડ/શિફ્ટિંગ માટે DISCOM ને ચૂકવેલા ચાર્જના 35%","મહત્તમ ₹5 લાખ","GIDC/માન્ય પાર્કની બહારના એકમ · ચુકવણીથી 6 મહિનામાં"]);
+    if(cl.size !== "medium"){
+      const p = inp.women100 ? 0.75 : 0.65;
+      const yr = Math.min(inp.rent*12*p, 300000);
+      L.push(["ભાડા સહાય (MSE)",`ભાડાના ${inp.women100?"75% (100% મહિલા માલિકી)":"65%"}, 5 વર્ષ`,"મહત્તમ ₹3 લાખ પ્રતિ વર્ષ","ભાડા કરારથી 6 મહિનામાં · ટ્રેડિંગ/સર્વિસ પાત્ર નથી", inp.rent>0 ? `${rupees(yr)} / વર્ષ` : null]);
+    }
+    L.push(["વીજ ડ્યુટી માફી","ગુજરાત વીજ ડ્યુટી અધિનિયમ 1958 મુજબ","",""]);
+    if(sel){
+      L.push(["સ્ટેમ્પ ડ્યુટી અને નોંધણી ફી","પ્રોજેક્ટ માટે જમીન ખરીદી/લીઝ પર 100% વળતર","","DoCP થી 6 મહિનામાં · પસંદગીનું થ્રસ્ટ સેક્ટર"]);
+      L.push(["IPR સહાય","પેટન્ટ, ડિઝાઇન, કોપીરાઇટ, ટ્રેડમાર્ક, GI ના ખર્ચના 75%","મહત્તમ ₹1 કરોડ","પસંદગીનું થ્રસ્ટ સેક્ટર"]);
+      L.push(["ટેક્નોલોજી એક્વિઝિશન (વધારેલી)","ખર્ચના 65%","મહત્તમ ₹1 કરોડ","પસંદગીનું થ્રસ્ટ સેક્ટર"]);
+      L.push(["આંતરરાષ્ટ્રીય સર્ટિફિકેશન","ફીના 100%","મહત્તમ ₹5 કરોડ","પસંદગીનું થ્રસ્ટ સેક્ટર · રિન્યુઅલ પાત્ર નથી"]);
+      L.push(["મેનપાવર તાલીમ","પહેલાં 12 મહિના તાલીમ ખર્ચ","₹8,000 પ્રતિ કર્મચારી પ્રતિ માસ","ફક્ત ગુજરાતના નિવાસી · એક વાર"]);
+      L.push(["ક્રિએટિવ ડિઝાઇન સ્ટુડિયો","મશીનરી, હાર્ડવેર, સોફ્ટવેર ખર્ચના 50%","મહત્તમ ₹5 કરોડ","પસંદગીનું થ્રસ્ટ સેક્ટર"]);
+      if(cl.size === "micro") L.push(["AI સબ્સ્ક્રિપ્શન","AI સબ્સ્ક્રિપ્શન ફીના 80%","₹1 લાખ પ્રતિ વર્ષ, 3 વર્ષ","માઇક્રો એન્ટરપ્રાઇઝ અને કારીગરો"]);
+    }
+  } else {
+    L.push(["વીજ ડ્યુટી માફી","ગુજરાત વીજ ડ્યુટી અધિનિયમ 1958 મુજબ","",""]);
+    if(cl.key === "ultra_thr") L.push(["સ્ટેમ્પ ડ્યુટી અને નોંધણી ફી","જમીન ખરીદી/લીઝ પર 100% વળતર","","DoCP થી 3 મહિનામાં"]);
+    if(sel){
+      L.push(["સ્ટેમ્પ ડ્યુટી અને નોંધણી ફી","સરકાર/GIDC ને ચૂકવેલ, જમીન ખરીદી/લીઝ પર 100% વળતર","","DoCP થી 3 મહિનામાં"]);
+      L.push(["IPR સહાય","પેટન્ટ, ડિઝાઇન, કોપીરાઇટ, ટ્રેડમાર્ક, GI ના ખર્ચના 75% સુધી","મહત્તમ ₹1 કરોડ","પ્રકાશનથી 3 મહિનામાં"]);
+      L.push(["ટેક્નોલોજી એક્વિઝિશન","ખર્ચના 75% સુધી (2 વર્ષની રોયલ્ટી સહિત)","મહત્તમ ₹5 કરોડ","MoU થી 3 મહિનામાં"]);
+      L.push(["આંતરરાષ્ટ્રીય સર્ટિફિકેશન","ફીના 100%","મહત્તમ ₹5 કરોડ","સર્ટિફિકેટથી 3 મહિનામાં"]);
+      L.push(["મેનપાવર તાલીમ","પહેલાં 12 મહિના તાલીમ ખર્ચ","₹15,000 પ્રતિ કર્મચારી પ્રતિ માસ","ફક્ત ગુજરાતના નિવાસી · એક વાર"]);
+      L.push(["ક્રિએટિવ ડિઝાઇન સ્ટુડિયો","બિલ્ડિંગ, મશીનરી, હાર્ડવેર, સોફ્ટવેરના 50% (બિલ્ડિંગ ≤ 20% EFCI)","મહત્તમ ₹50 કરોડ","શરૂઆતથી 3 મહિનામાં"]);
+    }
+  }
+  return L;
+}
+
+/* ======================= next steps ======================= */
+function steps(r){
+  const {inp, cl, msme} = r;
+  const invP = msme ? (inp.pm <= 50 ? "DoCP પછી 12 મહિના" : "DoCP પછી 18 મહિના")
+    : (cl.gfciLarge <= 1000 ? "DoCP પછી 18 મહિના" : cl.gfciLarge <= 10000 ? "DoCP પછી 24 મહિના" : cl.gfciLarge <= 100000 ? "DoCP પછી 36 મહિના" : "DoCP પછી 48 મહિના");
+  if(msme) return [
+    `01.01.2026 પછી ખરીદેલી અને ચૂકવેલી અસ્કયામતો જ EFCI માં ગણાય; રોકાણનો સમયગાળો ${invP} સુધી.`,
+    "Udyam Registration / IEM અથવા જરૂરી લાઇસન્સ મેળવો.",
+    "ઉત્પાદન શરૂ થયાથી (પ્રથમ વેચાણ બિલ) 6 મહિનામાં Provisional Eligibility Certificate (PEC) માટે અરજી કરો. PEC EFCI ના 40% સુધી મળે.",
+    "રોકાણ પૂરું થયે 6 મહિનામાં Final Eligibility Certificate (FEC). મોડું થાય તો 2 વર્ષ સુધી પ્રમાણસર કપાત સાથે; પછી અરજી માન્ય નથી.",
+    `મંજૂરી: ${cl.size==="medium" ? "MSME કમિશનર" : "જનરલ મેનેજર, જિલ્લા ઉદ્યોગ કેન્દ્ર (GM-DIC)"}. GPCB પ્રમાણપત્ર જરૂરી.`,
+    "સહાયના સમયગાળા સુધી ઉત્પાદન સતત ચાલુ રાખવું પડે; શરતભંગ પર 18% વ્યાજ સાથે વસૂલાત.",
+  ];
+  const comm = cl.gfciLarge <= 1000 ? "₹1,000 કરોડ સુધીની સમિતિ" : cl.gfciLarge <= 10000 ? "₹1,000–10,000 કરોડની સમિતિ" : "₹10,000 કરોડથી વધુની સમિતિ";
+  return [
+    "ઉદ્યોગ કમિશનર પાસે નોંધણી (Registration) ફરજિયાત: DoCP પહેલાં અથવા GR તારીખથી 3 મહિનામાં, જે મોડું હોય. પછી નોંધણી માન્ય નથી.",
+    `01.01.2026 પછી ખરીદેલી અને ચૂકવેલી અસ્કયામતો જ ગણાય; રોકાણનો સમયગાળો ${invP} સુધી.`,
+    "DoCP થી 3 મહિનામાં PEC (EFCI ના 40% સુધી) અથવા સીધું FEC માટે અરજી.",
+    "રોકાણ પૂરું થયે 3 મહિનામાં FEC. મોડું થાય તો 1 વર્ષ સુધી પ્રમાણસર કપાત; પછી અરજી માન્ય નથી.",
+    `FEC મંજૂરી: ${comm}. દાવા દર 3 મહિને ઉદ્યોગ કમિશનરને.`,
+    "નીતિ સમયગાળામાં એક એકમ વધુમાં વધુ 2 વખત સહાય લઈ શકે.",
+  ];
+}
+
+/* ======================= render: result ======================= */
+function render(){
+  const r = compute();
+  const {inp, cat, cl, S, R, efci, rows, tot, totCeil} = r;
+  const catTxt = cat ? `<span class="catpill cat${cat}">Category ${cat}</span>` : `<span class="catpill catB">શ્રેણી પસંદ કરો</span>`;
+  $("#catLine").innerHTML = `${esc(inp.tal||"")} તાલુકા: ${catTxt} <span style="color:var(--mute)">· GR 08.09.2026</span>`;
+
+  const chk = checks(r);
+  const blocked = chk.some(c => c[0] === "bad");
+  const W = Math.max(totCeil, tot.all, 1e-9);
+  const w = v => (v / W * 100).toFixed(2) + "%";
+
+  // year chart
+  const n = rows.length, cw = 640, ch = 190, pl = 44, pr = 8, pt = 10, pb = 26;
+  const maxY = Math.max(...rows.map(x => Math.max(x.annCap, x.c + x.i + x.p)), 1e-9);
+  const bw = (cw - pl - pr) / n;
+  const yS = v => pt + (ch - pt - pb) * (1 - v / maxY);
+  let bars = "";
+  rows.forEach((x, k) => {
+    const x0 = pl + k*bw + bw*0.18, bwi = bw*0.64;
+    let base = 0;
+    [[x.c,"var(--c-cap)"],[x.i,"var(--c-int)"],[x.p,"var(--c-pow)"]].forEach(([v,col]) => {
+      if(v > 0){ bars += `<rect x="${x0.toFixed(1)}" y="${yS(base+v).toFixed(1)}" width="${bwi.toFixed(1)}" height="${(yS(base)-yS(base+v)).toFixed(1)}" fill="${col}"/>`; base += v; }
+    });
+    bars += `<line x1="${(x0-3).toFixed(1)}" x2="${(x0+bwi+3).toFixed(1)}" y1="${yS(x.annCap).toFixed(1)}" y2="${yS(x.annCap).toFixed(1)}" stroke="var(--ink)" stroke-width="1.5" stroke-dasharray="3 2"/>`;
+    bars += `<text x="${(x0+bwi/2).toFixed(1)}" y="${ch-8}" text-anchor="middle">વ${x.y}</text>`;
+  });
+  let grid = "";
+  [0, .5, 1].forEach(f => { const v = maxY*f; grid += `<line x1="${pl}" x2="${cw-pr}" y1="${yS(v).toFixed(1)}" y2="${yS(v).toFixed(1)}" stroke="var(--line)"/><text x="${pl-6}" y="${(yS(v)+3).toFixed(1)}" text-anchor="end">${v<1?(v*100).toFixed(v*100<10?1:0)+"L":v.toFixed(v<10?1:0)+"Cr"}</text>`; });
+
+  const microNote = cl.size === "micro" ? "માઇક્રો: કેપિટલ સબસિડી પહેલા વર્ષે એકસાથે; વાર્ષિક મર્યાદા વર્ષ-1 માં " + R.annMicro[0] + "%, પછી " + R.annMicro[1] + "%." : `વાર્ષિક મર્યાદા EFCI ના ${R.ann}%${S.abs ? `, અને વધુમાં વધુ ₹${S.abs} કરોડ પ્રતિ વર્ષ` : ""}.`;
+
+  const other = otherList(r);
+
+  $("#res").innerHTML = `
+  <section class="panel">
+    <div class="tags">
+      <span class="tag acc">${esc(S.name)}</span>
+      <span class="tag">${SIZE_G[cl.size]}</span>
+      <span class="tag">${esc(cl.sector.g)}</span>
+      ${cat ? `<span class="catpill cat${cat}">Category ${cat}</span>` : ""}
+      ${r.bonus ? `<span class="tag">+1% વધારાનું વ્યાજ</span>` : ""}
+    </div>
+    ${blocked ? `<p style="margin:12px 0 0;color:var(--bad);font-weight:600">નીચેની શરતો પૂરી થતી નથી, તેથી આ યોજનામાં સહાય મળવાપાત્ર નથી. આંકડા ફક્ત સમજ માટે છે.</p>` : ""}
+    <div class="hero-num">
+      <span class="big">${money(tot.all)}</span>
+      <span class="of">${S.years} વર્ષમાં અંદાજિત કેપિટલ + વ્યાજ + પાવર સહાય · કુલ મર્યાદા ${money(totCeil)} (EFCI ના ${R.total}%)</span>
+    </div>
+    <div class="meter" role="img" aria-label="કુલ મર્યાદા સામે મળતી સહાય">
+      <div class="bar">
+        <div class="seg-c" style="width:${w(tot.c)};background:var(--c-cap)"></div>
+        <div class="seg-c" style="width:${w(tot.i)};background:var(--c-int)"></div>
+        <div class="seg-c" style="width:${w(tot.p)};background:var(--c-pow)"></div>
+        <div class="cap" style="left:calc(${w(totCeil)} - 2px)"></div>
+      </div>
+      <div class="scale"><span>0</span><span>કુલ મર્યાદા ${R.total}% EFCI</span></div>
+    </div>
+    <div class="comp">
+      <div><span class="k"><i style="display:inline-block;width:9px;height:9px;border-radius:2px;background:var(--c-cap);margin-right:6px"></i>કેપિટલ સબસિડી</span><b>${money(tot.c)}</b><small>EFCI ના ${R.cap}%${cl.size==="micro"?", પહેલા વર્ષે":`, ${S.years} વર્ષમાં સમાન હપ્તે`}</small></div>
+      <div><span class="k"><i style="display:inline-block;width:9px;height:9px;border-radius:2px;background:var(--c-int);margin-right:6px"></i>વ્યાજ સબસિડી</span><b>${money(tot.i)}</b><small>${R.int}%${r.bonus?" + 1%":""} ટર્મ લોન પર, મહત્તમ EFCI ના ${R.intCap}% (${money(r.intCeil)})</small></div>
+      <div><span class="k"><i style="display:inline-block;width:9px;height:9px;border-radius:2px;background:var(--c-pow);margin-right:6px"></i>પાવર ટેરિફ</span><b>${money(tot.p)}</b><small>₹${R.pow}/યુનિટ, મહત્તમ EFCI ના ${R.powCap}% (${money(r.powCeil)})</small></div>
+    </div>
+    <p class="note">EFCI ${money(efci)} = બિલ્ડિંગ ${money(inp.bld)} + P&amp;M ${money(inp.pm)} + ઇન્ફ્રાના ${r.infraFactor*100}% · જમીન EFCI માં ગણાતી નથી. ${tot.lost > 0.00001 ? `વાર્ષિક/કુલ મર્યાદાને કારણે ${money(tot.lost)} મળવાપાત્ર નથી (carry forward નથી).` : ""}</p>
+  </section>
+
+  <section class="panel">
+    <h3>વર્ષવાર વિતરણ</h3>
+    <div class="legend"><span><i style="background:var(--c-cap)"></i>કેપિટલ</span><span><i style="background:var(--c-int)"></i>વ્યાજ</span><span><i style="background:var(--c-pow)"></i>પાવર</span><span><i style="background:none;border-top:2px dashed var(--ink);height:0;border-radius:0;vertical-align:3px"></i>વાર્ષિક મર્યાદા</span></div>
+    <svg class="chart" viewBox="0 0 ${cw} ${ch}" role="img" aria-label="વર્ષવાર સહાય">${grid}${bars}</svg>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>વર્ષ</th><th class="n">કેપિટલ</th><th class="n">વ્યાજ</th><th class="n">પાવર</th><th class="n">કુલ</th><th class="n">વાર્ષિક મર્યાદા</th></tr></thead>
+      <tbody>${rows.map(x => `<tr><td>${x.y}</td><td class="n">${money(x.c)}</td><td class="n">${money(x.i)}</td><td class="n">${money(x.p)}</td><td class="n">${money(x.c+x.i+x.p)}</td><td class="n">${money(x.annCap)}</td></tr>`).join("")}
+      <tr class="tot"><td>કુલ</td><td class="n">${money(tot.c)}</td><td class="n">${money(tot.i)}</td><td class="n">${money(tot.p)}</td><td class="n">${money(tot.all)}</td><td class="n">${money(totCeil)}</td></tr></tbody>
+    </table></div>
+    <p class="note">${microNote} વાર્ષિક મર્યાદા નડે ત્યાં આ ગણતરી પહેલા કેપિટલ, પછી વ્યાજ, પછી પાવર ગણે છે. વ્યાજ: લોનની મુદ્દલ સમાન હપ્તે ચૂકવાય એમ માનીને, વર્ષના સરેરાશ બાકી પર. (${esc(S.ref)})</p>
+  </section>
+
+  <section class="panel">
+    <h3>EPF વળતર</h3>
+    <div class="hero-num" style="margin-top:0"><span class="big" style="font-size:26px">${money(r.epfTotal)}</span><span class="of">${r.epfYears} વર્ષમાં · ${rupees(r.epfMonth)} પ્રતિ માસ</span></div>
+    <p class="note">નવા કર્મચારીઓ પર નોકરીદાતાના EPF ફાળાના 100%, પ્રતિ કર્મચારી માસિક 12% (બેઝિક+DA) અથવા પુરુષ ₹1,800 / મહિલા ₹2,500 / દિવ્યાંગ ₹3,000, જે ઓછું હોય. GR માં આ ઘટક 1-2-3 થી અલગ બતાવેલું છે, તેથી અહીં ઉપરની કુલ રકમમાં ઉમેર્યું નથી. કેન્દ્ર/રાજ્યની બીજી યોજનામાંથી EPF વળતર લીધું હોય તે સમયગાળા માટે પાત્ર નથી.</p>
+  </section>
+
+  <section class="panel">
+    <h3>પાત્રતાની શરતો</h3>
+    <ul class="checks">${chk.map(([k,t]) => `<li><span class="dot d-${k}">${k==="ok"?"✓":k==="bad"?"✕":k==="warn"?"!":"i"}</span><span>${t}</span></li>`).join("")}</ul>
+  </section>
+
+  <section class="panel">
+    <h3>તમને લાગુ પડતી અન્ય સહાય</h3>
+    <div class="alist">${other.map(o => `<div class="aitem"><span class="t">${o[0]}</span><span class="v">${o[1]}</span>${o[2]?`<span class="c"><b style="color:var(--ink);font-weight:600">${o[2]}</b></span>`:""}${o[4]?`<span class="amt">${o[4]}</span>`:""}${o[3]?`<span class="c">${o[3]}</span>`:""}</div>`).join("")}</div>
+  </section>
+
+  <section class="panel">
+    <h3>આગળનાં પગલાં</h3>
+    <ol class="steps">${steps(r).map(s => `<li>${s}</li>`).join("")}</ol>
+  </section>`;
+}
+
+/* ======================= form setup ======================= */
+function fillDistricts(){
+  $("#dist").innerHTML = TALUKAS.map((d,i) => `<option value="${i}">${d[1]} · ${d[0]}</option>`).join("");
+}
+function fillTalukas(){
+  const d = TALUKAS[+$("#dist").value];
+  const all = [...d[2].map(t=>[t,"A"]), ...d[3].map(t=>[t,"B"])].sort((a,b)=>a[0].localeCompare(b[0]));
+  $("#tal").innerHTML = all.map(([t,c]) => `<option value="${esc(t)}">${esc(t)} (Cat ${c})</option>`).join("");
+}
+function fillSectors(){
+  const grp = (k, lbl) => `<optgroup label="${lbl}">` + SECTORS.filter(s=>s.kind===k).map(s=>`<option value="${s.id}">${s.g}</option>`).join("") + `</optgroup>`;
+  $("#sector").innerHTML = grp("general","સામાન્ય") + grp("thrust","થ્રસ્ટ સેક્ટર (Annexure-A)") + grp("selected","પસંદગીનાં થ્રસ્ટ સેક્ટર");
+}
+fillDistricts();
+$("#dist").value = String(TALUKAS.findIndex(d => d[0]==="Botad"));
+fillTalukas(); $("#tal").value = "Botad";
+fillSectors(); $("#sector").value = "t5";
+
+$("#dist").addEventListener("change", () => { fillTalukas(); render(); });
+$("#frm").addEventListener("input", e => {
+  if(e.target.name === "ptype") $("#exWrap").hidden = e.target.value === "new";
+  $("#exNote").hidden = true;
+  render();
+});
+$("#frm").addEventListener("change", e => { if(e.target.name === "ptype") $("#exWrap").hidden = e.target.value === "new"; render(); });
+$("#frm").addEventListener("submit", e => e.preventDefault());
+
+/* ======================= rates tab ======================= */
+function rateTables(){
+  const order = [["msme_gen","msme_sel"],["large_gen","large_thr","large_sel"],["mega_thr","mega_sel"],["ultra_thr","ultra_sel"]];
+  const hdr = {msme_gen:"MSME માટે કોઈ પણ ઉત્પાદન ક્ષેત્ર (પસંદગીના 5 સિવાય). વ્યાજ: મહિલા, રજિસ્ટર્ડ સ્ટાર્ટઅપ, પ્રથમ પેઢીના ઉદ્યમીને +1%, કુલ મર્યાદામાં.",
+    msme_sel:"સ્પોર્ટ્સ ગુડ્સ, રમકડાં, ફૂટવેર, રોબોટ, ડ્રોન. માઇક્રો: કેપિટલ પહેલા વર્ષે; સ્મોલ-મીડિયમ: 5 વર્ષમાં.",
+    large_gen:"P&M > ₹125 કરોડ, થ્રસ્ટ સેક્ટર બહાર (₹1,000 કરોડથી વધુ પણ).",
+    large_thr:"થ્રસ્ટ સેક્ટર; મેગાની રોજગારી શરત પૂરી ન કરતાં ₹1,000 કરોડ+ પ્રોજેક્ટ પણ.",
+    large_sel:"પસંદગીનાં થ્રસ્ટ સેક્ટર; મેગાની રોજગારી શરત ન પૂરી કરતા પ્રોજેક્ટ પણ.",
+    mega_thr:"GFCI ≥ ₹1,000 કરોડ અને ≥ 250 સીધી રોજગારી (દર ₹200 કરોડે +50).",
+    mega_sel:"પસંદગીનાં થ્રસ્ટ સેક્ટરમાં મેગા એકમ.",
+    ultra_thr:"GFCI ≥ ₹10,000 કરોડ અને ≥ 3,000 સીધી રોજગારી (દર ₹5,000 કરોડે +500). સ્ટેમ્પ ડ્યુટી 100% વળતર.",
+    ultra_sel:"પસંદગીનાં થ્રસ્ટ સેક્ટરમાં અલ્ટ્રા-મેગા એકમ."};
+  const out = [];
+  order.flat().forEach(k => {
+    const S = SCHEMES[k], msme = k.startsWith("msme");
+    const row = c => { const R = S[c];
+      const capTxt = msme ? `${R.cap}% · માઇક્રોને વર્ષ 1 માં, S&amp;M ને 5 વર્ષમાં` : `${R.cap}% · ${S.years} વર્ષ`;
+      const annTxt = msme ? `S&amp;M ${R.ann}% · માઇક્રો ${R.annMicro[0]}% પછી ${R.annMicro[1]}%` : `${R.ann}%`;
+      return `<tr><td><span class="catpill cat${c}">${c}</span></td><td>${capTxt}</td><td>${R.int}% · મહત્તમ ${R.intCap}%</td><td>₹${R.pow}/યુનિટ · મહત્તમ ${R.powCap}%</td><td class="n">${R.total}%</td><td class="n">${annTxt}</td></tr>`; };
+    out.push(`<section class="panel"><h3>${S.name}</h3><p class="hint" style="margin-bottom:6px">${hdr[k]}</p>
+      <div class="tbl-wrap"><table><thead><tr><th>શ્રેણી</th><th>કેપિટલ (EFCI)</th><th>વ્યાજ (ટર્મ લોન)</th><th>પાવર ટેરિફ</th><th class="n">કુલ</th><th class="n">વાર્ષિક</th></tr></thead>
+      <tbody>${row("A")}${row("B")}</tbody></table></div>
+      <p class="note">સમયગાળો ${S.years} વર્ષ · EPF ${S.epf} વર્ષ${S.abs?` · વાર્ષિક મહત્તમ ₹${S.abs} કરોડ`:""}${S.hpc?" · HPC કસ્ટમાઇઝ્ડ પેકેજ":""} · ${S.ref}</p></section>`);
+  });
+  $("#rateTables").innerHTML = out.join("");
+}
+
+/* ======================= other tab (full list) ======================= */
+function otherAll(){
+  const mk = (title, list) => `<section class="panel"><h3>${title}</h3><div class="alist">${list.map(o => `<div class="aitem"><span class="t">${o[0]}</span><span class="v">${o[1]}</span>${o[2]?`<span class="c"><b style="color:var(--ink);font-weight:600">${o[2]}</b></span>`:""}${o[3]?`<span class="c">${o[3]}</span>`:""}</div>`).join("")}</div></section>`;
+  const fake = (size, kind, key, opts={}) => otherList({inp:Object.assign({outGidc:true,rent:0,women100:false},opts), cl:{size, key, sector:{kind}}, msme:isMSME(size)});
+  const msmeAll = fake("micro","general","msme_gen");
+  const msmeSel = fake("micro","selected","msme_sel").filter(o => !msmeAll.some(m => m[0]===o[0]));
+  const largeSel = fake("large","selected","large_sel").filter(o => o[0] !== "વીજ ડ્યુટી માફી");
+  $("#otherAll").innerHTML =
+    mk("તમામ MSME (MSME GR para 8–18)", msmeAll) +
+    mk("પસંદગીનાં થ્રસ્ટ સેક્ટરના MSME માટે વધારાની સહાય (para 19)", msmeSel) +
+    mk("પસંદગીનાં થ્રસ્ટ સેક્ટરના લાર્જ/મેગા/અલ્ટ્રા-મેગા એકમો (Large GR para 5)", largeSel) +
+    mk("તમામ લાર્જ/મેગા/અલ્ટ્રા-મેગા એકમો", [["EPF વળતર","નવા કર્મચારીઓ પર નોકરીદાતાના ફાળાના 100%","પુરુષ ₹1,800 · મહિલા ₹2,500 · દિવ્યાંગ ₹3,000 પ્રતિ માસ","8 થી 10 વર્ષ, યોજના મુજબ"],["વીજ ડ્યુટી માફી","ગુજરાત વીજ ડ્યુટી અધિનિયમ 1958 મુજબ","",""],["સ્ટેમ્પ ડ્યુટી (અલ્ટ્રા-મેગા થ્રસ્ટ)","જમીન ખરીદી/લીઝ પર 100% વળતર","","DoCP થી 3 મહિનામાં"]]);
+}
+
+/* ======================= taluka tab ======================= */
+let tFilter = "all";
+function talGrid(){
+  const q = $("#tq").value.trim().toLowerCase();
+  const html = TALUKAS.map(([en, gu, a, b]) => {
+    const m = t => !q || t.toLowerCase().includes(q) || en.toLowerCase().includes(q) || gu.includes(q);
+    const fa = tFilter==="B" ? [] : a.filter(m), fb = tFilter==="A" ? [] : b.filter(m);
+    if(!fa.length && !fb.length) return "";
+    return `<div class="panel"><h4>${gu} · ${en}</h4><div class="cols">
+      <div><span class="catpill catA">A · ${fa.length}</span><ul>${fa.map(t=>`<li>${esc(t)}</li>`).join("")||"<li style='color:var(--mute)'>—</li>"}</ul></div>
+      <div><span class="catpill catB">B · ${fb.length}</span><ul>${fb.map(t=>`<li>${esc(t)}</li>`).join("")||"<li style='color:var(--mute)'>—</li>"}</ul></div></div></div>`;
+  }).join("");
+  $("#talGrid").innerHTML = html || `<p class="hint">આ નામનો તાલુકો મળ્યો નહીં. અંગ્રેજી જોડણી અજમાવો, દા.ત. "Jasdan".</p>`;
+}
+$("#tq").addEventListener("input", talGrid);
+$("#tf").addEventListener("click", e => { const b = e.target.closest("button"); if(!b) return; tFilter = b.dataset.f; $("#tf").querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x===b)); talGrid(); });
+
+/* ======================= rules tab ======================= */
+function rules(){
+  const card = (t, items) => `<section class="panel"><h3>${t}</h3><dl class="defs">${items.map(([a,b])=>`<div><dt>${a}</dt><dd>${b}</dd></div>`).join("")}</dl></section>`;
+  $("#rulesGrid").innerHTML =
+  card("એકમનો વર્ગ", [
+    ["માઇક્રો / સ્મોલ / મીડિયમ","દેશભરના તમામ એકમોમાં પ્લાન્ટ-મશીનરીનું રોકાણ: ≤ ₹2.5 કરોડ / ₹2.5–25 કરોડ / ₹25–125 કરોડ. વર્ગ પ્રોજેક્ટ પૂરો થયાની તારીખે નક્કી થાય."],
+    ["લાર્જ","પ્લાન્ટ-મશીનરીમાં GFCI ₹125 કરોડથી વધુ, અને IEM/MCA21 કે ભારત સરકારની જરૂરી પરવાનગી."],
+    ["મેગા","થ્રસ્ટ સેક્ટરમાં ઓછામાં ઓછું ₹1,000 કરોડ GFCI અને 250 સીધી રોજગારી; દર વધારાના ₹200 કરોડે +50. કોન્ટ્રાક્ટ એજન્સી મારફતના સીધા કર્મચારી પણ ગણાય."],
+    ["અલ્ટ્રા-મેગા","થ્રસ્ટ સેક્ટરમાં ઓછામાં ઓછું ₹10,000 કરોડ GFCI અને 3,000 સીધી રોજગારી; દર વધારાના ₹5,000 કરોડે +500."],
+  ]) +
+  card("પ્રોજેક્ટનો પ્રકાર", [
+    ["નવો એકમ","યોજના સમયગાળામાં ઉત્પાદન શરૂ કરે. અલગ પરિસરમાં વિસ્તરણ પણ નવો એકમ ગણાય. અલગ હિસાબી ચોપડા જરૂરી; હાલની યુટિલિટી વાપરી શકાય."],
+    ["વિસ્તરણ","એ જ પરિસરમાં GFCI (જમીન સિવાય) ઓછામાં ઓછું 50% વધે, તેમાંથી 60% P&M માં, ક્ષમતા 50% વધે, અને છેલ્લાં 3 વર્ષમાંથી એકમાં 75% ક્ષમતા-ઉપયોગ. MSME માટે હાલના એકમના પૂર્ણ થયા/DoCP ના 1 વર્ષ પછી."],
+    ["ડાયવર્સિફિકેશન","એ જ પરિસરમાં નવી પ્રોડક્ટ લાઇન: માઇક્રો/સ્મોલ માટે GFCI ના 25%, મીડિયમ અને લાર્જ માટે 50%; તેમાંથી 60% P&M માં."],
+    ["પાત્ર નથી","રિનોવેશન, મોડર્નાઇઝેશન, રિહેબિલિટેશન કે રેશનલાઇઝેશન માટેનું રોકાણ."],
+  ]) +
+  card("EFCI: શું ગણાય, શું નહીં", [
+    ["ગણાય","નવું બિલ્ડિંગ (R&B SOR કે વાસ્તવિક ખર્ચ, જે ઓછું; પ્રોસેસ બિલ્ડિંગ વાસ્તવિક ખર્ચે), કમ્પાઉન્ડ વોલ-રોડ-બોરવેલ જેવાં બાંધકામ, નવી P&M (ટ્રાન્સપોર્ટ, ફાઉન્ડેશન, ઇલેક્ટ્રિફિકેશન, સબ-સ્ટેશન સહિત), કેપ્ટિવ પાવર, પ્રદૂષણ નિયંત્રણ, ટેક્નોલોજી/પેટન્ટ (P&M ના 10% સુધી), DG સેટ (લોડના 50% સુધી; MSME 5 MW, લાર્જ 25 MW)."],
+    ["પ્રોજેક્ટ ઇન્ફ્રા","કોલોની, ડોર્મિટરી, હોસ્પિટલ, ફીડર રોડ, પાઇપલાઇન, તાલીમ કેન્દ્ર, કામદાર બસ. MSME: ખર્ચના 50%. લાર્જ: પરિસરમાં 100%, બહાર 20%."],
+    ["નથી ગણાતું","જમીન અને જમીન વિકાસ, વર્કિંગ કેપિટલ, ગુડવિલ, રોયલ્ટી, પ્રી-ઓપરેટિવ ખર્ચ, જૂની કે ભાડાની મશીનરી, કેપિટલાઇઝ્ડ વ્યાજ, થર્ડ-પાર્ટી વેચાણ માટેનો પાવર પ્લાન્ટ, ટેક્નોલોજી વગરની કન્સલ્ટન્સી ફી. લાર્જ માટે: ભાડાનું બિલ્ડિંગ (GIDC શેડ સિવાય)."],
+    ["ગણતરીનો આધાર","રોકાણ, બેંકનું Project Completion Certificate અથવા Asset Verification રિપોર્ટ, જે ઓછું હોય."],
+  ]) +
+  card("ઘટકોની શરતો", [
+    ["ટર્મ લોન","RBI માન્ય બેંક/નાણાં સંસ્થા, ECB, NDDB, GSFS, HUDCO, REC, PFC. NBFC ની લોન પાત્ર નથી. માત્ર રોકાણ સમયગાળામાં વિતરિત રકમ ગણાય."],
+    ["વ્યાજ સબસિડી","ફક્ત બેંકે લીધેલા વ્યાજ પર; પેનલ વ્યાજ નહીં. ડિફોલ્ટ સમયગાળાની સબસિડી નહીં અને તે સમયગાળો કપાય. એકમે ઓછામાં ઓછું 2% વ્યાજ ભોગવવું પડે, કેન્દ્રની સબસિડી પછી પણ."],
+    ["પાવર ટેરિફ","DISCOM કે ઓપન એક્સેસ રિન્યુએબલ પાવર પર; કેપ્ટિવ પ્લાન્ટનો વીજ વપરાશ નહીં. બિલ એકમના નામે. વિસ્તરણમાં સબ-મીટરથી વધારાનો વપરાશ."],
+    ["કેપિટલ સબસિડી","ઉત્પાદન શરૂ થયા પછી જ. કેન્દ્રની કેપિટલ સબસિડી લેતા હો તો કેન્દ્ર+રાજ્યની કુલ સહાય EFCI થી વધે નહીં એ રીતે ઘટાડાય."],
+  ]) +
+  card("સમયમર્યાદા", [
+    ["રોકાણ ગણવાની શરૂઆત","01.01.2026 પછી ખરીદેલી અને ચૂકવેલી અસ્કયામતો."],
+    ["વધારાનો રોકાણ સમયગાળો (MSME)","P&M ₹50 કરોડ સુધી: DoCP પછી 12 મહિના · ₹50–125 કરોડ: 18 મહિના."],
+    ["વધારાનો રોકાણ સમયગાળો (લાર્જ)","GFCI ₹1,000 કરોડ સુધી: 18 મહિના · ₹10,000 કરોડ સુધી: 24 · ₹1 લાખ કરોડ સુધી: 36 · તેથી વધુ: 48 મહિના."],
+    ["અરજી (MSME)","DoCP થી 6 મહિનામાં PEC; FEC 6 મહિનામાં; મોડું થાય તો 2 વર્ષ સુધી પ્રમાણસર કપાત."],
+    ["અરજી (લાર્જ+)","DoCP પહેલાં નોંધણી ફરજિયાત; PEC/FEC 3 મહિનામાં; મોડું થાય તો 1 વર્ષ સુધી પ્રમાણસર કપાત."],
+    ["અગાઉની યોજનાનો વિકલ્પ","01.06.2026 પહેલાં DoCP: ફક્ત અગાઉની યોજના. પછીની DoCP: GR થી 6 મહિનામાં વિકલ્પ, 04.10.2027 સુધી ઉત્પાદન જરૂરી; અફર."],
+  ]) +
+  card("સામાન્ય શરતો અને સત્તાધિકારી", [
+    ["સ્થાનિક રોજગારી","કુલ કર્મચારીઓના 85% અને મેનેજર/સુપરવાઇઝરના 60% ગુજરાતના નિવાસી."],
+    ["સતત ઉત્પાદન","સહાયના સમયગાળા સુધી ઉત્પાદન ચાલુ રાખવું; શરતભંગ પર 18% વાર્ષિક વ્યાજ સાથે જમીન મહેસૂલની જેમ વસૂલાત."],
+    ["બીજી યોજના","આ જ ઘટક માટે રાજ્યની બીજી યોજનામાંથી સહાય લેતા હો તો પાત્ર નથી. કેન્દ્રની યોજના લઈ શકાય, પણ કુલ સહાય EFCI થી વધે નહીં."],
+    ["MSME મંજૂરી","માઇક્રો-સ્મોલ: GM-DIC · મીડિયમ: MSME કમિશનર. ક્વોલિટી, ટેક્નોલોજી, પેટન્ટ, SME એક્સચેન્જ, પસંદગીનાં સેક્ટરની સહાય: MSME કમિશનર."],
+    ["લાર્જ મંજૂરી","રોકાણ મુજબ ત્રણ સમિતિઓ (₹1,000 કરોડ સુધી / ₹1,000–10,000 કરોડ / તેથી વધુ). મેગા-અલ્ટ્રા માટે મુખ્યમંત્રીના અધ્યક્ષપદ હેઠળ HPC."],
+  ]);
+}
+
+/* ======================= field help (ⓘ) ======================= */
+const HELP = {
+  dist: "જે જિલ્લામાં ફેક્ટરીની જમીન કે GIDC પ્લોટ છે તે પસંદ કરો. ઓફિસનું સરનામું નહીં, <b>ઉત્પાદન થાય તે સ્થળ</b> ગણાય.",
+  tal: "7/12 ઉતારો, જમીન દસ્તાવેજ કે GIDC ફાળવણી પત્રમાં લખેલો તાલુકો. નવા બનેલા તાલુકા (દા.ત. Hadad, Ogad, Rah) પણ યાદીમાં છે. Category A/B આપોઆપ દેખાશે.<br>જમીન બે તાલુકામાં હોય તો <b>જેમાં વધુ જમીન હોય</b> તે તાલુકો પસંદ કરો.",
+  sector: "તમે <b>શું બનાવશો</b> તે મુજબ પસંદ કરો. Udyam / IEM માં લખેલી પ્રવૃત્તિ જુઓ. દા.ત. કપાસિયા તેલ મિલ → એગ્રો પ્રોસેસિંગ; સ્પિનિંગ, વીવિંગ, ગારમેન્ટ → ટેક્સટાઇલ.<br>MSME માટે ફક્ત 5 <b>પસંદગીનાં</b> સેક્ટર (સ્પોર્ટ્સ ગુડ્સ, રમકડાં, ફૂટવેર, રોબોટ, ડ્રોન) માં દર ઊંચા છે. લાર્જ એકમ માટે થ્રસ્ટ સેક્ટરમાં પણ ઊંચા દર મળે. ટ્રેડિંગ અને સર્વિસ પ્રવૃત્તિ પાત્ર નથી.<br>સેક્ટર અંગે વિવાદ હોય તો સમિતિ HSN કોડ પરથી નક્કી કરે.",
+  ptype: "<b>નવો એકમ</b>: નવું કારખાનું. બીજી જગ્યાએ વિસ્તરણ પણ “નવો એકમ” ગણાય.<br><b>વિસ્તરણ</b>: એ જ પરિસરમાં એ જ પ્રોડક્ટની ક્ષમતા ઓછામાં ઓછી 50% વધે.<br><b>ડાયવર્સિફિકેશન</b>: એ જ પરિસરમાં નવી પ્રોડક્ટ લાઇન.<br>ફક્ત જૂની મશીનરી બદલવી, રિપેરિંગ કે મોડર્નાઇઝેશન પાત્ર નથી.",
+  exist: "વિસ્તરણ શરૂ કરતી તારીખે હાલના પ્રોજેક્ટનું <b>ગ્રોસ બ્લોક</b> (બિલ્ડિંગ + P&amp;M + અન્ય અસ્કયામતો, ઘસારો બાદ કર્યા વગર). બેલેન્સ શીટના Fixed Assets શેડ્યૂલમાં મળશે. <b>જમીન સિવાય</b>.<br>આના આધારે જોવાય છે કે નવું રોકાણ 50% (માઇક્રો/સ્મોલ ડાયવર્સિફિકેશનમાં 25%) થી વધુ છે કે નહીં.",
+  docp: "જે મહિને <b>પહેલું વાણિજ્યિક વેચાણ બિલ</b> બનશે તે (Date of Commercial Production). ટ્રાયલ પ્રોડક્શન નહીં.<br>યોજનાનો લાભ લેવા આ તારીખ <b>01.06.2026 થી 31.05.2031</b> વચ્ચે હોવી જોઈએ.",
+  pm: "<b>નવી</b> મશીનરીની કિંમત + ટ્રાન્સપોર્ટ, ફાઉન્ડેશન, ઇરેક્શન, ઇલેક્ટ્રિફિકેશન, સબ-સ્ટેશન/ટ્રાન્સફોર્મર, ડાઇ-મોલ્ડ, યુટિલિટી, પ્રદૂષણ નિયંત્રણ પ્લાન્ટ, કેપ્ટિવ પાવર પ્લાન્ટ (પરિસરમાં).<br>જૂની, સેકન્ડ-હેન્ડ કે ભાડાની મશીનરી ન ગણાય. 01.01.2026 પછી ખરીદેલી <b>અને ચૂકવેલી</b> જ.<br>રકમ કરોડમાં: ₹6 કરોડ = 6, ₹75 લાખ = 0.75.<br>આ આંકડાથી જ માઇક્રો (≤ 2.5), સ્મોલ (≤ 25), મીડિયમ (≤ 125) કે લાર્જ નક્કી થાય. દેશમાં બીજા એકમ હોય તો બધાનું કુલ P&amp;M ગણાય.",
+  bld: "ફેક્ટરી શેડ, ગોડાઉન, ઓફિસ, R&amp;D/લેબ બિલ્ડિંગ, કમ્પાઉન્ડ વોલ, ગેટ, સિક્યુરિટી કેબિન, આંતરિક રસ્તા, બોરવેલ, પાણીની ટાંકી, આંતરિક પાઇપલાઇન.<br>ઓફિસ-એડમિન બિલ્ડિંગ R&amp;B ના SOR અથવા વાસ્તવિક ખર્ચ, જે ઓછું હોય, તે ગણાય. જૂનું બિલ્ડિંગ ખરીદવું કે રિપેરિંગ ન ગણાય. MSME માટે ભાડાપટ્ટો સહાયના સમયગાળાને આવરી લે તો તે જમીન પરનું બાંધકામ ગણાય.",
+  infra: "કામદારો માટે કોલોની/ડોર્મિટરી, હોસ્પિટલ, ક્રેચ, નજીકના રોડથી ફેક્ટરી સુધીનો ફીડર રોડ, પાણી-ગેસ પાઇપલાઇન, વીજ કંપનીને ચૂકવેલી નોન-રિફંડેબલ ડિપોઝિટ, તાલીમ કેન્દ્ર, કામદારો માટે બસ.<br>MSME માટે ખર્ચના 50% EFCI માં ગણાય. આવો ખર્ચ ન હોય તો <b>0</b> લખો.",
+  land: "જમીન ખરીદી કે લીઝનો ખર્ચ. જમીન અને જમીન વિકાસ <b>સબસિડીની ગણતરી (EFCI) માં ગણાતાં નથી</b>.<br>લાર્જ એકમ માટે મેગા (₹1,000 કરોડ) અને અલ્ટ્રા-મેગા (₹10,000 કરોડ) ની મર્યાદા જોવા કુલ GFCI માં જમીન ગણાય.",
+  infraIn: "ઉપરનું ઇન્ફ્રા ફેક્ટરી પરિસરની અંદર છે? લાર્જ એકમ માટે અંદર હોય તો 100% અને બહાર હોય તો ફક્ત 20% ગણાય. MSME માટે હંમેશાં 50%.",
+  loan: "બેંકે મંજૂર કરેલી <b>ટર્મ લોન</b>, sanction letter માં જુઓ. CC/OD કે વર્કિંગ કેપિટલ લોન નહીં.<br>માન્ય: RBI માન્ય બેંક/નાણાં સંસ્થા, ECB, GSFS, NDDB, HUDCO, REC, PFC. <b>NBFC ની લોન પાત્ર નથી</b>. રોકાણ સમયગાળામાં ખરેખર વિતરિત રકમ જ ગણાય. લોન ન હોય તો 0.",
+  rate: "Sanction letter મુજબ વાર્ષિક વ્યાજ દર (%). પેનલ વ્યાજ નહીં.<br>એકમે ઓછામાં ઓછું <b>2%</b> વ્યાજ પોતે ભરવું પડે, એટલે 9% ની લોન પર પૂરી 7% સબસિડી મળે; 8% ની લોન પર 6%.",
+  tenure: "લોન ચૂકવવાનાં કુલ વર્ષ (sanction letter માં). આ ગણતરી માને છે કે મુદ્દલ દર વર્ષે સરખા હપ્તે ચૂકવાય છે. હપ્તા ચૂકશો તો એ સમયગાળાની સબસિડી નહીં મળે.",
+  units: "વર્ષમાં અંદાજિત વીજ વપરાશ (kWh / યુનિટ). વીજ બિલમાં “Units consumed” જુઓ: મહિને 50,000 યુનિટ હોય તો 6,00,000 લખો.<br>નવો એકમ ન હોય તો સબ-મીટર પરથી <b>ફક્ત વધારાનો</b> વપરાશ. પોતાના કેપ્ટિવ પ્લાન્ટનો વીજ વપરાશ ન ગણાય. DISCOM કે ઓપન એક્સેસ રિન્યુએબલ પાવર ગણાય.",
+  jobs: "પગારપત્રક પરના કર્મચારી + શ્રમ વિભાગમાં રજિસ્ટર્ડ કોન્ટ્રાક્ટર મારફતના <b>સીધા</b> કર્મચારી.<br>મેગા (₹1,000 કરોડ પર 250) અને અલ્ટ્રા-મેગા (₹10,000 કરોડ પર 3,000) દરજ્જા માટે આ આંકડો નિર્ણાયક છે. કુલમાંથી ઓછામાં ઓછા 85% ગુજરાતના નિવાસી જોઈએ.",
+  wage: "કર્મચારીઓનો સરેરાશ માસિક <b>બેઝિક + DA</b> (+ રિટેનિંગ એલાઉન્સ). HRA, બોનસ, ઓવરટાઇમ નહીં. પગારપત્રક કે EPF ECR માં મળશે.<br>EPF વળતર = આના 12% અથવા મર્યાદા (પુરુષ ₹1,800, મહિલા ₹2,500, દિવ્યાંગ ₹3,000), જે ઓછું હોય. ₹15,000 પગાર પર 12% = ₹1,800.",
+  em: "જેમની પાસે જોડાતા પહેલાં <b>UAN નંબર નહોતો</b> એવા નવા પુરુષ કર્મચારી. બીજી કંપનીમાંથી UAN સાથે આવેલા કર્મચારી ન ગણાય. વિસ્તરણમાં ફક્ત વધારાના કર્મચારી.",
+  ef: "જેમની પાસે જોડાતા પહેલાં UAN નંબર નહોતો એવી નવી મહિલા કર્મચારી. મહિલા માટે મર્યાદા ₹2,500 પ્રતિ માસ.",
+  ed: "જેમની પાસે જોડાતા પહેલાં UAN નંબર નહોતો એવા નવા દિવ્યાંગ કર્મચારી. મર્યાદા ₹3,000 પ્રતિ માસ.",
+  women: "MSME માટે મહિલા ઉદ્યમીને ટર્મ લોન પર <b>+1% વ્યાજ સબસિડી</b> (કુલ મર્યાદાની અંદર). GR માં “મહિલા ઉદ્યમી” ની વિગતવાર વ્યાખ્યા નથી; MSME કમિશનરની માર્ગદર્શિકક મુજબ.",
+  women100: "એકમની <b>100% ઇક્વિટી</b> મહિલા/મહિલાઓની માલિકીની હોય તો ભાડા સહાય 65% ને બદલે 75% મળે.",
+  startup: "ઉત્પાદન ક્ષેત્રનું <b>રજિસ્ટર્ડ સ્ટાર્ટઅપ</b> હોય તો MSME ને +1% વ્યાજ સબસિડી. મહિલા, સ્ટાર્ટઅપ, પ્રથમ પેઢી ત્રણેય હોય તો પણ વધારાનું 1% જ મળે.",
+  firstgen: "પરિવારમાં પહેલી વાર ઉદ્યોગ શરૂ કરનાર. MSME ને +1% વ્યાજ સબસિડી. GR માં વ્યાખ્યા આપી નથી; પુરાવા અંગે DIC ની માર્ગદર્શિકા જુઓ.",
+  outGidc: "એકમ GIDC એસ્ટેટ કે માન્ય ઔદ્યોગિક પાર્કની <b>બહાર</b> હોય તો MSME ને નવું વીજ કનેક્શન, વધારાનો લોડ કે સર્વિસ લાઇન શિફ્ટિંગના ચાર્જના 35% (મહત્તમ ₹5 લાખ) પાછા મળે.",
+  rent: "ભાડે કે લીઝ પર લીધેલા શેડનું ભાડા કરાર મુજબ <b>માસિક</b> ભાડું. પોતાનો શેડ હોય તો 0.<br>ફક્ત માઇક્રો અને સ્મોલ માટે. શેડના માલિક પાસે કાયદેસર માલિકી જોઈએ. ભાડા કરારથી 6 મહિનામાં અરજી.",
+  useCap: "મશીનરી-બિલ્ડિંગ (EFCI) ના ટકા મુજબ સીધી સબસિડી. માઇક્રોને પહેલા વર્ષે એકસાથે, બીજાઓને વર્ષવાર સમાન હપ્તે.",
+  useInt: "ટર્મ લોનના વ્યાજ પર વળતર. ફક્ત હપ્તા નિયમિત ભરો તો જ મળે.",
+  usePow: "દરેક યુનિટ વીજ વપરાશ પર ₹2 (Category A) અથવા ₹1 (Category B).<br>વાર્ષિક મર્યાદા ત્રણેય ઘટક પર સાથે લાગે છે. કોઈ ઘટક બંધ કરીને જુઓ કે કુલ રકમ પર શું અસર થાય છે.",
+};
+
+function makeBtn(key){
+  const b = document.createElement("button");
+  b.type = "button"; b.className = "ib"; b.textContent = "i";
+  b.setAttribute("aria-expanded","false");
+  b.setAttribute("aria-controls","h-"+key);
+  b.setAttribute("aria-label","આ ખાના વિશે માહિતી");
+  b.addEventListener("click", e => {
+    e.preventDefault(); e.stopPropagation();
+    const box = document.getElementById("h-"+key);
+    const open = box.hidden;
+    box.hidden = !open;
+    b.setAttribute("aria-expanded", String(open));
+  });
+  return b;
+}
+function makeBox(key, tag){
+  const d = document.createElement(tag || "span");
+  d.className = "help"; d.id = "h-"+key; d.hidden = true; d.innerHTML = HELP[key];
+  return d;
+}
+Object.keys(HELP).forEach(key => {
+  if(key === "ptype"){
+    const head = $("#ptypeHead");
+    head.appendChild(makeBtn(key));
+    head.after(makeBox(key, "div"));
+    return;
+  }
+  const inp = document.getElementById(key);
+  if(!inp) return;
+  const lab = inp.closest("label");
+  if(lab.classList.contains("chk")){
+    lab.appendChild(makeBtn(key));
+    lab.after(makeBox(key, "div"));
+  } else {
+    const txt = [...lab.childNodes].find(n => n.nodeType === 3 && n.textContent.trim());
+    const head = document.createElement("span"); head.className = "lh";
+    const t = document.createElement("span"); t.textContent = txt.textContent.trim();
+    head.append(t, makeBtn(key));
+    lab.replaceChild(head, txt);
+    const par = lab.parentElement;
+    if(par.classList.contains("row") || par.classList.contains("row3")){
+      // keep the hint full-width below the row so neighbouring inputs don't stretch
+      let anchor = par;
+      while(anchor.nextElementSibling && anchor.nextElementSibling.classList.contains("help")) anchor = anchor.nextElementSibling;
+      anchor.after(makeBox(key, "div"));
+    } else {
+      lab.appendChild(makeBox(key));
+    }
+  }
+});
+
+/* ======================= tabs ======================= */
+function showTab(id){
+  document.querySelectorAll("[data-panel]").forEach(p => p.hidden = p.dataset.panel !== id);
+  document.querySelectorAll("[role=tab]").forEach(b => b.setAttribute("aria-selected", b.dataset.tab === id));
+  try{ localStorage.setItem("sd-tab", id); }catch(e){}
+}
+document.querySelector("[role=tablist]").addEventListener("click", e => { const b = e.target.closest("[role=tab]"); if(b) showTab(b.dataset.tab); });
+
+rateTables(); otherAll(); talGrid(); rules(); render();
+const h = (location.hash||"").slice(1);
+if(["check","rates","other","taluka","rules"].includes(h)) showTab(h);
+</script>
+
+</body></html>
