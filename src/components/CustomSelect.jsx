@@ -147,7 +147,11 @@ export default function CustomSelect({
   };
 
   return (
-    <div className={`custom-select-wrap ${isOpen ? 'is-open' : ''}`} ref={containerRef}>
+    <div
+      className={`custom-select-wrap ${isOpen ? 'is-open' : ''}`}
+      ref={containerRef}
+      onClick={(e) => e.stopPropagation()}
+    >
       {/* Hidden native select for accessibility & form compatibility */}
       <select
         id={selectId}
@@ -168,7 +172,11 @@ export default function CustomSelect({
       <button
         type="button"
         className="custom-select-trigger"
-        onClick={() => setIsOpen((prev) => !prev)}
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          setIsOpen((prev) => !prev);
+        }}
         onKeyDown={handleKeyDown}
         aria-haspopup="listbox"
         aria-expanded={isOpen}
@@ -188,8 +196,14 @@ export default function CustomSelect({
 
       {/* Dropdown Popover List */}
       {isOpen && (
-        <div className="custom-select-dropdown" role="listbox" tabIndex={-1}>
-          {searchable && allOptions.length > 5 && (
+        <div
+          className="custom-select-dropdown"
+          role="listbox"
+          tabIndex={-1}
+          onClick={(e) => e.stopPropagation()}
+          onMouseDown={(e) => e.stopPropagation()}
+        >
+          {searchable && (
             <div className="custom-select-search-wrap">
               <Search size={15} className="custom-select-search-icon" aria-hidden="true" />
               <input
@@ -227,7 +241,11 @@ export default function CustomSelect({
                         role="option"
                         aria-selected={isSelected}
                         className={`custom-select-option ${isSelected ? 'selected' : ''} ${isHighlighted ? 'highlighted' : ''}`}
-                        onClick={() => handleSelect(opt.value)}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          handleSelect(opt.value);
+                        }}
                         onMouseEnter={() => setHighlightedIndex(globalIdx)}
                       >
                         <div className="custom-select-option-content">

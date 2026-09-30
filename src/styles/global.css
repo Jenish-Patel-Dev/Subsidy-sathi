@@ -979,6 +979,7 @@ legend small {
   }
 }
 
+.f,
 label.f {
   display: grid;
   gap: 6px;
@@ -2382,4 +2383,261 @@ footer {
   text-align: center;
   font-size: 13px;
   color: var(--mute);
+}
+
+/* ==========================================================================
+   Custom Month Picker / Modern Calendar Popover
+   ========================================================================== */
+.custom-month-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.custom-month-hidden-native {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
+.custom-month-trigger {
+  width: 100%;
+  height: 44px;
+  font: 500 14px var(--f-body);
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.02);
+  user-select: none;
+}
+
+.custom-month-trigger:hover {
+  border-color: var(--brand-500);
+  background: var(--paper-2);
+}
+
+.custom-month-trigger:focus-visible,
+.custom-month-wrap.is-open .custom-month-trigger {
+  border-color: var(--gold-500);
+  outline: 2px solid var(--gold-300);
+  outline-offset: 1px;
+  box-shadow: 0 0 0 3px rgba(226, 164, 69, 0.15);
+}
+
+.custom-month-display-text {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.custom-month-calendar-icon {
+  color: var(--brand-700);
+  flex-shrink: 0;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+:root[data-theme="dark"] .custom-month-calendar-icon {
+  color: #7BE0D4;
+}
+
+.custom-month-popover {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  max-width: 380px;
+  z-index: 150;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.16), 0 4px 10px rgba(0, 0, 0, 0.06);
+  padding: 14px;
+  animation: selectMenuFadeIn 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+:root[data-theme="dark"] .custom-month-popover {
+  background: #111e1c;
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(77, 194, 182, 0.15);
+}
+
+/* Header with Year navigation */
+.custom-month-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+.custom-month-year-label {
+  font-family: var(--f-num);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: 0.04em;
+}
+
+.custom-month-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--paper-2);
+  color: var(--ink);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.custom-month-nav-btn:hover {
+  background: var(--surface);
+  border-color: var(--brand-500);
+  color: var(--brand-700);
+}
+
+/* Grid of 12 months */
+.custom-month-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.custom-month-cell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 6px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.custom-month-cell:hover {
+  background: var(--paper-2);
+  border-color: var(--brand-500);
+  transform: translateY(-1px);
+}
+
+:root[data-theme="dark"] .custom-month-cell:hover {
+  background: rgba(77, 194, 182, 0.12);
+  border-color: rgba(77, 194, 182, 0.4);
+}
+
+.custom-month-cell.selected {
+  background: linear-gradient(135deg, var(--brand-700) 0%, #0A3633 100%);
+  border-color: var(--brand-700);
+  box-shadow: 0 4px 12px rgba(14, 75, 71, 0.25);
+}
+
+:root[data-theme="dark"] .custom-month-cell.selected {
+  background: linear-gradient(135deg, #136B65 0%, #0D4945 100%);
+  border-color: #7BE0D4;
+  box-shadow: 0 4px 14px rgba(77, 194, 182, 0.25);
+}
+
+.month-cell-gu {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.2;
+}
+
+.month-cell-en {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--mute);
+  margin-top: 2px;
+}
+
+.custom-month-cell.selected .month-cell-gu {
+  color: #FFFFFF;
+}
+
+.custom-month-cell.selected .month-cell-en {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.month-cell-check {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  color: #FFFFFF;
+}
+
+.custom-month-cell.current-month:not(.selected) {
+  border-color: var(--gold-500);
+}
+
+/* Footer buttons */
+.custom-month-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+}
+
+.custom-month-today-btn {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--brand-700);
+  background: var(--c-cap-soft);
+  border: 1px solid rgba(19, 107, 101, 0.25);
+  border-radius: 6px;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.custom-month-today-btn:hover {
+  background: rgba(19, 107, 101, 0.2);
+}
+
+:root[data-theme="dark"] .custom-month-today-btn {
+  color: #7BE0D4;
+  border-color: rgba(77, 194, 182, 0.3);
+}
+
+.custom-month-close-btn {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--mute);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 5px 8px;
+}
+
+.custom-month-close-btn:hover {
+  color: var(--ink);
 }

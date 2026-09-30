@@ -3,6 +3,7 @@ import { TALUKAS, catOf } from '../data/talukas.js';
 import { SECTORS } from '../data/sectors.js';
 import { HelpButton, HelpBox, HelpModal } from './Help.jsx';
 import CustomSelect from './CustomSelect.jsx';
+import CustomMonthPicker from './CustomMonthPicker.jsx';
 import {
   MapPin,
   Building2,
@@ -150,7 +151,7 @@ export default function CheckerForm({ formValues, onChange, onInputChange }) {
           </span>
         </legend>
         <div className="row">
-          <label className="f">
+          <div className="f">
             <span className="lh">
               <span>જિલ્લો</span>
               <HelpButton fieldKey="dist" isOpen={!!openHelp.dist} onToggle={toggleHelp} />
@@ -162,8 +163,8 @@ export default function CheckerForm({ formValues, onChange, onInputChange }) {
               options={districtOptions}
               ariaLabel="જિલ્લો પસંદ કરો"
             />
-          </label>
-          <label className="f">
+          </div>
+          <div className="f">
             <span className="lh">
               <span>તાલુકા</span>
               <HelpButton fieldKey="tal" isOpen={!!openHelp.tal} onToggle={toggleHelp} />
@@ -175,7 +176,7 @@ export default function CheckerForm({ formValues, onChange, onInputChange }) {
               options={talukaOptions}
               ariaLabel="તાલુકા પસંદ કરો"
             />
-          </label>
+          </div>
         </div>
         <HelpBox fieldKey="dist" isOpen={!!openHelp.dist} as="div" />
         <HelpBox fieldKey="tal" isOpen={!!openHelp.tal} as="div" />
@@ -198,7 +199,7 @@ export default function CheckerForm({ formValues, onChange, onInputChange }) {
             <span>પ્રોજેક્ટ</span>
           </span>
         </legend>
-        <label className="f">
+        <div className="f">
           <span className="lh">
             <span>ઉત્પાદન ક્ષેત્ર (Annexure-A)</span>
             <HelpButton fieldKey="sector" isOpen={!!openHelp.sector} onToggle={toggleHelp} />
@@ -211,7 +212,7 @@ export default function CheckerForm({ formValues, onChange, onInputChange }) {
             ariaLabel="ઉત્પાદન ક્ષેત્ર (Annexure-A)"
           />
           <HelpBox fieldKey="sector" isOpen={!!openHelp.sector} as="span" />
-        </label>
+        </div>
 
         <div className="seghead" id="ptypeHead">
           <span>પ્રોજેક્ટનો પ્રકાર</span>
@@ -255,7 +256,7 @@ export default function CheckerForm({ formValues, onChange, onInputChange }) {
           </label>
         </div>
 
-        <label className="f" id="exWrap" hidden={formValues.ptype === 'new'}>
+        <div className="f" id="exWrap" hidden={formValues.ptype === 'new'}>
           <span className="lh">
             <span>હાલના પ્રોજેક્ટનું GFCI, જમીન સિવાય (₹ કરોડ)</span>
             <HelpButton fieldKey="exist" isOpen={!!openHelp.exist} onToggle={toggleHelp} />
@@ -269,21 +270,21 @@ export default function CheckerForm({ formValues, onChange, onInputChange }) {
             onChange={(e) => handleFieldChange('exist', e.target.value)}
           />
           <HelpBox fieldKey="exist" isOpen={!!openHelp.exist} as="span" />
-        </label>
+        </div>
 
-        <label className="f">
+        <div className="f">
           <span className="lh">
             <span>વાણિજ્યિક ઉત્પાદન શરૂ થવાની અપેક્ષિત તારીખ (DoCP)</span>
             <HelpButton fieldKey="docp" isOpen={!!openHelp.docp} onToggle={toggleHelp} />
           </span>
-          <input
-            type="month"
+          <CustomMonthPicker
             id="docp"
             value={formValues.docp}
             onChange={(e) => handleFieldChange('docp', e.target.value)}
+            ariaLabel="વાણિજ્યિક ઉત્પાદન શરૂ થવાની અપેક્ષિત તારીખ (DoCP)"
           />
           <HelpBox fieldKey="docp" isOpen={!!openHelp.docp} as="span" />
-        </label>
+        </div>
       </fieldset>
 
       {/* Fieldset 3: રોકાણ */}
@@ -296,7 +297,7 @@ export default function CheckerForm({ formValues, onChange, onInputChange }) {
           <small>(₹ કરોડમાં · 1 લાખ = 0.01)</small>
         </legend>
         <div className="row">
-          <label className="f">
+          <div className="f">
             <span className="lh">
               <span>પ્લાન્ટ અને મશીનરી</span>
               <HelpButton fieldKey="pm" isOpen={!!openHelp.pm} onToggle={toggleHelp} />
@@ -309,8 +310,8 @@ export default function CheckerForm({ formValues, onChange, onInputChange }) {
               value={formValues.pm}
               onChange={(e) => handleFieldChange('pm', e.target.value)}
             />
-          </label>
-          <label className="f">
+          </div>
+          <div className="f">
             <span className="lh">
               <span>નવું બિલ્ડિંગ + અન્ય બાંધકામ</span>
               <HelpButton fieldKey="bld" isOpen={!!openHelp.bld} onToggle={toggleHelp} />
@@ -323,13 +324,13 @@ export default function CheckerForm({ formValues, onChange, onInputChange }) {
               value={formValues.bld}
               onChange={(e) => handleFieldChange('bld', e.target.value)}
             />
-          </label>
+          </div>
         </div>
         <HelpBox fieldKey="pm" isOpen={!!openHelp.pm} as="div" />
         <HelpBox fieldKey="bld" isOpen={!!openHelp.bld} as="div" />
 
         <div className="row">
-          <label className="f">
+          <div className="f">
             <span className="lh">
               <span>પ્રોજેક્ટ સંબંધિત ઇન્ફ્રા</span>
               <HelpButton fieldKey="infra" isOpen={!!openHelp.infra} onToggle={toggleHelp} />
@@ -342,8 +343,8 @@ export default function CheckerForm({ formValues, onChange, onInputChange }) {
               value={formValues.infra}
               onChange={(e) => handleFieldChange('infra', e.target.value)}
             />
-          </label>
-          <label className="f">
+          </div>
+          <div className="f">
             <span className="lh">
               <span>જમીન</span>
               <HelpButton fieldKey="land" isOpen={!!openHelp.land} onToggle={toggleHelp} />
@@ -356,7 +357,7 @@ export default function CheckerForm({ formValues, onChange, onInputChange }) {
               value={formValues.land}
               onChange={(e) => handleFieldChange('land', e.target.value)}
             />
-          </label>
+          </div>
         </div>
         <HelpBox fieldKey="infra" isOpen={!!openHelp.infra} as="div" />
         <HelpBox fieldKey="land" isOpen={!!openHelp.land} as="div" />
@@ -385,7 +386,7 @@ export default function CheckerForm({ formValues, onChange, onInputChange }) {
           </span>
         </legend>
         <div className="row3">
-          <label className="f">
+          <div className="f">
             <span className="lh">
               <span>લોન (₹ કરોડ)</span>
               <HelpButton fieldKey="loan" isOpen={!!openHelp.loan} onToggle={toggleHelp} />
@@ -398,8 +399,8 @@ export default function CheckerForm({ formValues, onChange, onInputChange }) {
               value={formValues.loan}
               onChange={(e) => handleFieldChange('loan', e.target.value)}
             />
-          </label>
-          <label className="f">
+          </div>
+          <div className="f">
             <span className="lh">
               <span>વ્યાજ દર %</span>
               <HelpButton fieldKey="rate" isOpen={!!openHelp.rate} onToggle={toggleHelp} />
@@ -412,8 +413,8 @@ export default function CheckerForm({ formValues, onChange, onInputChange }) {
               value={formValues.rate}
               onChange={(e) => handleFieldChange('rate', e.target.value)}
             />
-          </label>
-          <label className="f">
+          </div>
+          <div className="f">
             <span className="lh">
               <span>મુદત (વર્ષ)</span>
               <HelpButton fieldKey="tenure" isOpen={!!openHelp.tenure} onToggle={toggleHelp} />
@@ -426,13 +427,13 @@ export default function CheckerForm({ formValues, onChange, onInputChange }) {
               value={formValues.tenure}
               onChange={(e) => handleFieldChange('tenure', e.target.value)}
             />
-          </label>
+          </div>
         </div>
         <HelpBox fieldKey="loan" isOpen={!!openHelp.loan} as="div" />
         <HelpBox fieldKey="rate" isOpen={!!openHelp.rate} as="div" />
         <HelpBox fieldKey="tenure" isOpen={!!openHelp.tenure} as="div" />
 
-        <label className="f">
+        <div className="f">
           <span className="lh">
             <span>વાર્ષિક વીજ વપરાશ, નવો/વધારાનો (યુનિટ)</span>
             <HelpButton fieldKey="units" isOpen={!!openHelp.units} onToggle={toggleHelp} />
@@ -446,7 +447,7 @@ export default function CheckerForm({ formValues, onChange, onInputChange }) {
             onChange={(e) => handleFieldChange('units', e.target.value)}
           />
           <HelpBox fieldKey="units" isOpen={!!openHelp.units} as="span" />
-        </label>
+        </div>
       </fieldset>
 
       {/* Fieldset 5: રોજગારી */}
@@ -458,7 +459,7 @@ export default function CheckerForm({ formValues, onChange, onInputChange }) {
           </span>
         </legend>
         <div className="row">
-          <label className="f">
+          <div className="f">
             <span className="lh">
               <span>કુલ સીધી રોજગારી</span>
               <HelpButton fieldKey="jobs" isOpen={!!openHelp.jobs} onToggle={toggleHelp} />
@@ -471,8 +472,8 @@ export default function CheckerForm({ formValues, onChange, onInputChange }) {
               value={formValues.jobs}
               onChange={(e) => handleFieldChange('jobs', e.target.value)}
             />
-          </label>
-          <label className="f">
+          </div>
+          <div className="f">
             <span className="lh">
               <span>સરેરાશ બેઝિક + DA (₹/માસ)</span>
               <HelpButton fieldKey="wage" isOpen={!!openHelp.wage} onToggle={toggleHelp} />
@@ -485,13 +486,13 @@ export default function CheckerForm({ formValues, onChange, onInputChange }) {
               value={formValues.wage}
               onChange={(e) => handleFieldChange('wage', e.target.value)}
             />
-          </label>
+          </div>
         </div>
         <HelpBox fieldKey="jobs" isOpen={!!openHelp.jobs} as="div" />
         <HelpBox fieldKey="wage" isOpen={!!openHelp.wage} as="div" />
 
         <div className="row3">
-          <label className="f">
+          <div className="f">
             <span className="lh">
               <span>નવા પુરુષ કર્મચારી</span>
               <HelpButton fieldKey="em" isOpen={!!openHelp.em} onToggle={toggleHelp} />
@@ -504,8 +505,8 @@ export default function CheckerForm({ formValues, onChange, onInputChange }) {
               value={formValues.em}
               onChange={(e) => handleFieldChange('em', e.target.value)}
             />
-          </label>
-          <label className="f">
+          </div>
+          <div className="f">
             <span className="lh">
               <span>નવા મહિલા કર્મચારી</span>
               <HelpButton fieldKey="ef" isOpen={!!openHelp.ef} onToggle={toggleHelp} />
@@ -518,8 +519,8 @@ export default function CheckerForm({ formValues, onChange, onInputChange }) {
               value={formValues.ef}
               onChange={(e) => handleFieldChange('ef', e.target.value)}
             />
-          </label>
-          <label className="f">
+          </div>
+          <div className="f">
             <span className="lh">
               <span>નવા દિવ્યાંગ કર્મચારી</span>
               <HelpButton fieldKey="ed" isOpen={!!openHelp.ed} onToggle={toggleHelp} />
@@ -532,7 +533,7 @@ export default function CheckerForm({ formValues, onChange, onInputChange }) {
               value={formValues.ed}
               onChange={(e) => handleFieldChange('ed', e.target.value)}
             />
-          </label>
+          </div>
         </div>
         <HelpBox fieldKey="em" isOpen={!!openHelp.em} as="div" />
         <HelpBox fieldKey="ef" isOpen={!!openHelp.ef} as="div" />
@@ -609,7 +610,7 @@ export default function CheckerForm({ formValues, onChange, onInputChange }) {
         </label>
         <HelpBox fieldKey="outGidc" isOpen={!!openHelp.outGidc} as="div" />
 
-        <label className="f">
+        <div className="f">
           <span className="lh">
             <span>ભાડાના શેડનું માસિક ભાડું (₹)</span>
             <HelpButton fieldKey="rent" isOpen={!!openHelp.rent} onToggle={toggleHelp} />
@@ -622,7 +623,7 @@ export default function CheckerForm({ formValues, onChange, onInputChange }) {
             value={formValues.rent}
             onChange={(e) => handleFieldChange('rent', e.target.value)}
           />
-        </label>
+        </div>
         <HelpBox fieldKey="rent" isOpen={!!openHelp.rent} as="div" />
       </fieldset>
 

@@ -52,6 +52,8 @@ export function HelpButton({ fieldKey, onToggle, onOpen }) {
       aria-label="આ ખાના વિશે માહિતી"
       title="માહિતી જોવા માટે ક્લિક કરો"
       onClick={handleClick}
+      onMouseDown={(e) => e.stopPropagation()}
+      onTouchStart={(e) => e.stopPropagation()}
     >
       i
     </button>
