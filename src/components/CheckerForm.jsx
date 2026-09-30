@@ -572,23 +572,20 @@ export default function CheckerForm({ formValues, onChange, onInputChange }) {
         </label>
         <HelpBox fieldKey="outGidc" isOpen={!!openHelp.outGidc} as="div" />
 
-        <div className="row">
-          <label className="f">
-            <span className="lh">
-              <span>ભાડાના શેડનું માસિક ભાડું (₹)</span>
-              <HelpButton fieldKey="rent" isOpen={!!openHelp.rent} onToggle={toggleHelp} />
-            </span>
-            <input
-              type="number"
-              id="rent"
-              min="0"
-              step="1000"
-              value={formValues.rent}
-              onChange={(e) => handleFieldChange('rent', e.target.value)}
-            />
-          </label>
-          <span></span>
-        </div>
+        <label className="f">
+          <span className="lh">
+            <span>ભાડાના શેડનું માસિક ભાડું (₹)</span>
+            <HelpButton fieldKey="rent" isOpen={!!openHelp.rent} onToggle={toggleHelp} />
+          </span>
+          <input
+            type="number"
+            id="rent"
+            min="0"
+            step="1000"
+            value={formValues.rent}
+            onChange={(e) => handleFieldChange('rent', e.target.value)}
+          />
+        </label>
         <HelpBox fieldKey="rent" isOpen={!!openHelp.rent} as="div" />
       </fieldset>
 
