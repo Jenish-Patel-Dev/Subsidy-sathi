@@ -60,8 +60,8 @@ export default function TalukaGrid({ hidden }) {
     <section id="p-taluka" data-panel="taluka" hidden={hidden} className="taluka-container">
       {/* Header */}
       <div>
-        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '3px 10px', background: 'var(--brand-50)', color: 'var(--brand-700)', borderRadius: 'var(--radius-pill)', fontSize: '12px', fontWeight: '700', marginBottom: '8px' }}>
-          <Sparkles size={14} />
+        <div className="taluka-top-badge">
+          <Sparkles size={14} style={{ flexShrink: 0 }} />
           <span>પરિશિષ્ટ-અ · Annexure-A (GR 06-10-2020)</span>
         </div>
         <h2 className="sec-h" style={{ marginTop: '2px' }}>તાલુકા શ્રેણી વર્ગીકરણ</h2>

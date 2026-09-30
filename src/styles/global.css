@@ -446,14 +446,21 @@ img, svg {
 
 .brand-sub {
   font-family: var(--f-body);
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 600;
   color: var(--brand-700);
   background: var(--c-cap-soft);
   border-radius: var(--radius-pill);
-  padding: 2px 8px;
+  padding: 0 8px;
+  min-height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
   border: 1px solid rgba(19, 107, 101, 0.2);
   white-space: nowrap;
+  box-sizing: border-box;
+  vertical-align: middle;
 }
 
 :root[data-theme="dark"] .brand-sub {
@@ -1424,10 +1431,16 @@ select {
   font-size: 12px;
   font-weight: 700;
   border-radius: var(--radius-pill);
-  padding: 3px 10px;
+  padding: 0 10px;
+  min-height: 24px;
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  justify-content: center;
+  line-height: 1;
+  gap: 5px;
+  box-sizing: border-box;
+  white-space: nowrap;
+  vertical-align: middle;
 }
 
 .catA {
@@ -1501,10 +1514,18 @@ select {
   font-size: 12.5px;
   font-weight: 600;
   border-radius: var(--radius-pill);
-  padding: 4px 11px;
+  padding: 0 12px;
+  min-height: 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
   background: var(--surface-subtle);
   color: var(--ink);
   border: 1px solid var(--line);
+  box-sizing: border-box;
+  white-space: nowrap;
+  vertical-align: middle;
 }
 
 .tag.acc {
@@ -2037,6 +2058,30 @@ dl.defs dd {
   gap: 18px;
 }
 
+.taluka-top-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 12px;
+  min-height: 26px;
+  background: var(--brand-50);
+  color: var(--brand-700);
+  border: 1px solid var(--brand-100);
+  border-radius: var(--radius-pill);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 8px;
+  box-sizing: border-box;
+}
+
+:root[data-theme="dark"] .taluka-top-badge {
+  background: rgba(31, 136, 129, 0.15);
+  color: var(--brand-500);
+  border-color: rgba(77, 194, 182, 0.3);
+}
+
 /* Taluka Stats Cards (KPIs) */
 .taluka-stats-grid {
   display: grid;
@@ -2258,7 +2303,8 @@ input[type="search"].taluka-search-input:focus,
   font-family: var(--f-body);
   font-size: 13px;
   font-weight: 600;
-  padding: 6px 14px;
+  padding: 0 14px;
+  min-height: 34px;
   border: none;
   border-radius: calc(var(--radius-sm) - 2px);
   background: transparent;
@@ -2267,8 +2313,15 @@ input[type="search"].taluka-search-input:focus,
   transition: all 0.15s ease;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  min-height: 32px;
+  justify-content: center;
+  line-height: 1;
+  gap: 7px;
+  box-sizing: border-box;
+}
+
+.taluka-filter-btn > span {
+  display: inline-block;
+  flex-shrink: 0;
 }
 
 .taluka-filter-btn:hover {
@@ -2366,12 +2419,19 @@ input[type="search"].taluka-search-input:focus,
 .taluka-card-badge {
   font-size: 11.5px;
   font-weight: 700;
-  padding: 3px 9px;
+  padding: 0 10px;
+  min-height: 24px;
   border-radius: var(--radius-pill);
   background: var(--paper);
   color: var(--mute);
   border: 1px solid var(--line);
   white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  text-align: center;
+  box-sizing: border-box;
 }
 
 /* Category Sections inside Card */
@@ -2392,11 +2452,21 @@ input[type="search"].taluka-search-input:focus,
 .taluka-cat-head-pill {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  padding: 2px 8px;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 10px;
+  min-height: 24px;
   border-radius: var(--radius-pill);
   font-size: 11.5px;
   font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.taluka-cat-head-pill > span {
+  display: inline-block;
+  flex-shrink: 0;
 }
 
 .taluka-cat-head-pill.cat-a {
@@ -2437,11 +2507,18 @@ input[type="search"].taluka-search-input:focus,
 
 .taluka-chip {
   font-size: 12.5px;
-  padding: 4px 10px;
+  font-weight: 500;
+  padding: 0 10px;
+  min-height: 28px;
   border-radius: 6px;
-  line-height: 1.35;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
   transition: all 0.15s ease;
   user-select: all;
+  box-sizing: border-box;
 }
 
 .taluka-chip.cat-a {
@@ -2513,10 +2590,16 @@ input[type="search"].taluka-search-input:focus,
   font-size: 11.5px;
   color: var(--mute);
   font-style: italic;
-  padding: 6px 10px;
+  padding: 0 10px;
+  min-height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
   border-radius: 6px;
   background: var(--paper);
   border: 1px dashed var(--line);
+  box-sizing: border-box;
 }
 
 /* Global Empty State */
@@ -2945,9 +3028,15 @@ footer {
 .custom-select-badge {
   font-size: 11px;
   font-weight: 700;
-  padding: 2px 7px;
-  border-radius: 20px;
+  padding: 0 8px;
+  min-height: 22px;
+  border-radius: var(--radius-pill);
   white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  box-sizing: border-box;
 }
 
 .custom-select-badge.catA {
