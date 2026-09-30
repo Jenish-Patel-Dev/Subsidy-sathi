@@ -2169,12 +2169,31 @@ dl.defs dd {
   position: relative;
   flex: 1 1 280px;
   min-width: 240px;
+  display: flex;
+  align-items: center;
 }
 
-.taluka-search-input {
+.taluka-search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--mute);
+  pointer-events: none;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+input[type="search"].taluka-search-input,
+.taluka-search-wrap input.taluka-search-input {
   width: 100%;
-  height: 42px;
-  padding: 8px 36px 8px 38px;
+  height: 44px;
+  padding-left: 44px !important;
+  padding-right: 40px !important;
+  padding-top: 8px;
+  padding-bottom: 8px;
   border: 1px solid var(--line);
   border-radius: var(--radius-sm);
   background: var(--paper);
@@ -2182,27 +2201,29 @@ dl.defs dd {
   font-family: var(--f-body);
   font-size: 14px;
   transition: all 0.2s ease;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
-.taluka-search-input:focus {
+input[type="search"].taluka-search-input::-webkit-search-decoration,
+input[type="search"].taluka-search-input::-webkit-search-cancel-button,
+input[type="search"].taluka-search-input::-webkit-search-results-button,
+input[type="search"].taluka-search-input::-webkit-search-results-decoration {
+  -webkit-appearance: none;
+  display: none;
+}
+
+input[type="search"].taluka-search-input:focus,
+.taluka-search-wrap input.taluka-search-input:focus {
   outline: none;
   border-color: var(--brand-600);
   background: var(--surface);
   box-shadow: 0 0 0 3px var(--focus-ring);
 }
 
-.taluka-search-icon {
-  position: absolute;
-  left: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--mute);
-  pointer-events: none;
-}
-
 .taluka-search-clear {
   position: absolute;
-  right: 10px;
+  right: 12px;
   top: 50%;
   transform: translateY(-50%);
   background: transparent;
@@ -2214,6 +2235,7 @@ dl.defs dd {
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 2;
   transition: color 0.15s ease, background-color 0.15s ease;
 }
 

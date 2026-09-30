@@ -140,6 +140,7 @@ export default function TalukaGrid({ hidden }) {
             aria-label="તાલુકા કે જિલ્લો શોધો"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            style={{ paddingLeft: '44px', paddingRight: searchQuery ? '40px' : '16px' }}
           />
           {searchQuery && (
             <button
