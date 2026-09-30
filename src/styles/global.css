@@ -862,7 +862,7 @@ img, svg {
 /* Mobile Top App Bar adjustments (< 768px) */
 @media (max-width: 767px) {
   .top-navbar {
-    height: 56px;
+    height: 64px;
   }
 
   .desktop-nav {
@@ -870,18 +870,18 @@ img, svg {
   }
 
   .nav-brand-logo {
-    height: 36px;
-    max-width: 165px;
+    height: 44px;
+    max-width: 205px;
   }
 
   .brand-logo-wrap {
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
+    width: 36px;
+    height: 36px;
+    border-radius: 9px;
   }
 
   .brand-title {
-    font-size: 18px;
+    font-size: 19px;
   }
 
   .brand-sub {
@@ -889,11 +889,11 @@ img, svg {
   }
 
   .theme-toggle-btn {
-    width: 38px;
-    height: 38px;
-    min-width: 38px;
-    min-height: 38px;
-    border-radius: 10px;
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
+    border-radius: 11px;
   }
 }
 
