@@ -15,6 +15,7 @@ import { money } from './lib/format.js';
 import { ChevronDown } from 'lucide-react';
 import { PWAProvider } from './context/PWAContext.jsx';
 import PWAUpdateModal from './components/PWAUpdateModal.jsx';
+import AppLoader from './components/AppLoader.jsx';
 
 const VALID_TABS = ['check', 'rates', 'other', 'taluka', 'rules'];
 
@@ -213,6 +214,9 @@ export default function App() {
 
       {/* 7. PWA Update Notification Popup */}
       <PWAUpdateModal />
+
+      {/* 8. Fullscreen App Loader (For refresh & update transitions) */}
+      <AppLoader />
     </PWAProvider>
   );
 }

@@ -276,6 +276,7 @@ html,
 html {
   scroll-padding-top: calc(env(safe-area-inset-top, 0px) + 74px);
   -webkit-text-size-adjust: 100%;
+  overscroll-behavior-y: none;
 }
 
 body {
@@ -288,6 +289,8 @@ body {
   padding: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overscroll-behavior-y: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .wrap {
@@ -761,6 +764,99 @@ img, svg {
 @keyframes pwa-scale-up {
   from { opacity: 0; transform: scale(0.94); }
   to { opacity: 1; transform: scale(1); }
+}
+
+/* ==========================================================================
+   In-App Fullscreen Loader (Triggered on Refresh / Manual Update)
+   ========================================================================== */
+.app-loader-backdrop {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at 50% 35%, #0E4B47 0%, #0A3532 60%, #062321 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 999999;
+  animation: pwa-fade-in 0.25s ease-out;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.app-loader-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 360px;
+  color: #FFFFFF;
+}
+
+.app-loader-logo-wrap {
+  width: 96px;
+  height: 96px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+  animation: splash-pulse 2s ease-in-out infinite;
+}
+
+.app-loader-logo {
+  width: 76px;
+  height: auto;
+  max-height: 76px;
+  object-fit: contain;
+}
+
+.app-loader-title {
+  margin: 0 0 8px;
+  font-family: var(--f-disp);
+  font-size: 19px;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+.app-loader-desc {
+  margin: 0 0 24px;
+  font-size: 13.5px;
+  color: #BBD7D2;
+  line-height: 1.5;
+}
+
+.app-loader-bar-wrap {
+  width: 180px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 99px;
+  overflow: hidden;
+  position: relative;
+}
+
+.app-loader-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 50%;
+  background: linear-gradient(90deg, #1E9E96, #D99A36);
+  border-radius: 99px;
+  animation: splash-load 1.4s ease-in-out infinite;
+}
+
+@keyframes splash-pulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4); }
+  50% { transform: scale(1.04); box-shadow: 0 16px 40px rgba(30, 158, 150, 0.35); }
+}
+
+@keyframes splash-load {
+  0% { left: -50%; width: 30%; }
+  50% { left: 25%; width: 60%; }
+  100% { left: 100%; width: 30%; }
 }
 
 /* Mobile Top App Bar adjustments (< 768px) */

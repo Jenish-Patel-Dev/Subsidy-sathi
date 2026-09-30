@@ -17,7 +17,36 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Gujarati:wght@400;500;600;700&family=Noto+Serif+Gujarati:wght@600;800&family=IBM+Plex+Mono:wght@500;600&display=swap" />
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div id="app-splash" style="position:fixed;inset:0;background:radial-gradient(circle at 50% 35%, #0E4B47 0%, #0A3532 60%, #062321 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#FFFFFF;font-family:'Noto Sans Gujarati',-apple-system,BlinkMacSystemFont,system-ui,sans-serif;z-index:999999;user-select:none;-webkit-user-select:none;text-align:center;padding:20px;">
+        <div style="width:108px;height:108px;border-radius:26px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.18);display:flex;align-items:center;justify-content:center;margin-bottom:20px;box-shadow:0 12px 35px rgba(0,0,0,0.4);animation:splash-pulse 2s ease-in-out infinite;">
+          <img src="/logo-dark.png" alt="સબસિડી સાથી" style="width:86px;height:auto;max-height:86px;object-fit:contain;" />
+        </div>
+        <div style="font-size:22px;font-weight:700;color:#FFFFFF;margin-bottom:6px;letter-spacing:0.02em;">
+          સબસિડી સાથી
+        </div>
+        <div style="font-size:13px;color:#BBD7D2;margin-bottom:28px;letter-spacing:0.03em;">
+          વિકસિત ગુજરાત ઔદ્યોગિક નીતિ ૨૦૨૬
+        </div>
+        <div style="width:160px;height:4px;background:rgba(255,255,255,0.15);border-radius:99px;overflow:hidden;position:relative;">
+          <div style="position:absolute;top:0;left:0;bottom:0;width:50%;background:linear-gradient(90deg, #1E9E96, #D99A36);border-radius:99px;animation:splash-load 1.4s ease-in-out infinite;"></div>
+        </div>
+        <div style="margin-top:14px;font-size:12px;color:rgba(187,215,210,0.7);">
+          એપ્લિકેશન લોડ થઈ રહી છે...
+        </div>
+        <style>
+          @keyframes splash-pulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 12px 35px rgba(0,0,0,0.4); }
+            50% { transform: scale(1.05); box-shadow: 0 16px 40px rgba(30,158,150,0.35); }
+          }
+          @keyframes splash-load {
+            0% { left: -50%; width: 30%; }
+            50% { left: 25%; width: 60%; }
+            100% { left: 100%; width: 30%; }
+          }
+        </style>
+      </div>
+    </div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
