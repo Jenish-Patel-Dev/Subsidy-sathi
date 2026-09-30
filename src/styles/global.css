@@ -590,97 +590,16 @@ img, svg {
 }
 
 /* ==========================================================================
-   PWA Action Buttons (Install & Update / Refresh in Navbar)
+   PWA Action Buttons (Matches .theme-toggle-btn UI identically)
    ========================================================================== */
-.pwa-action-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-  height: 42px;
-  padding: 0 14px;
-  border-radius: 12px;
-  font-family: var(--f-body);
-  font-size: 13.5px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  white-space: nowrap;
-  user-select: none;
-  border: 1px solid transparent;
-  box-shadow: var(--shadow-xs);
-}
-
-/* Install Button */
-.pwa-install-btn {
-  background: var(--brand-700);
-  color: #FFFFFF;
-  border-color: var(--brand-700);
-}
-
-.pwa-install-btn:hover {
-  background: var(--brand-800);
-  border-color: var(--brand-800);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(19, 107, 101, 0.25);
-}
-
-:root[data-theme="dark"] .pwa-install-btn {
-  background: var(--brand-600);
-  border-color: var(--brand-600);
-}
-
-:root[data-theme="dark"] .pwa-install-btn:hover {
-  background: var(--brand-500);
-  border-color: var(--brand-500);
-  box-shadow: 0 4px 14px rgba(30, 158, 150, 0.35);
-}
-
-/* Refresh / Update Button (When already installed) */
-.pwa-refresh-btn {
-  background: var(--surface-subtle);
-  color: var(--brand-700);
-  border-color: var(--line);
-}
-
-.pwa-refresh-btn:hover {
-  background: var(--sunk);
-  border-color: var(--brand-500);
-  transform: translateY(-1px);
-}
-
-:root[data-theme="dark"] .pwa-refresh-btn {
-  background: rgba(31, 136, 129, 0.15);
-  color: #7BE0D4;
-  border-color: rgba(77, 194, 182, 0.3);
-}
-
-:root[data-theme="dark"] .pwa-refresh-btn:hover {
-  background: rgba(31, 136, 129, 0.25);
-  border-color: rgba(77, 194, 182, 0.5);
-}
-
-.pwa-btn-icon {
-  flex-shrink: 0;
-}
-
-.pwa-btn-icon.spinning {
+.pwa-toggle-btn svg.spinning,
+.pwa-toggle-btn.refreshing svg {
   animation: pwa-spin 0.8s linear infinite;
 }
 
 @keyframes pwa-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
-}
-
-@media (max-width: 767px) {
-  .pwa-action-btn {
-    height: 38px;
-    padding: 0 10px;
-    font-size: 12.5px;
-    gap: 5px;
-    border-radius: 10px;
-  }
 }
 
 /* ==========================================================================
@@ -871,6 +790,14 @@ img, svg {
 
   .brand-sub {
     display: none;
+  }
+
+  .theme-toggle-btn {
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+    min-height: 38px;
+    border-radius: 10px;
   }
 }
 
