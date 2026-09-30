@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { TALUKAS } from '../data/talukas.js';
-import { Search, MapPin, Building } from 'lucide-react';
+import { Search, Building2, MapPin, Layers, Info, X, CheckCircle2, Sparkles } from 'lucide-react';
 
 export default function TalukaGrid({ hidden }) {
   const [searchQuery, setSearchQuery] = useState('');
@@ -8,116 +8,325 @@ export default function TalukaGrid({ hidden }) {
 
   const q = searchQuery.trim().toLowerCase();
 
-  const renderedPanels = TALUKAS.map(([en, gu, a, b]) => {
-    const m = (t) =>
-      !q ||
-      t.toLowerCase().includes(q) ||
-      en.toLowerCase().includes(q) ||
-      gu.includes(q);
+  // Calculate overall statistics
+  const stats = useMemo(() => {
+    let catA = 0;
+    let catB = 0;
+    TALUKAS.forEach(([, , a, b]) => {
+      catA += a.length;
+      catB += b.length;
+    });
+    return {
+      totalDistricts: TALUKAS.length,
+      totalCatA: catA,
+      totalCatB: catB,
+      totalTalukas: catA + catB,
+    };
+  }, []);
 
-    const fa = filter === 'B' ? [] : a.filter(m);
-    const fb = filter === 'A' ? [] : b.filter(m);
+  // Filtered districts and talukas
+  const filteredDistricts = useMemo(() => {
+    return TALUKAS.map(([en, gu, a, b]) => {
+      const districtMatches = !q || en.toLowerCase().includes(q) || gu.includes(q);
 
-    if (!fa.length && !fb.length) return null;
+      // Taluka matching logic
+      const talukaMatches = (t) => !q || districtMatches || t.toLowerCase().includes(q);
 
-    return (
-      <div className="panel" key={en}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
-          <Building size={16} style={{ color: 'var(--brand-700)', flexShrink: 0 }} aria-hidden="true" />
-          <h4 style={{ margin: 0, border: 'none', padding: 0 }}>
-            {gu} · {en}
-          </h4>
+      const fa = filter === 'B' ? [] : a.filter(talukaMatches);
+      const fb = filter === 'A' ? [] : b.filter(talukaMatches);
+
+      // If neither category has matching talukas, exclude this district
+      if (!fa.length && !fb.length) return null;
+
+      return {
+        en,
+        gu,
+        catA: fa,
+        catB: fb,
+        origTotalA: a.length,
+        origTotalB: b.length,
+        totalShown: fa.length + fb.length,
+        districtMatches,
+      };
+    }).filter(Boolean);
+  }, [q, filter]);
+
+  // Total visible talukas across all matched districts
+  const visibleTalukasCount = useMemo(() => {
+    return filteredDistricts.reduce((acc, d) => acc + d.totalShown, 0);
+  }, [filteredDistricts]);
+
+  return (
+    <section id="p-taluka" data-panel="taluka" hidden={hidden} className="taluka-container">
+      {/* Header */}
+      <div>
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '3px 10px', background: 'var(--brand-50)', color: 'var(--brand-700)', borderRadius: 'var(--radius-pill)', fontSize: '12px', fontWeight: '700', marginBottom: '8px' }}>
+          <Sparkles size={14} />
+          <span>પરિશિષ્ટ-અ · Annexure-A (GR 06-10-2020)</span>
         </div>
-        <div className="cols">
-          <div style={{ background: 'var(--paper)', padding: '10px 12px', borderRadius: 'var(--radius-sm)' }}>
-            <span className="catpill catA">Category A · {fa.length}</span>
-            <ul>
-              {fa.length > 0 ? (
-                fa.map((t) => <li key={t}>{t}</li>)
-              ) : (
-                <li style={{ color: 'var(--mute)' }}>—</li>
-              )}
-            </ul>
+        <h2 className="sec-h" style={{ marginTop: '2px' }}>તાલુકા શ્રેણી વર્ગીકરણ</h2>
+        <p className="sec-p">
+          ગુજરાતના તમામ ૩૪ જિલ્લાઓના તાલુકાઓનું Category-A અને Category-B મુજબ વિગતવાર વર્ગીકરણ.
+        </p>
+      </div>
+
+      {/* Summary KPI Stat Cards */}
+      <div className="taluka-stats-grid">
+        <div className="taluka-stat-card">
+          <div className="taluka-stat-icon districts">
+            <Building2 size={22} />
           </div>
-          <div style={{ background: 'var(--paper)', padding: '10px 12px', borderRadius: 'var(--radius-sm)' }}>
-            <span className="catpill catB">Category B · {fb.length}</span>
-            <ul>
-              {fb.length > 0 ? (
-                fb.map((t) => <li key={t}>{t}</li>)
-              ) : (
-                <li style={{ color: 'var(--mute)' }}>—</li>
-              )}
-            </ul>
+          <div>
+            <div className="taluka-stat-val">{stats.totalDistricts}</div>
+            <div className="taluka-stat-lbl">કુલ જિલ્લા</div>
+            <div className="taluka-stat-sub">ગુજરાત રાજ્ય</div>
+          </div>
+        </div>
+
+        <div className="taluka-stat-card">
+          <div className="taluka-stat-icon cat-a">
+            <span style={{ fontSize: '16px', fontWeight: '800' }}>A</span>
+          </div>
+          <div>
+            <div className="taluka-stat-val">{stats.totalCatA}</div>
+            <div className="taluka-stat-lbl">Category-A તાલુકા</div>
+            <div className="taluka-stat-sub">વધુ સહાય (7% વ્યાજ / 65% કેપિટલ)</div>
+          </div>
+        </div>
+
+        <div className="taluka-stat-card">
+          <div className="taluka-stat-icon cat-b">
+            <span style={{ fontSize: '16px', fontWeight: '800' }}>B</span>
+          </div>
+          <div>
+            <div className="taluka-stat-val">{stats.totalCatB}</div>
+            <div className="taluka-stat-lbl">Category-B તાલુકા</div>
+            <div className="taluka-stat-sub">સામાન્ય સહાય (5% વ્યાજ / 60% કેપિટલ)</div>
+          </div>
+        </div>
+
+        <div className="taluka-stat-card">
+          <div className="taluka-stat-icon total">
+            <MapPin size={22} />
+          </div>
+          <div>
+            <div className="taluka-stat-val">{stats.totalTalukas}</div>
+            <div className="taluka-stat-lbl">કુલ તાલુકાઓ</div>
+            <div className="taluka-stat-sub">
+              {q || filter !== 'all' ? `હાલ દર્શાવેલ: ${visibleTalukasCount}` : 'સંપૂર્ણ રાજ્ય આવરી લીધું'}
+            </div>
           </div>
         </div>
       </div>
-    );
-  }).filter(Boolean);
 
-  return (
-    <section id="p-taluka" data-panel="taluka" hidden={hidden}>
-      <h2 className="sec-h">તાલુકા શ્રેણી (Annexure-A)</h2>
-      <p className="sec-p">
-        34 જિલ્લા · 130 Category-A અને 138 Category-B તાલુકા. પ્રોજેક્ટ એકથી વધુ તાલુકામાં હોય તો જમીનનો સૌથી મોટો ભાગ જે તાલુકામાં હોય તેની શ્રેણી ગણાય.
-      </p>
-      <div className="toolbar">
-        <div style={{ position: 'relative', flex: '1 1 260px' }}>
-          <Search
-            size={18}
-            style={{
-              position: 'absolute',
-              left: '12px',
-              top: '50%',
-              transform: 'translateY(-50%)',
-              color: 'var(--mute)',
-              pointerEvents: 'none',
-            }}
-            aria-hidden="true"
-          />
+      {/* Rule Info Banner */}
+      <div className="taluka-rule-banner">
+        <Info size={20} style={{ color: 'var(--brand-700)', flexShrink: 0, marginTop: '2px' }} />
+        <div>
+          <strong>મહત્વનો સરકારી નિયમ:</strong> જો કોઈ ઔદ્યોગિક પ્રોજેક્ટ એક કરતાં વધુ તાલુકામાં ફેલાયેલો હોય, તો જમીનનો સૌથી મોટો ભાગ (Majority Area) જે તાલુકામાં આવતો હોય, તે તાલુકાની શ્રેણી સમગ્ર પ્રોજેક્ટ માટે ગણવામાં આવશે.
+        </div>
+      </div>
+
+      {/* Search & Filter Toolbar */}
+      <div className="taluka-toolbar-card">
+        {/* Search input with clear button */}
+        <div className="taluka-search-wrap">
+          <Search size={18} className="taluka-search-icon" aria-hidden="true" />
           <input
             type="search"
             id="tq"
-            placeholder="તાલુકા કે જિલ્લો શોધો, દા.ત. Botad"
-            aria-label="તાલુકા શોધો"
+            className="taluka-search-input"
+            placeholder="તાલુકા કે જિલ્લો શોધો, દા.ત. Botad, Dholera, અમદાવાદ..."
+            aria-label="તાલુકા કે જિલ્લો શોધો"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            style={{ paddingLeft: '38px' }}
           />
+          {searchQuery && (
+            <button
+              type="button"
+              className="taluka-search-clear"
+              onClick={() => setSearchQuery('')}
+              title="શોધ સાફ કરો"
+              aria-label="શોધ સાફ કરો"
+            >
+              <X size={16} />
+            </button>
+          )}
         </div>
-        <div className="filt" id="tf">
+
+        {/* Filter Segmented Controls */}
+        <div className="taluka-filter-group" role="group" aria-label="કેટેગરી ફિલ્ટર">
           <button
             type="button"
-            data-f="all"
-            aria-pressed={filter === 'all' ? 'true' : 'false'}
+            className={`taluka-filter-btn ${filter === 'all' ? 'active' : ''}`}
+            aria-pressed={filter === 'all'}
             onClick={() => setFilter('all')}
           >
-            બધા
+            બધા ({stats.totalDistricts})
           </button>
           <button
             type="button"
-            data-f="A"
-            aria-pressed={filter === 'A' ? 'true' : 'false'}
+            className={`taluka-filter-btn ${filter === 'A' ? 'active' : ''}`}
+            aria-pressed={filter === 'A'}
             onClick={() => setFilter('A')}
           >
-            Category A
+            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--accent-500)', display: 'inline-block' }}></span>
+            Category A ({stats.totalCatA})
           </button>
           <button
             type="button"
-            data-f="B"
-            aria-pressed={filter === 'B' ? 'true' : 'false'}
+            className={`taluka-filter-btn ${filter === 'B' ? 'active' : ''}`}
+            aria-pressed={filter === 'B'}
             onClick={() => setFilter('B')}
           >
-            Category B
+            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--brand-600)', display: 'inline-block' }}></span>
+            Category B ({stats.totalCatB})
           </button>
         </div>
       </div>
-      <div className="tal" id="talGrid">
-        {renderedPanels.length > 0 ? (
-          renderedPanels
+
+      {/* Results Count Summary when searching or filtering */}
+      {(q || filter !== 'all') && (
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '13px', color: 'var(--mute)', padding: '0 4px' }}>
+          <span>
+            મળેલા પરિણામો: <strong style={{ color: 'var(--ink)' }}>{filteredDistricts.length}</strong> જિલ્લાઓ (<strong style={{ color: 'var(--ink)' }}>{visibleTalukasCount}</strong> તાલુકા)
+          </span>
+          <button
+            type="button"
+            onClick={() => {
+              setSearchQuery('');
+              setFilter('all');
+            }}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: 'var(--brand-700)',
+              fontWeight: '600',
+              cursor: 'pointer',
+              textDecoration: 'underline',
+              fontSize: '12.5px',
+            }}
+          >
+            બધા ફિલ્ટર્સ સાફ કરો
+          </button>
+        </div>
+      )}
+
+      {/* District Cards Grid */}
+      <div className="taluka-cards-grid" id="talGrid">
+        {filteredDistricts.length > 0 ? (
+          filteredDistricts.map((d) => {
+            const hasCatA = d.catA.length > 0;
+            const hasCatB = d.catB.length > 0;
+
+            return (
+              <div className="taluka-card" key={d.en}>
+                {/* District Header */}
+                <div className="taluka-card-head">
+                  <div className="taluka-card-title-wrap">
+                    <div className="taluka-card-icon">
+                      <Building2 size={18} />
+                    </div>
+                    <div>
+                      <div className="taluka-card-gu-name">{d.gu}</div>
+                      <div className="taluka-card-en-name">{d.en}</div>
+                    </div>
+                  </div>
+                  <span className="taluka-card-badge">
+                    {d.totalShown} તાલુકા
+                  </span>
+                </div>
+
+                {/* Category A Section */}
+                {(filter === 'all' || filter === 'A') && (
+                  <div className="taluka-cat-section">
+                    <div className="taluka-cat-head">
+                      <span className="taluka-cat-head-pill cat-a">
+                        <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'currentColor' }}></span>
+                        Category-A ({d.catA.length})
+                      </span>
+                      <span className="taluka-cat-subtext">ઉચ્ચ સબસિડી દર</span>
+                    </div>
+
+                    {hasCatA ? (
+                      <div className="taluka-chips-wrap">
+                        {d.catA.map((t) => {
+                          const isMatched = q && t.toLowerCase().includes(q);
+                          return (
+                            <span
+                              key={t}
+                              className={`taluka-chip cat-a ${isMatched ? 'matched' : ''}`}
+                              title={`${t} (${d.gu} - Category A)`}
+                            >
+                              {t}
+                            </span>
+                          );
+                        })}
+                      </div>
+                    ) : (
+                      <div className="taluka-empty-cat">
+                        આ જિલ્લામાં Category-A તાલુકો નથી
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Category B Section */}
+                {(filter === 'all' || filter === 'B') && (
+                  <div className="taluka-cat-section" style={{ marginTop: filter === 'all' ? '6px' : '0' }}>
+                    <div className="taluka-cat-head">
+                      <span className="taluka-cat-head-pill cat-b">
+                        <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'currentColor' }}></span>
+                        Category-B ({d.catB.length})
+                      </span>
+                      <span className="taluka-cat-subtext">સામાન્ય સબસિડી દર</span>
+                    </div>
+
+                    {hasCatB ? (
+                      <div className="taluka-chips-wrap">
+                        {d.catB.map((t) => {
+                          const isMatched = q && t.toLowerCase().includes(q);
+                          return (
+                            <span
+                              key={t}
+                              className={`taluka-chip cat-b ${isMatched ? 'matched' : ''}`}
+                              title={`${t} (${d.gu} - Category B)`}
+                            >
+                              {t}
+                            </span>
+                          );
+                        })}
+                      </div>
+                    ) : (
+                      <div className="taluka-empty-cat">
+                        {d.origTotalA > 0 ? 'આ જિલ્લાના તમામ તાલુકા Category-A છે' : 'આ જિલ્લામાં Category-B તાલુકો નથી'}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            );
+          })
         ) : (
-          <p className="hint" style={{ gridColumn: '1 / -1', padding: '16px', background: 'var(--surface)', borderRadius: 'var(--radius-md)' }}>
-            આ નામનો તાલુકો મળ્યો નહીં. અંગ્રેજી જોડણી અજમાવો, દા.ત. &quot;Jasdan&quot;.
-          </p>
+          <div className="taluka-no-results">
+            <div className="taluka-no-results-icon">
+              <Search size={24} />
+            </div>
+            <h3>આ નામનો કોઈ તાલુકો કે જિલ્લો મળ્યો નથી</h3>
+            <p>
+              કૃપા કરીને અંગ્રેજી કે ગુજરાતી જોડણી ચકાસો (દા.ત. &quot;Jasdan&quot;, &quot;Botad&quot;, &quot;Dholera&quot;, &quot;અમદાવાદ&quot;).
+            </p>
+            <button
+              type="button"
+              className="taluka-reset-btn"
+              onClick={() => {
+                setSearchQuery('');
+                setFilter('all');
+              }}
+            >
+              શોધ રીસેટ કરો
+            </button>
+          </div>
         )}
       </div>
     </section>

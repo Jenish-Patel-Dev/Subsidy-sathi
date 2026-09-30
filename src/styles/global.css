@@ -2028,88 +2028,536 @@ dl.defs dd {
   line-height: 1.6;
 }
 
-/* Taluka Grid Component */
-.tal {
+/* ==========================================================================
+   Taluka Grid Modern Redesign
+   ========================================================================== */
+.taluka-container {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Taluka Stats Cards (KPIs) */
+.taluka-stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.taluka-stat-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.taluka-stat-card:hover {
+  border-color: var(--line-strong);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.taluka-stat-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.taluka-stat-icon.districts {
+  background: var(--brand-50);
+  color: var(--brand-700);
+}
+:root[data-theme="dark"] .taluka-stat-icon.districts {
+  background: rgba(31, 136, 129, 0.18);
+  color: var(--brand-500);
+}
+
+.taluka-stat-icon.cat-a {
+  background: var(--accent-100);
+  color: var(--accent-700);
+}
+:root[data-theme="dark"] .taluka-stat-icon.cat-a {
+  background: rgba(217, 154, 54, 0.18);
+  color: var(--accent-400);
+}
+
+.taluka-stat-icon.cat-b {
+  background: var(--brand-100);
+  color: var(--brand-800);
+}
+:root[data-theme="dark"] .taluka-stat-icon.cat-b {
+  background: rgba(77, 194, 182, 0.18);
+  color: var(--brand-600);
+}
+
+.taluka-stat-icon.total {
+  background: var(--surface-subtle);
+  color: var(--ink);
+}
+
+.taluka-stat-val {
+  font-family: var(--f-num);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.1;
+}
+
+.taluka-stat-lbl {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-top: 3px;
+}
+
+.taluka-stat-sub {
+  font-size: 11.5px;
+  color: var(--mute);
+  margin-top: 2px;
+}
+
+/* Taluka Rule Banner */
+.taluka-rule-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: var(--info-soft);
+  border: 1px solid var(--info-border);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+:root[data-theme="dark"] .taluka-rule-banner {
+  background: rgba(14, 94, 88, 0.15);
+  border-color: rgba(31, 136, 129, 0.3);
+}
+
+.taluka-rule-banner strong {
+  color: var(--brand-700);
+}
+:root[data-theme="dark"] .taluka-rule-banner strong {
+  color: var(--brand-500);
+}
+
+/* Redesigned Search & Filter Toolbar */
+.taluka-toolbar-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  box-shadow: var(--shadow-sm);
+}
+
+.taluka-search-wrap {
+  position: relative;
+  flex: 1 1 280px;
+  min-width: 240px;
+}
+
+.taluka-search-input {
+  width: 100%;
+  height: 42px;
+  padding: 8px 36px 8px 38px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.taluka-search-input:focus {
+  outline: none;
+  border-color: var(--brand-600);
+  background: var(--surface);
+  box-shadow: 0 0 0 3px var(--focus-ring);
+}
+
+.taluka-search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--mute);
+  pointer-events: none;
+}
+
+.taluka-search-clear {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: var(--mute);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.taluka-search-clear:hover {
+  color: var(--ink);
+  background: var(--surface-subtle);
+}
+
+/* Taluka Filter Buttons */
+.taluka-filter-group {
+  display: flex;
+  gap: 4px;
+  background: var(--paper);
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+}
+
+.taluka-filter-btn {
+  font-family: var(--f-body);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border: none;
+  border-radius: calc(var(--radius-sm) - 2px);
+  background: transparent;
+  color: var(--mute);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+}
+
+.taluka-filter-btn:hover {
+  color: var(--ink);
+  background: var(--surface-subtle);
+}
+
+.taluka-filter-btn.active {
+  background: var(--surface);
+  color: var(--brand-700);
+  font-weight: 700;
+  box-shadow: var(--shadow-sm);
+}
+
+:root[data-theme="dark"] .taluka-filter-btn.active {
+  background: var(--brand-700);
+  color: #FFFFFF;
+}
+
+/* Taluka Cards Grid */
+.taluka-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 350px), 1fr));
   gap: 16px;
 }
 
-.tal .panel {
-  padding: 16px 18px;
-}
-
-.tal h4 {
-  margin: 0 0 12px;
-  font: 700 15px var(--f-body);
-  color: var(--navy-ink);
-  border-bottom: 1px solid var(--line);
-  padding-bottom: 8px;
-}
-
-.tal .cols {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-  font-size: 13.5px;
-}
-
-.tal ul {
-  list-style: none;
-  padding: 0;
-  margin: 8px 0 0;
-  display: grid;
-  gap: 4px;
-}
-
-.tal li {
-  color: var(--ink);
-  line-height: 1.4;
-}
-
-/* Taluka Search Toolbar */
-.toolbar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-bottom: 20px;
-}
-
-.toolbar input {
-  flex: 1 1 260px;
-}
-
-.filt {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.filt button {
-  font: 600 13.5px var(--f-body);
-  border: 1px solid var(--line);
+/* District Card */
+.taluka-card {
   background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.taluka-card:hover {
+  border-color: var(--line-strong);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+  transform: translateY(-2px);
+}
+
+:root[data-theme="dark"] .taluka-card:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.28);
+}
+
+.taluka-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 12px;
+  gap: 10px;
+}
+
+.taluka-card-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.taluka-card-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: var(--brand-50);
+  color: var(--brand-700);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+:root[data-theme="dark"] .taluka-card-icon {
+  background: rgba(31, 136, 129, 0.2);
+  color: var(--brand-500);
+}
+
+.taluka-card-gu-name {
+  font-size: 16px;
+  font-weight: 700;
   color: var(--ink);
-  border-radius: var(--radius-sm);
-  padding: 8px 14px;
-  cursor: pointer;
-  min-height: 44px;
-  transition: all 0.2s ease;
+  line-height: 1.2;
+}
+
+.taluka-card-en-name {
+  font-size: 12px;
+  color: var(--mute);
+  font-weight: 500;
+}
+
+.taluka-card-badge {
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: var(--radius-pill);
+  background: var(--paper);
+  color: var(--mute);
+  border: 1px solid var(--line);
+  white-space: nowrap;
+}
+
+/* Category Sections inside Card */
+.taluka-cat-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.taluka-cat-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.taluka-cat-head-pill {
   display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  font-size: 11.5px;
+  font-weight: 700;
+}
+
+.taluka-cat-head-pill.cat-a {
+  background: var(--accent-100);
+  color: var(--accent-700);
+  border: 1px solid var(--accent-400);
+}
+:root[data-theme="dark"] .taluka-cat-head-pill.cat-a {
+  background: rgba(217, 154, 54, 0.15);
+  color: var(--accent-400);
+  border-color: rgba(217, 154, 54, 0.3);
+}
+
+.taluka-cat-head-pill.cat-b {
+  background: var(--brand-50);
+  color: var(--brand-800);
+  border: 1px solid var(--brand-100);
+}
+:root[data-theme="dark"] .taluka-cat-head-pill.cat-b {
+  background: rgba(31, 136, 129, 0.15);
+  color: var(--brand-500);
+  border-color: rgba(77, 194, 182, 0.3);
+}
+
+.taluka-cat-subtext {
+  font-size: 11px;
+  color: var(--mute);
+  font-weight: 500;
+}
+
+/* Taluka Chips Container */
+.taluka-chips-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-height: 28px;
+}
+
+.taluka-chip {
+  font-size: 12.5px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  line-height: 1.35;
+  transition: all 0.15s ease;
+  user-select: all;
+}
+
+.taluka-chip.cat-a {
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--line);
+}
+
+.taluka-chip.cat-a:hover {
+  background: var(--accent-100);
+  border-color: var(--accent-400);
+  color: var(--accent-700);
+}
+
+:root[data-theme="dark"] .taluka-chip.cat-a {
+  background: var(--paper);
+  color: var(--ink);
+  border-color: var(--line);
+}
+
+:root[data-theme="dark"] .taluka-chip.cat-a:hover {
+  background: rgba(217, 154, 54, 0.2);
+  color: var(--accent-400);
+  border-color: var(--accent-500);
+}
+
+.taluka-chip.cat-b {
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--line);
+}
+
+.taluka-chip.cat-b:hover {
+  background: var(--brand-50);
+  border-color: var(--brand-500);
+  color: var(--brand-700);
+}
+
+:root[data-theme="dark"] .taluka-chip.cat-b {
+  background: var(--paper);
+  color: var(--ink);
+  border-color: var(--line);
+}
+
+:root[data-theme="dark"] .taluka-chip.cat-b:hover {
+  background: rgba(31, 136, 129, 0.2);
+  color: var(--brand-500);
+  border-color: var(--brand-600);
+}
+
+/* Matched Search Query Chip Highlight */
+.taluka-chip.matched {
+  background: var(--brand-700) !important;
+  color: #FFFFFF !important;
+  font-weight: 700;
+  border-color: var(--brand-800) !important;
+  box-shadow: 0 0 0 2px var(--focus);
+  transform: scale(1.04);
+}
+
+:root[data-theme="dark"] .taluka-chip.matched {
+  background: var(--brand-600) !important;
+  color: #FFFFFF !important;
+  border-color: var(--brand-500) !important;
+}
+
+/* Empty Category inside District */
+.taluka-empty-cat {
+  font-size: 11.5px;
+  color: var(--mute);
+  font-style: italic;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: var(--paper);
+  border: 1px dashed var(--line);
+}
+
+/* Global Empty State */
+.taluka-no-results {
+  grid-column: 1 / -1;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 36px 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.taluka-no-results-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--surface-subtle);
+  color: var(--mute);
+  display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.filt button:hover {
-  background: var(--surface-subtle);
-  border-color: var(--line-strong);
+.taluka-no-results h3 {
+  margin: 0;
+  font-size: 16px;
+  color: var(--ink);
 }
 
-.filt button[aria-pressed="true"] {
+.taluka-no-results p {
+  margin: 0;
+  font-size: 13.5px;
+  color: var(--mute);
+  max-width: 420px;
+  line-height: 1.5;
+}
+
+.taluka-reset-btn {
+  margin-top: 6px;
+  padding: 8px 18px;
   background: var(--brand-700);
   color: #FFFFFF;
-  border-color: var(--brand-700);
-  box-shadow: var(--shadow-sm);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.taluka-reset-btn:hover {
+  background: var(--brand-800);
+}
+
+/* Backward compatibility for .tal class */
+.tal {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 350px), 1fr));
+  gap: 16px;
 }
 
 /* ==========================================================================
