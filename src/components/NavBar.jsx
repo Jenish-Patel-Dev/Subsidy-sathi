@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { NAV_ITEMS } from '../config/navigation.js';
 import ThemeToggle from './ThemeToggle.jsx';
+import PWAInstallButton from './PWAInstallButton.jsx';
 
 export default function NavBar({ activeTab, onSelectTab }) {
   const navListRef = useRef(null);
@@ -76,8 +77,9 @@ export default function NavBar({ activeTab, onSelectTab }) {
           </div>
         </nav>
 
-        {/* Far Right: Theme Toggle */}
+        {/* Far Right: PWA Install / Update Action & Theme Toggle */}
         <div className="nav-actions">
+          <PWAInstallButton />
           <ThemeToggle />
         </div>
       </div>

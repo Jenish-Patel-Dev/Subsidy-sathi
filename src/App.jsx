@@ -13,6 +13,8 @@ import { TALUKAS } from './data/talukas.js';
 import { compute } from './lib/calc.js';
 import { money } from './lib/format.js';
 import { ChevronDown } from 'lucide-react';
+import { PWAProvider } from './context/PWAContext.jsx';
+import PWAUpdateModal from './components/PWAUpdateModal.jsx';
 
 const VALID_TABS = ['check', 'rates', 'other', 'taluka', 'rules'];
 
@@ -142,7 +144,7 @@ export default function App() {
   }, [formValues]);
 
   return (
-    <>
+    <PWAProvider>
       {/* 1. Unified Top Navigation Bar (Desktop Sticky Navbar + Mobile Sticky App Bar) */}
       <NavBar activeTab={activeTab} onSelectTab={handleSelectTab} />
 
@@ -208,6 +210,9 @@ export default function App() {
 
       {/* 6. Footer */}
       <Footer />
-    </>
+
+      {/* 7. PWA Update Notification Popup */}
+      <PWAUpdateModal />
+    </PWAProvider>
   );
 }

@@ -1,0 +1,28 @@
+{
+  "name": "સબસિડી સાથી - Subsidy Sathi",
+  "short_name": "સબસિડી સાથી",
+  "description": "ગુજરાત ઔદ્યોગિક નીતિ 2026 - ઉદ્યોગ અને ખાણ વિભાગ સબસિડી કેલ્ક્યુલેટર",
+  "start_url": "/",
+  "id": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0A3532",
+  "theme_color": "#0E4B47",
+  "orientation": "portrait-primary",
+  "lang": "gu",
+  "categories": ["business", "finance", "productivity"],
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
