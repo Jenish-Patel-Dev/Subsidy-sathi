@@ -1685,7 +1685,7 @@ select {
   border: 1px solid var(--info-border);
 }
 
-/* Responsive Table Wrapper */
+/* Responsive Table Wrapper with Horizontal Scroll & Sticky First Column */
 .tbl-wrap {
   overflow-x: auto;
   margin-top: 12px;
@@ -1694,19 +1694,38 @@ select {
   box-shadow: var(--shadow-xs);
   background: var(--surface);
   -webkit-overflow-scrolling: touch;
+  position: relative;
+}
+
+/* Slim scrollbar for smooth horizontal scrolling */
+.tbl-wrap::-webkit-scrollbar {
+  height: 7px;
+}
+.tbl-wrap::-webkit-scrollbar-track {
+  background: var(--surface-subtle);
+  border-radius: 4px;
+}
+.tbl-wrap::-webkit-scrollbar-thumb {
+  background: rgba(120, 120, 120, 0.35);
+  border-radius: 4px;
+}
+.tbl-wrap::-webkit-scrollbar-thumb:hover {
+  background: rgba(120, 120, 120, 0.55);
 }
 
 table {
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   width: 100%;
   font-size: 13.5px;
 }
 
 th, td {
   text-align: left;
-  padding: 10px 14px;
+  padding: 11px 16px;
   border-bottom: 1px solid var(--line);
   vertical-align: middle;
+  white-space: nowrap; /* Ensures each row stays strictly on a single line */
 }
 
 th {
@@ -1719,12 +1738,51 @@ th {
   z-index: 1;
 }
 
-tr:last-child td {
-  border-bottom: 0;
+/* Sticky First Column */
+th:first-child,
+td:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background: var(--surface);
+  border-right: 1px solid var(--line);
+  box-shadow: 4px 0 8px rgba(0, 0, 0, 0.05);
+  min-width: 120px;
 }
 
-tbody tr:hover {
+:root[data-theme="dark"] th:first-child,
+:root[data-theme="dark"] td:first-child {
+  background: #142220;
+  border-right-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 4px 0 12px rgba(0, 0, 0, 0.45);
+}
+
+/* Top-Left Header Cell has highest priority z-index */
+th:first-child {
+  z-index: 4;
+  background: var(--paper);
+}
+
+:root[data-theme="dark"] th:first-child {
+  background: #111e1c;
+}
+
+/* Highlight sticky cell on row hover */
+tbody tr:hover td {
   background: var(--surface-subtle);
+}
+
+tbody tr:hover td:first-child {
+  background: var(--surface-subtle);
+}
+
+:root[data-theme="dark"] tbody tr:hover td,
+:root[data-theme="dark"] tbody tr:hover td:first-child {
+  background: #1b2d29;
+}
+
+tr:last-child td {
+  border-bottom: 0;
 }
 
 td.n, th.n {
@@ -1738,6 +1796,15 @@ tr.tot td {
   font-weight: 700;
   border-top: 2px solid var(--ink);
   background: var(--paper);
+}
+
+tr.tot td:first-child {
+  background: var(--paper);
+}
+
+:root[data-theme="dark"] tr.tot td,
+:root[data-theme="dark"] tr.tot td:first-child {
+  background: #111e1c;
 }
 
 /* SVG Chart */
