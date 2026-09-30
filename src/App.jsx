@@ -146,8 +146,8 @@ export default function App() {
       {/* 1. Unified Top Navigation Bar (Desktop Sticky Navbar + Mobile Sticky App Bar) */}
       <NavBar activeTab={activeTab} onSelectTab={handleSelectTab} />
 
-      {/* 2. Hero Section (Not sticky, green-to-teal gradient, eyebrow, description, GR cards) */}
-      <Hero />
+      {/* 2. Hero Section (Shown ONLY on Home / first menu tab: "મારી પાત્રતા") */}
+      {activeTab === 'check' && <Hero />}
 
       {/* 3. Main Content Area */}
       <main className="wrap">
