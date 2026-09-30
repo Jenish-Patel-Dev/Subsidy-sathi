@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { NAV_ITEMS } from '../config/navigation.js';
 import ThemeToggle from './ThemeToggle.jsx';
+import PageSearch from './PageSearch.jsx';
 
 export default function NavBar({ activeTab, onSelectTab }) {
   const navListRef = useRef(null);
@@ -48,7 +49,10 @@ export default function NavBar({ activeTab, onSelectTab }) {
           />
         </div>
 
-        {/* Desktop / Tablet Navigation Menu (hidden on mobile < 768px) */}
+        {/* In-Page Search Field (between Logo and Navigation Menu) */}
+        <PageSearch activeTab={activeTab} />
+
+        {/* Desktop / Tablet Navigation Menu (shifted right next to actions) */}
         <nav className="desktop-nav" aria-label="મુખ્ય નેવિગેશન">
           <div className="nav-menu-list" role="tablist" ref={navListRef}>
             {NAV_ITEMS.map((item, idx) => {
