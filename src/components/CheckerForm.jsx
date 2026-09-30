@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { TALUKAS, catOf } from '../data/talukas.js';
 import { SECTORS } from '../data/sectors.js';
 import { HelpButton, HelpBox, HelpModal } from './Help.jsx';
+import CustomSelect from './CustomSelect.jsx';
 import {
   MapPin,
   Building2,
@@ -63,6 +64,70 @@ export default function CheckerForm({ formValues, onChange, onInputChange }) {
 
   const currentCat = catOf(formValues.tal);
 
+  const districtOptions = React.useMemo(
+    () =>
+      TALUKAS.map((d, i) => ({
+        value: String(i),
+        label: `${d[1]} · ${d[0]}`,
+        searchTerms: `${d[1]} ${d[0]}`,
+      })),
+    []
+  );
+
+  const talukaOptions = React.useMemo(
+    () =>
+      talukaList.map(([t, c]) => ({
+        value: t,
+        label: `${t} (Cat ${c})`,
+        renderLabel: (
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+            <span>{t}</span>
+            <span className={`custom-select-badge cat${c}`} style={{ fontSize: '10.5px', padding: '1px 6px' }}>
+              Cat {c}
+            </span>
+          </span>
+        ),
+        badge: `Cat ${c}`,
+        badgeType: `cat${c}`,
+        searchTerms: `${t} category ${c} cat ${c}`,
+      })),
+    [talukaList]
+  );
+
+  const sectorGroups = React.useMemo(
+    () => [
+      {
+        label: 'સામાન્ય',
+        options: SECTORS.filter((s) => s.kind === 'general').map((s) => ({
+          value: s.id,
+          label: s.g,
+          searchTerms: s.g,
+        })),
+      },
+      {
+        label: 'થ્રસ્ટ સેક્ટર (Annexure-A)',
+        options: SECTORS.filter((s) => s.kind === 'thrust').map((s) => ({
+          value: s.id,
+          label: s.g,
+          badge: 'Thrust',
+          badgeType: 'catA',
+          searchTerms: `${s.g} thrust થ્રસ્ટ`,
+        })),
+      },
+      {
+        label: 'પસંદગીનાં થ્રસ્ટ સેક્ટર',
+        options: SECTORS.filter((s) => s.kind === 'selected').map((s) => ({
+          value: s.id,
+          label: s.g,
+          badge: 'Selected',
+          badgeType: 'catB',
+          searchTerms: `${s.g} selected પસંદગી`,
+        })),
+      },
+    ],
+    []
+  );
+
   return (
     <form className="form" id="frm" autoComplete="off" onSubmit={(e) => e.preventDefault()}>
       <div className="example" id="exNote" hidden={!showExNote}>
@@ -90,34 +155,26 @@ export default function CheckerForm({ formValues, onChange, onInputChange }) {
               <span>જિલ્લો</span>
               <HelpButton fieldKey="dist" isOpen={!!openHelp.dist} onToggle={toggleHelp} />
             </span>
-            <select
+            <CustomSelect
               id="dist"
               value={formValues.dist}
               onChange={handleDistrictChange}
-            >
-              {TALUKAS.map((d, i) => (
-                <option key={d[0]} value={i}>
-                  {d[1]} · {d[0]}
-                </option>
-              ))}
-            </select>
+              options={districtOptions}
+              ariaLabel="જિલ્લો પસંદ કરો"
+            />
           </label>
           <label className="f">
             <span className="lh">
               <span>તાલુકા</span>
               <HelpButton fieldKey="tal" isOpen={!!openHelp.tal} onToggle={toggleHelp} />
             </span>
-            <select
+            <CustomSelect
               id="tal"
               value={formValues.tal}
               onChange={(e) => handleFieldChange('tal', e.target.value)}
-            >
-              {talukaList.map(([t, c]) => (
-                <option key={t} value={t}>
-                  {t} (Cat {c})
-                </option>
-              ))}
-            </select>
+              options={talukaOptions}
+              ariaLabel="તાલુકા પસંદ કરો"
+            />
           </label>
         </div>
         <HelpBox fieldKey="dist" isOpen={!!openHelp.dist} as="div" />
@@ -146,33 +203,13 @@ export default function CheckerForm({ formValues, onChange, onInputChange }) {
             <span>ઉત્પાદન ક્ષેત્ર (Annexure-A)</span>
             <HelpButton fieldKey="sector" isOpen={!!openHelp.sector} onToggle={toggleHelp} />
           </span>
-          <select
+          <CustomSelect
             id="sector"
             value={formValues.sector}
             onChange={(e) => handleFieldChange('sector', e.target.value)}
-          >
-            <optgroup label="સામાન્ય">
-              {SECTORS.filter((s) => s.kind === 'general').map((s) => (
-                <option key={s.id} value={s.id}>
-                  {s.g}
-                </option>
-              ))}
-            </optgroup>
-            <optgroup label="થ્રસ્ટ સેક્ટર (Annexure-A)">
-              {SECTORS.filter((s) => s.kind === 'thrust').map((s) => (
-                <option key={s.id} value={s.id}>
-                  {s.g}
-                </option>
-              ))}
-            </optgroup>
-            <optgroup label="પસંદગીનાં થ્રસ્ટ સેક્ટર">
-              {SECTORS.filter((s) => s.kind === 'selected').map((s) => (
-                <option key={s.id} value={s.id}>
-                  {s.g}
-                </option>
-              ))}
-            </optgroup>
-          </select>
+            groups={sectorGroups}
+            ariaLabel="ઉત્પાદન ક્ષેત્ર (Annexure-A)"
+          />
           <HelpBox fieldKey="sector" isOpen={!!openHelp.sector} as="span" />
         </label>
 
