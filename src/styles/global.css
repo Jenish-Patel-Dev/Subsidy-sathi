@@ -961,19 +961,10 @@ img, svg {
   gap: 12px;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 860px) {
   .grs {
-    display: flex;
-    gap: 10px;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: 6px;
-    scrollbar-width: none;
-  }
-
-  .grs::-webkit-scrollbar {
-    display: none;
+    grid-template-columns: 1fr;
+    gap: 8px;
   }
 }
 
@@ -991,10 +982,24 @@ img, svg {
   transition: all 0.2s ease;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 860px) {
   .gr-card {
-    flex: 0 0 clamp(260px, 80vw, 320px);
-    scroll-snap-align: start;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 4px 14px;
+    padding: 10px 14px;
+  }
+}
+
+@media (max-width: 520px) {
+  .gr-card {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 3px;
+    padding: 9px 12px;
   }
 }
 
