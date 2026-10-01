@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { TALUKAS } from '../data/talukas.js';
-import { Search, Building2, MapPin, Layers, Info, X, CheckCircle2, Sparkles } from 'lucide-react';
+import { Search, Building2, MapPin, Layers, Info, X, CheckCircle2, Sparkles, RotateCcw } from 'lucide-react';
 
 export default function TalukaGrid({ hidden }) {
   const [searchQuery, setSearchQuery] = useState('');
@@ -190,27 +190,22 @@ export default function TalukaGrid({ hidden }) {
 
       {/* Results Count Summary when searching or filtering */}
       {(q || filter !== 'all') && (
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '13px', color: 'var(--mute)', padding: '0 4px' }}>
+        <div className="taluka-summary-row">
           <span>
             મળેલા પરિણામો: <strong style={{ color: 'var(--ink)' }}>{filteredDistricts.length}</strong> જિલ્લાઓ (<strong style={{ color: 'var(--ink)' }}>{visibleTalukasCount}</strong> તાલુકા)
           </span>
           <button
             type="button"
+            className="taluka-clear-btn"
             onClick={() => {
               setSearchQuery('');
               setFilter('all');
             }}
-            style={{
-              background: 'none',
-              border: 'none',
-              color: 'var(--brand-700)',
-              fontWeight: '600',
-              cursor: 'pointer',
-              textDecoration: 'underline',
-              fontSize: '12.5px',
-            }}
+            title="બધા ફિલ્ટર્સ સાફ કરો"
+            aria-label="બધા ફિલ્ટર્સ સાફ કરો"
           >
-            બધા ફિલ્ટર્સ સાફ કરો
+            <RotateCcw size={13} aria-hidden="true" />
+            <span>બધા ફિલ્ટર્સ સાફ કરો</span>
           </button>
         </div>
       )}
