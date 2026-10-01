@@ -3,7 +3,7 @@ import { ShieldAlert } from 'lucide-react';
 
 export default function Footer() {
   return (
-    <footer>
+    <footer className="desktop-footer">
       <div className="wrap" style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
         <ShieldAlert size={20} style={{ color: 'var(--mute)', flexShrink: 0, marginTop: '2px' }} aria-hidden="true" />
         <div>

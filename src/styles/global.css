@@ -3121,9 +3121,13 @@ input[type="search"].taluka-search-input:focus,
 }
 
 /* ==========================================================================
-   Footer Component
+   Footer & In-App Disclaimer Components
+   - Desktop (> 950px): Full-width .desktop-footer across bottom of page
+   - Mobile & Tablet (<= 950px): Footer hidden; in-page .app-disclaimer-note
+     shown directly below content on all tabs, native app style.
    ========================================================================== */
-footer {
+footer,
+.desktop-footer {
   color: var(--mute);
   font-size: 13px;
   line-height: 1.6;
@@ -3134,8 +3138,42 @@ footer {
 }
 
 @media (max-width: 950px) {
-  footer {
-    padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px));
+  footer,
+  .desktop-footer {
+    display: none !important;
+  }
+}
+
+/* In-Page App Disclaimer (Appears at bottom of content on all pages <= 950px) */
+.app-disclaimer-note {
+  display: none;
+}
+
+@media (max-width: 950px) {
+  .app-disclaimer-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 14px;
+    margin-top: 24px;
+    margin-bottom: 8px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-xs);
+  }
+
+  .app-disclaimer-icon {
+    color: var(--mute);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .app-disclaimer-text {
+    flex: 1;
+    color: var(--mute);
+    font-size: 12px;
+    line-height: 1.55;
   }
 }
 

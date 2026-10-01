@@ -12,7 +12,7 @@ import Footer from './components/Footer.jsx';
 import { TALUKAS } from './data/talukas.js';
 import { compute } from './lib/calc.js';
 import { money } from './lib/format.js';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, ShieldAlert } from 'lucide-react';
 import { PWAProvider } from './context/PWAContext.jsx';
 import PWAUpdateModal from './components/PWAUpdateModal.jsx';
 import AppLoader from './components/AppLoader.jsx';
@@ -182,6 +182,14 @@ export default function App() {
 
         {/* RULES TAB */}
         <Rules hidden={activeTab !== 'rules'} />
+
+        {/* In-Page App Disclaimer (Visible below active page content on screens <= 950px where bottom nav is active) */}
+        <div className="app-disclaimer-note" role="note" aria-label="ડિસ્ક્લેમર નોંધ">
+          <ShieldAlert size={18} className="app-disclaimer-icon" aria-hidden="true" />
+          <div className="app-disclaimer-text">
+            આ સાધન ત્રણ GR ના લખાણ પર આધારિત સૂચક અંદાજ આપે છે. અંતિમ પાત્રતા અને રકમ Asset Verification, PEC/FEC અને મંજૂરી સત્તાધિકારીના નિર્ણય મુજબ રહેશે. અર્થઘટનમાં મતભેદ હોય તો MSME માટે SLEC અને લાર્જ એકમો માટે para 12(c) ની સમિતિનો નિર્ણય આખરી ગણાય.
+          </div>
+        </div>
       </main>
 
       {/* 4. Mobile Fixed Bottom Navigation Menu (< 768px) */}
