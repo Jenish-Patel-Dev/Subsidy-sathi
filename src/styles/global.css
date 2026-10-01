@@ -861,8 +861,8 @@ img, svg {
   100% { left: 100%; width: 30%; }
 }
 
-/* Mobile Top App Bar adjustments (< 768px) */
-@media (max-width: 767px) {
+/* Mobile & Tablet Top App Bar adjustments (<= 950px) */
+@media (max-width: 950px) {
   .top-navbar {
     height: 64px;
   }
@@ -1068,13 +1068,13 @@ img, svg {
 }
 
 /* ==========================================================================
-   Mobile Fixed Bottom Navigation Menu (< 768px)
+   Mobile & Tablet Fixed Bottom Navigation Menu (<= 950px)
    ========================================================================== */
 .mobile-bottom-nav {
   display: none;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 950px) {
   .mobile-bottom-nav {
     display: block;
     position: fixed;
@@ -1095,6 +1095,8 @@ img, svg {
     grid-template-columns: repeat(5, 1fr);
     gap: 2px;
     padding: 4px 4px;
+    max-width: 950px;
+    margin: 0 auto;
   }
 
   .mobile-nav-btn {
@@ -1163,7 +1165,7 @@ main {
   padding-block: clamp(20px, 3.5vw, 36px) clamp(36px, 5vw, 64px);
 }
 
-@media (max-width: 767px) {
+@media (max-width: 950px) {
   main {
     padding-bottom: calc(130px + env(safe-area-inset-bottom, 0px));
   }
@@ -2970,13 +2972,13 @@ input[type="search"].taluka-search-input:focus,
     backdrop-filter: blur(12px);
   }
 
-  @media (max-width: 767px) {
+  @media (max-width: 950px) {
     .mobile-sticky-bar {
       bottom: calc(64px + env(safe-area-inset-bottom, 0px));
     }
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 951px) {
     .mobile-sticky-bar {
       bottom: calc(14px + env(safe-area-inset-bottom, 0px));
     }
@@ -3013,7 +3015,7 @@ footer {
   margin-top: 40px;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 950px) {
   footer {
     padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px));
   }

@@ -49,7 +49,7 @@ export default function NavBar({ activeTab, onSelectTab }) {
           />
         </div>
 
-        {/* Desktop / Tablet Navigation Menu (hidden on mobile < 768px) */}
+        {/* Desktop Navigation Menu (hidden on mobile and tablet <= 950px) */}
         <nav className="desktop-nav" aria-label="મુખ્ય નેવિગેશન">
           <div className="nav-menu-list" role="tablist" ref={navListRef}>
             {NAV_ITEMS.map((item, idx) => {
