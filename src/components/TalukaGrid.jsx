@@ -60,11 +60,13 @@ export default function TalukaGrid({ hidden }) {
     <section id="p-taluka" data-panel="taluka" hidden={hidden} className="taluka-container">
       {/* Header */}
       <div>
-        <div className="taluka-top-badge">
-          <Sparkles size={14} style={{ flexShrink: 0 }} />
-          <span>પરિશિષ્ટ-અ · Annexure-A (GR 06-10-2020)</span>
+        <div className="taluka-header-row">
+          <h2 className="sec-h">તાલુકા શ્રેણી વર્ગીકરણ</h2>
+          <span className="taluka-top-badge">
+            <Sparkles size={13} style={{ flexShrink: 0 }} />
+            <span>પરિશિષ્ટ-અ · Annexure-A (GR 06-10-2020)</span>
+          </span>
         </div>
-        <h2 className="sec-h" style={{ marginTop: '2px' }}>તાલુકા શ્રેણી વર્ગીકરણ</h2>
         <p className="sec-p">
           ગુજરાતના તમામ ૩૪ જિલ્લાઓના તાલુકાઓનું Category-A અને Category-B મુજબ વિગતવાર વર્ગીકરણ.
         </p>

@@ -2340,12 +2340,24 @@ dl.defs dd {
   gap: 18px;
 }
 
+.taluka-header-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  margin: 4px 0 6px;
+}
+
+.taluka-header-row .sec-h {
+  margin: 0;
+}
+
 .taluka-top-badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
-  padding: 0 12px;
+  padding: 4px 12px;
   min-height: 26px;
   background: var(--brand-50);
   color: var(--brand-700);
@@ -2354,8 +2366,9 @@ dl.defs dd {
   font-size: 12px;
   font-weight: 700;
   line-height: 1;
-  margin-bottom: 8px;
+  margin-bottom: 0;
   box-sizing: border-box;
+  vertical-align: middle;
 }
 
 :root[data-theme="dark"] .taluka-top-badge {
