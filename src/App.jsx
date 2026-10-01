@@ -19,19 +19,53 @@ import AppLoader from './components/AppLoader.jsx';
 
 const VALID_TABS = ['check', 'rates', 'other', 'taluka', 'rules'];
 
-function getInitialTab() {
-  const hash = (window.location.hash || '').replace('#', '');
-  if (VALID_TABS.includes(hash)) {
-    return hash;
-  }
+function isPageReload() {
   try {
-    const saved = localStorage.getItem('sd-tab');
-    if (saved && VALID_TABS.includes(saved)) {
-      return saved;
+    const navEntries = performance.getEntriesByType('navigation');
+    if (navEntries && navEntries.length > 0) {
+      return navEntries[0].type === 'reload' || navEntries[0].type === 'back_forward';
+    }
+    if (window.performance && window.performance.navigation) {
+      const type = window.performance.navigation.type;
+      return type === 1 || type === 2; // TYPE_RELOAD or TYPE_BACK_FORWARD
     }
   } catch (e) {
     // ignore
   }
+  return false;
+}
+
+function getInitialTab() {
+  const isReload = isPageReload();
+
+  if (isReload) {
+    // On page reload (or browser back/forward), stay on the active tab
+    try {
+      const saved = sessionStorage.getItem('sd-tab');
+      if (saved && VALID_TABS.includes(saved)) {
+        return saved;
+      }
+    } catch (e) {
+      // ignore
+    }
+    const hash = (window.location.hash || '').replace('#', '');
+    if (VALID_TABS.includes(hash)) {
+      return hash;
+    }
+  } else {
+    // Fresh visit / opening site freshly: always land on Home page ('check')
+    try {
+      sessionStorage.removeItem('sd-tab');
+      localStorage.removeItem('sd-tab');
+      if (window.location.hash) {
+        history.replaceState(null, '', window.location.pathname + window.location.search);
+      }
+    } catch (e) {
+      // ignore
+    }
+    return 'check';
+  }
+
   return 'check';
 }
 
@@ -80,7 +114,8 @@ export default function App() {
   const handleSelectTab = (tabId) => {
     setActiveTab(tabId);
     try {
-      localStorage.setItem('sd-tab', tabId);
+      sessionStorage.setItem('sd-tab', tabId);
+      localStorage.removeItem('sd-tab');
     } catch (e) {
       // ignore
     }
@@ -99,6 +134,11 @@ export default function App() {
       const hash = (window.location.hash || '').replace('#', '');
       if (VALID_TABS.includes(hash)) {
         setActiveTab(hash);
+        try {
+          sessionStorage.setItem('sd-tab', hash);
+        } catch (e) {
+          // ignore
+        }
       }
     };
     window.addEventListener('hashchange', handleHashChange);
