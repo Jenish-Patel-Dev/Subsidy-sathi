@@ -3174,7 +3174,63 @@ footer,
     color: var(--mute);
     font-size: 12px;
     line-height: 1.55;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
   }
+}
+
+.footer-official-ref {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: 12.5px;
+  margin-top: 2px;
+}
+
+.footer-gov-link,
+.app-gov-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--brand-700);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.15s ease, opacity 0.15s ease;
+}
+
+.footer-gov-link:hover,
+.app-gov-link:hover {
+  color: var(--brand-800);
+  opacity: 0.9;
+}
+
+:root[data-theme="dark"] .footer-gov-link,
+:root[data-theme="dark"] .app-gov-link {
+  color: var(--brand-400);
+}
+
+:root[data-theme="dark"] .footer-gov-link:hover,
+:root[data-theme="dark"] .app-gov-link:hover {
+  color: #7BE0D4;
+}
+
+.app-disclaimer-link-wrap {
+  margin-top: 2px;
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: 11.5px;
+}
+
+.app-disclaimer-link-label {
+  color: var(--mute);
+  font-weight: 600;
 }
 
 /* ==========================================================================

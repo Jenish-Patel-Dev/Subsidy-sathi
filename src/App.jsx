@@ -12,7 +12,7 @@ import Footer from './components/Footer.jsx';
 import { TALUKAS } from './data/talukas.js';
 import { compute } from './lib/calc.js';
 import { money } from './lib/format.js';
-import { ChevronDown, ShieldAlert } from 'lucide-react';
+import { ChevronDown, ShieldAlert, ExternalLink } from 'lucide-react';
 import { PWAProvider } from './context/PWAContext.jsx';
 import PWAUpdateModal from './components/PWAUpdateModal.jsx';
 import AppLoader from './components/AppLoader.jsx';
@@ -227,7 +227,22 @@ export default function App() {
         <div className="app-disclaimer-note" role="note" aria-label="ડિસ્ક્લેમર નોંધ">
           <ShieldAlert size={18} className="app-disclaimer-icon" aria-hidden="true" />
           <div className="app-disclaimer-text">
-            આ સાધન ત્રણ GR ના લખાણ પર આધારિત સૂચક અંદાજ આપે છે. અંતિમ પાત્રતા અને રકમ Asset Verification, PEC/FEC અને મંજૂરી સત્તાધિકારીના નિર્ણય મુજબ રહેશે. અર્થઘટનમાં મતભેદ હોય તો MSME માટે SLEC અને લાર્જ એકમો માટે para 12(c) ની સમિતિનો નિર્ણય આખરી ગણાય.
+            <div>
+              આ સાધન ત્રણ GR ના લખાણ પર આધારિત સૂચક અંદાજ આપે છે. અંતિમ પાત્રતા અને રકમ Asset Verification, PEC/FEC અને મંજૂરી સત્તાધિકારીના નિર્ણય મુજબ રહેશે. અર્થઘટનમાં મતભેદ હોય તો MSME માટે SLEC અને લાર્જ એકમો માટે para 12(c) ની સમિતિનો નિર્ણય આખરી ગણાય.
+            </div>
+            <div className="app-disclaimer-link-wrap">
+              <span className="app-disclaimer-link-label">સત્તાવાર સરકારી સંદર્ભ:</span>{' '}
+              <a
+                href="https://ic.gujarat.gov.in/industrial-policy.aspx"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="app-gov-link"
+                title="ઉદ્યોગ કમિશનરશ્રીની કચેરી - ઔદ્યોગિક નીતિ પોર્ટલ (ic.gujarat.gov.in)"
+              >
+                <span>ic.gujarat.gov.in/industrial-policy.aspx</span>
+                <ExternalLink size={12} aria-hidden="true" />
+              </a>
+            </div>
           </div>
         </div>
       </main>
