@@ -22,7 +22,7 @@ export default function BottomNav({ activeTab, onSelectTab }) {
               onClick={() => onSelectTab(item.id)}
             >
               <div className="mobile-nav-icon-wrap" aria-hidden="true">
-                <Icon size={19} />
+                <Icon size={20} strokeWidth={isActive ? 2.3 : 1.85} />
               </div>
               <span className="mobile-nav-label">{item.label}</span>
             </button>
