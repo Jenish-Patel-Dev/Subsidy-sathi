@@ -16,8 +16,8 @@ import {
   Info,
 } from 'lucide-react';
 
-export default function ResultPanel({ result }) {
-  const { cat, cl, S, R, rows, tot, totCeil } = result;
+export default function ResultPanel({ result, onSelectTab }) {
+  const { inp = {}, cat, cl, S, R, rows = [], tot = {}, totCeil } = result || {};
 
   const chk = getChecks(result);
   const blocked = chk.some((c) => c[0] === 'bad');
@@ -90,7 +90,8 @@ export default function ResultPanel({ result }) {
           className="discnote-link"
           onClick={(e) => {
             e.preventDefault();
-            if (result.onSelectTab) result.onSelectTab('disc');
+            if (onSelectTab) onSelectTab('disc');
+            else if (result?.onSelectTab) result.onSelectTab('disc');
             else window.location.hash = 'disc';
           }}
         >
