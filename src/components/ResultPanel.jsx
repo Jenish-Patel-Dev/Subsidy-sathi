@@ -81,7 +81,7 @@ export default function ResultPanel({
       {/* Top PDF Download Banner */}
       <div className="pdfwrap topbar">
         <span>બધી વિગતો ભરી લીધી? આ પરિણામનો અહેવાલ PDF માં લો.</span>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <div className="pdf-topbar-actions">
           <button
             type="button"
             className="pdfbtn"
