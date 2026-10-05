@@ -8,16 +8,19 @@ import RateTables from './components/RateTables.jsx';
 import OtherSubsidies from './components/OtherSubsidies.jsx';
 import TalukaGrid from './components/TalukaGrid.jsx';
 import Rules from './components/Rules.jsx';
+import DisclaimerTab from './components/DisclaimerTab.jsx';
 import Footer from './components/Footer.jsx';
 import { TALUKAS } from './data/talukas.js';
 import { compute } from './lib/calc.js';
 import { money } from './lib/format.js';
 import { ChevronDown, ShieldAlert, ExternalLink } from 'lucide-react';
 import { PWAProvider } from './context/PWAContext.jsx';
+import { DisclaimerProvider } from './context/DisclaimerContext.jsx';
+import DisclaimerModal from './components/DisclaimerModal.jsx';
 import PWAUpdateModal from './components/PWAUpdateModal.jsx';
 import AppLoader from './components/AppLoader.jsx';
 
-const VALID_TABS = ['check', 'rates', 'other', 'taluka', 'rules'];
+const VALID_TABS = ['check', 'rates', 'other', 'taluka', 'rules', 'disc'];
 
 function isPageReload() {
   try {
@@ -181,105 +184,125 @@ export default function App() {
       useInt: !!formValues.useInt,
       usePow: !!formValues.usePow,
     };
-    return compute(inp);
+    const res = compute(inp);
+    res.onSelectTab = handleSelectTab;
+    return res;
   }, [formValues]);
 
   return (
     <PWAProvider>
-      {/* 1. Unified Top Navigation Bar (Desktop Sticky Navbar + Mobile Sticky App Bar) */}
-      <NavBar activeTab={activeTab} onSelectTab={handleSelectTab} />
+      <DisclaimerProvider>
+        {/* 1. Unified Top Navigation Bar (Desktop Sticky Navbar + Mobile Sticky App Bar) */}
+        <NavBar activeTab={activeTab} onSelectTab={handleSelectTab} />
 
-      {/* 2. Hero Section (Shown ONLY on Home / first menu tab: "મારી પાત્રતા") */}
-      {activeTab === 'check' && <Hero />}
+        {/* 2. Hero Section (Shown ONLY on Home / first menu tab: "મારી પાત્રતા") */}
+        {activeTab === 'check' && <Hero />}
 
-      {/* 3. Main Content Area */}
-      <main className="wrap">
-        {/* CHECKER TAB */}
-        <section id="p-check" data-panel="check" hidden={activeTab !== 'check'}>
-          {/* Top 2-Column Grid with Equal Height */}
-          <div className="checker">
-            <CheckerForm
-              formValues={formValues}
-              onChange={handleFieldChange}
-            />
-            <ResultPanel result={computedResult} />
-          </div>
+        {/* 3. Main Content Area */}
+        <main className="wrap">
+          {/* CHECKER TAB */}
+          <section id="p-check" data-panel="check" hidden={activeTab !== 'check'}>
+            {/* Top 2-Column Grid with Equal Height */}
+            <div className="checker">
+              <CheckerForm
+                formValues={formValues}
+                onChange={handleFieldChange}
+              />
+              <ResultPanel result={computedResult} onSelectTab={handleSelectTab} />
+            </div>
 
-          {/* Bottom Full-Width Section: Applicable Other Subsidies */}
-          <div className="checker-full-width">
-            <ApplicableOtherSubsidies result={computedResult} />
-          </div>
-        </section>
+            {/* Bottom Full-Width Section: Applicable Other Subsidies */}
+            <div className="checker-full-width">
+              <ApplicableOtherSubsidies result={computedResult} />
+            </div>
+          </section>
 
-        {/* RATES TAB */}
-        <RateTables hidden={activeTab !== 'rates'} />
+          {/* RATES TAB */}
+          <RateTables hidden={activeTab !== 'rates'} />
 
-        {/* OTHER TAB */}
-        <OtherSubsidies hidden={activeTab !== 'other'} />
+          {/* OTHER TAB */}
+          <OtherSubsidies hidden={activeTab !== 'other'} />
 
-        {/* TALUKA TAB */}
-        <TalukaGrid hidden={activeTab !== 'taluka'} />
+          {/* TALUKA TAB */}
+          <TalukaGrid hidden={activeTab !== 'taluka'} />
 
-        {/* RULES TAB */}
-        <Rules hidden={activeTab !== 'rules'} />
+          {/* RULES TAB */}
+          <Rules hidden={activeTab !== 'rules'} />
 
-        {/* In-Page App Disclaimer (Visible below active page content on screens <= 950px where bottom nav is active) */}
-        <div className="app-disclaimer-note" role="note" aria-label="ડિસ્ક્લેમર નોંધ">
-          <div className="app-disclaimer-top">
-            <ShieldAlert size={18} className="app-disclaimer-icon" aria-hidden="true" />
-            <div className="app-disclaimer-text">
-              આ સાધન ત્રણ GR ના લખાણ પર આધારિત સૂચક અંદાજ આપે છે. અંતિમ પાત્રતા અને રકમ Asset Verification, PEC/FEC અને મંજૂરી સત્તાધિકારીના નિર્ણય મુજબ રહેશે. અર્થઘટનમાં મતભેદ હોય તો MSME માટે SLEC અને લાર્જ એકમો માટે para 12(c) ની સમિતિનો નિર્ણય આખરી ગણાય.
+          {/* DISCLAIMER & AUDIT TAB */}
+          <DisclaimerTab hidden={activeTab !== 'disc'} />
+
+          {/* In-Page App Disclaimer (Visible below active page content on screens <= 950px where bottom nav is active) */}
+          <div className="app-disclaimer-note" role="note" aria-label="ડિસ્ક્લેમર નોંધ">
+            <div className="app-disclaimer-top">
+              <ShieldAlert size={18} className="app-disclaimer-icon" aria-hidden="true" />
+              <div className="app-disclaimer-text">
+                આ સાધન ત્રણ GR ના લખાણ પર આધારિત સૂચક અંદાજ આપે છે. અંતિમ પાત્રતા અને રકમ Asset Verification, PEC/FEC અને મંજૂરી સત્તાધિકારીના નિર્ણય મુજબ રહેશે.{' '}
+                <a
+                  href="#disc"
+                  className="footer-disc-link"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleSelectTab('disc');
+                  }}
+                >
+                  સંપૂર્ણ અસ્વીકરણ વાંચો
+                </a>
+              </div>
+            </div>
+            <div className="app-disclaimer-link-wrap">
+              <span className="app-disclaimer-link-label">સત્તાવાર સરકારી સંદર્ભ:</span>{' '}
+              <a
+                href="https://ic.gujarat.gov.in/industrial-policy.aspx"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="app-gov-link"
+                title="ઉદ્યોગ કમિશનરશ્રીની કચેરી - ઔદ્યોગિક નીતિ પોર્ટલ (ic.gujarat.gov.in)"
+              >
+                <span>ic.gujarat.gov.in/industrial-policy.aspx</span>
+                <ExternalLink size={12} aria-hidden="true" />
+              </a>
             </div>
           </div>
-          <div className="app-disclaimer-link-wrap">
-            <span className="app-disclaimer-link-label">સત્તાવાર સરકારી સંદર્ભ:</span>{' '}
-            <a
-              href="https://ic.gujarat.gov.in/industrial-policy.aspx"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="app-gov-link"
-              title="ઉદ્યોગ કમિશનરશ્રીની કચેરી - ઔદ્યોગિક નીતિ પોર્ટલ (ic.gujarat.gov.in)"
+        </main>
+
+        {/* 4. Mobile Fixed Bottom Navigation Menu (< 768px) */}
+        <BottomNav activeTab={activeTab} onSelectTab={handleSelectTab} />
+
+        {/* 5. Mobile Sticky Total Bar */}
+        {activeTab === 'check' && (
+          <div className="mobile-sticky-bar" aria-label="મોબાઈલ કુલ સહાય સારાંશ">
+            <div>
+              <div style={{ fontSize: '12px', color: 'var(--mute)', fontWeight: 600 }}>કુલ અંદાજિત સહાય</div>
+              <div style={{ font: '700 20px var(--f-num)', color: 'var(--brand-700)', lineHeight: 1.2 }}>
+                {money(computedResult.grand || computedResult.tot.all)}
+              </div>
+            </div>
+            <button
+              type="button"
+              className="mobile-sticky-btn"
+              onClick={() => {
+                document.getElementById('res')?.scrollIntoView({ behavior: 'smooth' });
+              }}
             >
-              <span>ic.gujarat.gov.in/industrial-policy.aspx</span>
-              <ExternalLink size={12} aria-hidden="true" />
-            </a>
+              <span>પરિણામ જુઓ</span>
+              <ChevronDown size={16} aria-hidden="true" />
+            </button>
           </div>
-        </div>
-      </main>
+        )}
 
-      {/* 4. Mobile Fixed Bottom Navigation Menu (< 768px) */}
-      <BottomNav activeTab={activeTab} onSelectTab={handleSelectTab} />
+        {/* 6. Footer */}
+        <Footer onSelectTab={handleSelectTab} />
 
-      {/* 5. Mobile Sticky Total Bar */}
-      {activeTab === 'check' && (
-        <div className="mobile-sticky-bar" aria-label="મોબાઈલ કુલ સહાય સારાંશ">
-          <div>
-            <div style={{ fontSize: '12px', color: 'var(--mute)', fontWeight: 600 }}>કુલ અંદાજિત સહાય</div>
-            <div style={{ font: '700 20px var(--f-num)', color: 'var(--brand-700)', lineHeight: 1.2 }}>
-              {money(computedResult.tot.all)}
-            </div>
-          </div>
-          <button
-            type="button"
-            className="mobile-sticky-btn"
-            onClick={() => {
-              document.getElementById('res')?.scrollIntoView({ behavior: 'smooth' });
-            }}
-          >
-            <span>પરિણામ જુઓ</span>
-            <ChevronDown size={16} aria-hidden="true" />
-          </button>
-        </div>
-      )}
+        {/* 7. Mandatory Disclaimer / Terms Gate & Review Modal */}
+        <DisclaimerModal />
 
-      {/* 6. Footer */}
-      <Footer />
+        {/* 8. PWA Update Notification Popup */}
+        <PWAUpdateModal />
 
-      {/* 7. PWA Update Notification Popup */}
-      <PWAUpdateModal />
-
-      {/* 8. Fullscreen App Loader (For refresh & update transitions) */}
-      <AppLoader />
+        {/* 9. Fullscreen App Loader (For refresh & update transitions) */}
+        <AppLoader />
+      </DisclaimerProvider>
     </PWAProvider>
   );
 }

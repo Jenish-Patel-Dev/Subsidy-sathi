@@ -42,9 +42,62 @@ export default function ResultPanel({ result }) {
       : `વાર્ષિક મર્યાદા EFCI ના ${R.ann}%${S.abs ? `, અને વધુમાં વધુ ₹${S.abs} કરોડ પ્રતિ વર્ષ` : ''}.`;
 
   const steps = getSteps(result);
+  const [isPdfGenerating, setIsPdfGenerating] = React.useState(false);
+  const [pdfStat, setPdfStat] = React.useState('');
+
+  const handleDownloadPdf = async () => {
+    if (isPdfGenerating) return;
+    setIsPdfGenerating(true);
+    setPdfStat('અહેવાલ બની રહ્યો છે…');
+    try {
+      const { generateSubsidyPdf } = await import('../lib/pdf.js');
+      await generateSubsidyPdf(result);
+      setPdfStat('PDF ડાઉનલોડ થઈ ગઈ.');
+      setTimeout(() => setPdfStat(''), 4000);
+    } catch (err) {
+      console.error('PDF error:', err);
+      // Fallback to window.print() if canvas pdf fails
+      window.print();
+      setPdfStat('');
+    } finally {
+      setIsPdfGenerating(false);
+    }
+  };
 
   return (
     <div className="res" id="res" aria-live="polite">
+      {/* Top PDF Download Banner */}
+      <div className="pdfwrap topbar">
+        <span>બધી વિગતો ભરી લીધી? આ પરિણામનો અહેવાલ PDF માં લો.</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <button
+            type="button"
+            className="pdfbtn"
+            onClick={handleDownloadPdf}
+            disabled={isPdfGenerating}
+          >
+            {isPdfGenerating ? 'અહેવાલ બની રહ્યો છે…' : 'PDF રિપોર્ટ ડાઉનલોડ કરો'}
+          </button>
+          {pdfStat && <span className="pdfstat" role="status">{pdfStat}</span>}
+        </div>
+      </div>
+
+      {/* Discnote */}
+      <p className="discnote">
+        આ સરકારી એપ નથી. નીચેની રકમ સૂચક અંદાજ છે, મંજૂરી કે ખાતરી નથી; સત્તાવાર GR અને મંજૂરી સત્તાધિકારીનો નિર્ણય જ આખરી.{' '}
+        <a
+          href="#disc"
+          className="discnote-link"
+          onClick={(e) => {
+            e.preventDefault();
+            if (result.onSelectTab) result.onSelectTab('disc');
+            else window.location.hash = 'disc';
+          }}
+        >
+          અસ્વીકરણ
+        </a>
+      </p>
+
       {/* Panel 1: Hero Overview */}
       <section className="panel hero-card">
         <div className="tags">
@@ -80,11 +133,55 @@ export default function ResultPanel({ result }) {
         )}
 
         <div className="hero-num">
-          <span className="big">{money(tot.all)}</span>
-          <span className="of">
-            {S.years} વર્ષમાં અંદાજિત કેપિટલ + વ્યાજ + પાવર સહાય · કુલ મર્યાદા {money(totCeil)} (EFCI ના {R.total}%)
-          </span>
+          <span className="big">{money(result.grand)}</span>
+          <span className="of">કુલ અંદાજિત નાણાકીય લાભ</span>
         </div>
+
+        <div className="tbl-wrap">
+          <table className="sum">
+            <tbody>
+              <tr>
+                <td>કેપિટલ + વ્યાજ + પાવર (ઘટક 1–3)</td>
+                <td className="c">{S.years} વર્ષ</td>
+                <td className="n">{money(tot.all)}</td>
+              </tr>
+              <tr>
+                <td>EPF વળતર</td>
+                <td className="c">{result.epfYears} વર્ષ</td>
+                <td className="n">{money(result.epfTotal)}</td>
+              </tr>
+              {result.rentAnnual > 0 && (
+                <tr>
+                  <td>ભાડા સહાય ({Math.round(result.rentPct * 100)}% · {rupees(result.rentAnnual)}/વર્ષ)</td>
+                  <td className="c">5 વર્ષ</td>
+                  <td className="n">{money(result.rentTotal)}</td>
+                </tr>
+              )}
+              <tr className="tot">
+                <td>કુલ</td>
+                <td></td>
+                <td className="n">{money(result.grand)}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        {result.rentNote && (
+          <p className="note" style={{ color: 'var(--warn)' }}>
+            {result.rentNote}
+          </p>
+        )}
+
+        {result.bonusInfo && (
+          <p className="bonusnote">
+            {result.bonusInfo.delta > 1e-6 ? '✓' : 'i'}{' '}
+            <span dangerouslySetInnerHTML={{ __html: result.bonusInfo.why }} />
+          </p>
+        )}
+
+        <p className="note" style={{ margin: '14px 0 0' }}>
+          <b style={{ color: 'var(--ink)' }}>ઘટક 1–3:</b> {money(tot.all)} · કુલ મર્યાદા {money(totCeil)} (EFCI ના {R.total}%)
+        </p>
 
         <div className="meter" role="img" aria-label="કુલ મર્યાદા સામે મળતી સહાય">
           <div className="bar">
@@ -153,9 +250,18 @@ export default function ResultPanel({ result }) {
               પાવર ટેરિફ
             </span>
             <b style={{ color: 'var(--c-pow)' }}>{money(tot.p)}</b>
-            <small>₹{R.pow}/યુનિટ, 5 વર્ષ સુધી (મહત્તમ ₹1 કરોડ/વર્ષ)</small>
+            <small>
+              ₹{R.pow}/યુનિટ, મહત્તમ EFCI ના {R.powCap}% ({money(result.powCeil)})
+            </small>
           </div>
         </div>
+
+        <p className="note">
+          EFCI {money(result.efci)} = બિલ્ડિંગ {money(inp.bld)} + P&amp;M {money(inp.pm)} + ઇન્ફ્રાના {result.infraFactor * 100}% · જમીન EFCI માં ગણાતી નથી.{' '}
+          {tot.lost > 0.00001
+            ? `વાર્ષિક/કુલ મર્યાદાને કારણે ${money(tot.lost)} મળવાપાત્ર નથી (carry forward નથી).`
+            : ''}
+        </p>
       </section>
 
       {/* Panel 2: વાર્ષિક વિગત અને ચાર્ટ */}

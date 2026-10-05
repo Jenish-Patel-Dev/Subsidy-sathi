@@ -1,14 +1,25 @@
 import React from 'react';
 import { ShieldAlert, ExternalLink } from 'lucide-react';
 
-export default function Footer() {
+export default function Footer({ onSelectTab }) {
   return (
     <footer className="desktop-footer">
       <div className="wrap">
         <div className="footer-disclaimer-row">
           <ShieldAlert size={20} className="footer-disclaimer-icon" aria-hidden="true" />
           <div className="footer-disclaimer-text">
-            આ સાધન ત્રણ GR ના લખાણ પર આધારિત સૂચક અંદાજ આપે છે. અંતિમ પાત્રતા અને રકમ Asset Verification, PEC/FEC અને મંજૂરી સત્તાધિકારીના નિર્ણય મુજબ રહેશે. અર્થઘટનમાં મતભેદ હોય તો MSME માટે SLEC અને લાર્જ એકમો માટે para 12(c) ની સમિતિનો નિર્ણય આખરી ગણાય.
+            સબસિડી સાથી સરકારી એપ નથી. અહીંની રકમ ત્રણ GR પર આધારિત સૂચક અંદાજ છે, મંજૂરી કે ખાતરી નથી; સત્તાવાર GR અને મંજૂરી સત્તાધિકારીનો નિર્ણય જ આખરી.{' '}
+            <a
+              href="#disc"
+              className="footer-disc-link"
+              onClick={(e) => {
+                e.preventDefault();
+                if (onSelectTab) onSelectTab('disc');
+                else window.location.hash = 'disc';
+              }}
+            >
+              સંપૂર્ણ અસ્વીકરણ વાંચો
+            </a>
           </div>
         </div>
         <div className="footer-official-ref">

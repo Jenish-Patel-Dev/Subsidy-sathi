@@ -1,4 +1,4 @@
-import { Calculator, Percent, Layers, MapPin, FileCheck } from 'lucide-react';
+import { Calculator, Percent, Layers, MapPin, FileCheck, ShieldAlert } from 'lucide-react';
 
 export const NAV_ITEMS = [
   {
@@ -35,5 +35,12 @@ export const NAV_ITEMS = [
     icon: FileCheck,
     hash: '#rules',
     panelId: 'p-rules',
+  },
+  {
+    id: 'disc',
+    label: 'અસ્વીકરણ',
+    icon: ShieldAlert,
+    hash: '#disc',
+    panelId: 'p-disc',
   },
 ];

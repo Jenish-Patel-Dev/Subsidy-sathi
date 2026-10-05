@@ -85,64 +85,119 @@ export function compute(inp) {
   const infraFactor = msme ? 0.5 : (inp.infraIn ? 1 : 0.2);
   const efci = inp.bld + inp.pm + inp.infra * infraFactor;
 
-  // bonus interest (MSME only: women / startup / first-generation)
-  const bonus = msme && (inp.women || inp.startup || inp.firstgen) ? 1 : 0;
+  // bonus interest (MSME only: women / startup / first-generation) — "within overall ceiling"
+  const bonusAsked = inp.women || inp.women100 || inp.startup || inp.firstgen;
+  const bonus = msme && bonusAsked ? 1 : 0;
   const loanElig = Math.min(inp.loan, efci);
-  const subRate = Math.max(0, Math.min(R.int + bonus, inp.rate - 2)) / 100; // unit bears ≥2%
+  const rateFor = (b) => Math.max(0, Math.min(R.int + b, inp.rate - (inp.goiInt || 0) - 2)) / 100; // unit bears ≥2% even after GoI subvention
+  const subRate = rateFor(bonus);
 
   const N = S.years;
   const capTotal = inp.useCap ? (R.cap / 100) * efci : 0;
   const intCeil = (R.intCap / 100) * efci;
   const powCeil = (R.powCap / 100) * efci;
   const totCeil = (R.total / 100) * efci;
-  let cumI = 0;
-  let cumP = 0;
-  let cumT = 0;
-  const rows = [];
 
-  for (let y = 1; y <= N; y++) {
-    let c = 0;
-    if (inp.useCap) {
-      c = cl.size === "micro" ? (y === 1 ? capTotal : 0) : capTotal / N;
+  function simulate(sr) {
+    let cumI = 0;
+    let cumP = 0;
+    let cumT = 0;
+    const rows = [];
+    for (let y = 1; y <= N; y++) {
+      let c = 0;
+      if (inp.useCap) {
+        c = cl.size === "micro" ? (y === 1 ? capTotal : 0) : capTotal / N;
+      }
+      let i = 0;
+      if (inp.useInt && y <= inp.tenure) {
+        const out = loanElig * (1 - (y - 0.5) / inp.tenure);
+        i = out * sr;
+      }
+      i = Math.min(i, Math.max(0, intCeil - cumI));
+      let p = inp.usePow ? (inp.units * R.pow) / 1e7 : 0;
+      p = Math.min(p, Math.max(0, powCeil - cumP));
+      const annPct = cl.size === "micro" ? (y === 1 ? R.annMicro[0] : R.annMicro[1]) : R.ann;
+      let annCap = (annPct / 100) * efci;
+      if (S.abs) annCap = Math.min(annCap, S.abs);
+      const allowed = Math.max(0, Math.min(annCap, totCeil - cumT));
+      // apply ceilings in order capital → interest → power; no carry forward
+      let room = allowed;
+      const c2 = Math.min(c, room);
+      room -= c2;
+      const i2 = Math.min(i, room);
+      room -= i2;
+      const p2 = Math.min(p, room);
+      room -= p2;
+      cumI += i2;
+      cumP += p2;
+      cumT += c2 + i2 + p2;
+      rows.push({ y, c: c2, i: i2, p: p2, annCap, lost: c + i + p - (c2 + i2 + p2) });
     }
-    let i = 0;
-    if (inp.useInt && y <= inp.tenure) {
-      const out = loanElig * (1 - (y - 0.5) / inp.tenure);
-      i = out * subRate;
+    let tot = rows.reduce(
+      (a, r) => ({ c: a.c + r.c, i: a.i + r.i, p: a.p + r.p, lost: a.lost + r.lost }),
+      { c: 0, i: 0, p: 0, lost: 0 }
+    );
+    tot.all = tot.c + tot.i + tot.p;
+    // central + state must not exceed EFCI: reduce state capital first, then interest, then power
+    let goiCut = 0;
+    if (inp.goiCap > 0) {
+      let excess = tot.all - Math.max(0, efci - inp.goiCap);
+      if (excess > 1e-9) {
+        goiCut = excess;
+        for (const k of ["c", "i", "p"]) {
+          for (let j = rows.length - 1; j >= 0 && excess > 1e-9; j--) {
+            const t = Math.min(rows[j][k], excess);
+            rows[j][k] -= t;
+            excess -= t;
+          }
+        }
+        tot = rows.reduce(
+          (a, r) => ({ c: a.c + r.c, i: a.i + r.i, p: a.p + r.p, lost: a.lost + r.lost }),
+          { c: 0, i: 0, p: 0, lost: 0 }
+        );
+        tot.all = tot.c + tot.i + tot.p;
+      }
     }
-    i = Math.min(i, Math.max(0, intCeil - cumI));
-    let p = inp.usePow ? (inp.units * R.pow) / 1e7 : 0;
-    p = Math.min(p, Math.max(0, powCeil - cumP));
-
-    const annPct = cl.size === "micro" ? (y === 1 ? R.annMicro[0] : R.annMicro[1]) : R.ann;
-    let annCap = (annPct / 100) * efci;
-    if (S.abs) annCap = Math.min(annCap, S.abs);
-    const allowed = Math.max(0, Math.min(annCap, totCeil - cumT));
-    // apply ceilings in order capital → interest → power; no carry forward
-    let room = allowed;
-    const c2 = Math.min(c, room);
-    room -= c2;
-    const i2 = Math.min(i, room);
-    room -= i2;
-    const p2 = Math.min(p, room);
-    room -= p2;
-    cumI += i2;
-    cumP += p2;
-    cumT += c2 + i2 + p2;
-    rows.push({ y, c: c2, i: i2, p: p2, annCap, lost: c + i + p - (c2 + i2 + p2) });
+    tot.goiCut = goiCut;
+    return { rows, tot };
   }
 
-  const tot = rows.reduce(
-    (a, r) => ({ c: a.c + r.c, i: a.i + r.i, p: a.p + r.p, lost: a.lost + r.lost }),
-    { c: 0, i: 0, p: 0, lost: 0 }
-  );
-  tot.all = tot.c + tot.i + tot.p;
+  const { rows, tot } = simulate(subRate);
+
+  // what the +1% actually adds, and why it may add nothing
+  let bonusInfo = null;
+  if (bonusAsked) {
+    const base = simulate(rateFor(0));
+    const delta = tot.all - base.tot.all;
+    let why;
+    if (!msme) {
+      why = "લાર્જ/મેગા/અલ્ટ્રા-મેગા GR માં મહિલા, સ્ટાર્ટઅપ કે પ્રથમ પેઢીના ઉદ્યમી માટે વધારાનું વ્યાજ નથી; આ લાભ ફક્ત MSME ને છે.";
+    } else if (!inp.useInt || loanElig <= 0) {
+      why = "વધારાનું 1% ટર્મ લોનના વ્યાજ પર મળે છે; લોન નથી અથવા વ્યાજ ઘટક પસંદ કર્યો નથી.";
+    } else if (rateFor(1) <= rateFor(0)) {
+      why = `તમારો વ્યાજ દર ${pct(inp.rate)}${inp.goiInt > 0 ? ` (કેન્દ્રની ${pct(inp.goiInt)} સહાય બાદ ${pct(inp.rate - inp.goiInt)})` : ""} છે; એકમે ઓછામાં ઓછું 2% ભરવું પડે, તેથી 7% થી વધુ સબસિડી શક્ય નથી. અસરકારક વ્યાજ દર ${pct(R.int + 2)} થી વધુ હોય તો જ વધારાનો લાભ શરૂ થાય, અને પૂરું 1% માટે ${pct(R.int + 3)} કે વધુ જોઈએ.`;
+    } else if (delta < 1e-6) {
+      why = `વ્યાજ 7% ને બદલે 8% ગણાયું છે, પણ GR મુજબ આ વધારાનું 1% <b>કુલ મર્યાદાની અંદર</b> જ મળે. તમારા કિસ્સામાં વ્યાજની મર્યાદા (EFCI ના ${R.intCap}%) અથવા વાર્ષિક મર્યાદા પહેલેથી પૂરી થાય છે, તેથી કુલ રકમ બદલાતી નથી.`;
+    } else {
+      why = `વ્યાજ 7% ને બદલે 8% ગણાયું; તેનાથી કુલ સહાયમાં <b>${money(delta)}</b> નો વધારો થયો.`;
+    }
+    bonusInfo = { delta, why };
+  }
 
   // EPF — MSME GR 7.2 · Large GR 4 (iv) + 6-D
   const epfEach = (cap) => Math.min(0.12 * inp.wage, cap);
   const epfMonth = inp.em * epfEach(1800) + inp.ef * epfEach(2500) + inp.ed * epfEach(3000);
   const epfYears = S.epf;
   const epfTotal = (epfMonth * 12 * epfYears) / 1e7;
+
+  // Rent assistance — MSME GR para 17 (MSEs only): 65% / 75% (100% women equity), max ₹3 lakh p.a., 5 years
+  const rentPct = inp.women100 ? 0.75 : 0.65;
+  const rentElig = msme && cl.size !== "medium";
+  const rentAnnual = rentElig && inp.rent > 0 ? Math.min(inp.rent * 12 * rentPct, 300000) : 0; // ₹
+  const rentTotal = (rentAnnual * 5) / 1e7; // ₹ Cr
+  const rentNote = inp.rent > 0 && !rentElig ? (msme ? "ભાડા સહાય ફક્ત માઇક્રો અને સ્મોલ (MSE) માટે છે; મીડિયમને નથી." : "ભાડા સહાય ફક્ત માઇક્રો અને સ્મોલ MSME માટે છે.") : null;
+
+  const grand = tot.all + epfTotal + rentTotal;
 
   return {
     inp,
@@ -154,6 +209,7 @@ export function compute(inp) {
     efci,
     infraFactor,
     bonus,
+    bonusInfo,
     loanElig,
     subRate,
     rows,
@@ -164,6 +220,11 @@ export function compute(inp) {
     epfMonth,
     epfYears,
     epfTotal,
+    rentPct,
+    rentAnnual,
+    rentTotal,
+    rentNote,
+    grand,
   };
 }
 
