@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDisclaimer } from '../context/DisclaimerContext.jsx';
-import { ShieldAlert, CheckCircle2, FileText, ExternalLink, RefreshCw } from 'lucide-react';
+import { ShieldAlert, CheckCircle2, FileText } from 'lucide-react';
 
 export default function DisclaimerTab({ hidden }) {
   const {
@@ -187,20 +187,6 @@ export default function DisclaimerTab({ hidden }) {
             </div>
           </dl>
         </section>
-      </div>
-
-      <div className="footer-official-ref" style={{ marginTop: '24px' }}>
-        <span className="footer-ref-label">સત્તાવાર સરકારી સંદર્ભ પોર્ટલ:</span>{' '}
-        <a
-          href="https://ic.gujarat.gov.in/industrial-policy.aspx"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="footer-gov-link"
-          title="ઉદ્યોગ કમિશનરશ્રીની કચેરી - ઔદ્યોગિક નીતિ પોર્ટલ (ic.gujarat.gov.in)"
-        >
-          <span>Industries Commissionerate · Industrial Policy (ic.gujarat.gov.in)</span>
-          <ExternalLink size={13} aria-hidden="true" />
-        </a>
       </div>
     </section>
   );
