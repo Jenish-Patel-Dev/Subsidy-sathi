@@ -15,6 +15,7 @@ import {
   Info,
   HelpCircle,
   FileText,
+  Download,
 } from 'lucide-react';
 
 export default function CheckerForm({
@@ -704,19 +705,20 @@ export default function CheckerForm({
           />
         </div>
         <HelpBox fieldKey="firm" isOpen={!!openHelp.firm} as="div" />
-        <div className="pdfwrap" style={{ marginTop: '10px' }}>
+        <div className="report-btn-wrap">
           <button
             type="button"
-            className="pdfbtn"
+            className="pdfbtn report-download-btn-full"
             onClick={onDownloadPdf}
             disabled={isPdfGenerating}
           >
-            {isPdfGenerating ? 'અહેવાલ બની રહ્યો છે…' : 'PDF રિપોર્ટ ડાઉનલોડ કરો'}
+            <Download size={17} aria-hidden="true" />
+            <span>{isPdfGenerating ? 'અહેવાલ બની રહ્યો છે…' : 'PDF રિપોર્ટ ડાઉનલોડ કરો'}</span>
           </button>
           {pdfStat && (
-            <span className="pdfstat" role="status">
+            <div className="report-pdfstat" role="status">
               {pdfStat}
-            </span>
+            </div>
           )}
         </div>
       </fieldset>

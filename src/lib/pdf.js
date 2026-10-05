@@ -44,9 +44,10 @@ const strip = (s) =>
     .trim();
 
 class Doc {
-  constructor(title) {
+  constructor(title, logoImg = null) {
     this.pages = [];
     this.title = title;
+    this.logoImg = logoImg;
     this.newPage();
   }
   newPage() {
@@ -105,14 +106,22 @@ class Doc {
     const g = this.g;
     g.fillStyle = C.teal;
     g.fillRect(0, 0, PW, HEAD);
-    this.icon(M, 27, 64, '#FFFFFF', C.teal, C.teal2);
+
+    // Draw application's official logo
+    if (this.logoImg) {
+      this.rr(M, 20, 78, 78, 16, '#FFFFFF');
+      g.drawImage(this.logoImg, M + 7, 27, 64, 64);
+    } else {
+      this.icon(M, 27, 64, '#FFFFFF', C.teal, C.teal2);
+    }
+
     g.textBaseline = 'alphabetic';
     g.fillStyle = '#fff';
     this.font(34, 700);
-    g.fillText('સબસિડી સાથી', M + 84, 62);
+    g.fillText('સબસિડી સાથી', M + 96, 62);
     g.fillStyle = C.head;
     this.font(19, 500);
-    g.fillText('Subsidy Sathi · વિકસિત ગુજરાત ઔદ્યોગિક નીતિ 2026 · સહાય અંદાજ અહેવાલ', M + 84, 94);
+    g.fillText('Subsidy Sathi · વિકસિત ગુજરાત ઔદ્યોગિક નીતિ 2026 · સહાય અંદાજ અહેવાલ', M + 96, 94);
     this.font(18, 500);
     g.textAlign = 'right';
     g.fillText(this.title, PW - M, 62);
@@ -356,12 +365,34 @@ export async function generateSubsidyPdf(result, firm = '') {
     await document.fonts.ready;
   } catch (e) {}
 
+  // Load application's official brand logo
+  const loadLogo = async () => {
+    const tryLoad = (src) =>
+      new Promise((resolve) => {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = () => resolve(img);
+        img.onerror = () => resolve(null);
+        img.src = src;
+      });
+
+    let img = await tryLoad('/favicon.png');
+    if (!img) img = await tryLoad('/logo-dark.png');
+    if (!img) img = await tryLoad('/logo-light.png');
+    return img;
+  };
+
+  let appLogoImg = null;
+  try {
+    appLogoImg = await loadLogo();
+  } catch (e) {}
+
   const r = result;
   const { inp, cat, cl, S, R, tot, rows, totCeil } = r;
   const d = TALUKAS[+inp.dist] || TALUKAS[0];
   const now = new Date();
   const dt = now.toLocaleDateString('en-GB').replace(/\//g, '.') + ' ' + now.toTimeString().slice(0, 5);
-  const doc = new Doc(dt);
+  const doc = new Doc(dt, appLogoImg);
   const firmClean = (firm || inp.firm || '').trim();
   const chk = getChecks(r);
   const blocked = chk.some((c) => c[0] === 'bad');
