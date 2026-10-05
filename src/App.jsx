@@ -231,39 +231,6 @@ export default function App() {
 
           {/* DISCLAIMER & AUDIT TAB */}
           <DisclaimerTab hidden={activeTab !== 'disc'} />
-
-          {/* In-Page App Disclaimer (Visible below active page content on screens <= 950px where bottom nav is active) */}
-          <div className="app-disclaimer-note" role="note" aria-label="ડિસ્ક્લેમર નોંધ">
-            <div className="app-disclaimer-top">
-              <ShieldAlert size={18} className="app-disclaimer-icon" aria-hidden="true" />
-              <div className="app-disclaimer-text">
-                આ સાધન ત્રણ GR ના લખાણ પર આધારિત સૂચક અંદાજ આપે છે. અંતિમ પાત્રતા અને રકમ Asset Verification, PEC/FEC અને મંજૂરી સત્તાધિકારીના નિર્ણય મુજબ રહેશે.{' '}
-                <a
-                  href="#disc"
-                  className="footer-disc-link"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleSelectTab('disc');
-                  }}
-                >
-                  સંપૂર્ણ અસ્વીકરણ વાંચો
-                </a>
-              </div>
-            </div>
-            <div className="app-disclaimer-link-wrap">
-              <span className="app-disclaimer-link-label">સત્તાવાર સરકારી સંદર્ભ:</span>{' '}
-              <a
-                href="https://ic.gujarat.gov.in/industrial-policy.aspx"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="app-gov-link"
-                title="ઉદ્યોગ કમિશનરશ્રીની કચેરી - ઔદ્યોગિક નીતિ પોર્ટલ (ic.gujarat.gov.in)"
-              >
-                <span>ic.gujarat.gov.in/industrial-policy.aspx</span>
-                <ExternalLink size={12} aria-hidden="true" />
-              </a>
-            </div>
-          </div>
         </main>
 
         {/* 4. Mobile Fixed Bottom Navigation Menu (< 768px) */}

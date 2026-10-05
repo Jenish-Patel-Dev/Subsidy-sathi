@@ -1218,12 +1218,12 @@ img, svg {
 }
 
 main {
-  padding-block: clamp(20px, 3.5vw, 36px) clamp(36px, 5vw, 64px);
+  padding-block: clamp(16px, 2.5vw, 24px) clamp(16px, 2vw, 20px);
 }
 
 @media (max-width: 950px) {
   main {
-    padding-bottom: calc(140px + env(safe-area-inset-bottom, 0px));
+    padding-bottom: 8px;
   }
 }
 
@@ -3174,86 +3174,49 @@ input[type="search"].taluka-search-input:focus,
 }
 
 /* ==========================================================================
-   Footer & In-App Disclaimer Components
-   - Desktop (> 950px): Full-width .desktop-footer across bottom of page
-   - Mobile & Tablet (<= 950px): Footer hidden; in-page .app-disclaimer-note
-     shown directly below content on all tabs, native app style.
+   Footer Component (Unified, Centered, Clean Spacing across All Devices)
    ========================================================================== */
 footer,
-.desktop-footer {
+.desktop-footer,
+.app-footer {
   color: var(--mute);
-  font-size: 13px;
-  line-height: 1.6;
+  font-size: 12.5px;
+  line-height: 1.55;
   border-top: 1px solid var(--line);
   background: var(--surface);
-  padding-block: 24px 40px;
-  margin-top: 40px;
+  padding-block: 16px;
+  margin-top: 24px;
+  text-align: center;
 }
 
 @media (max-width: 950px) {
   footer,
-  .desktop-footer {
-    display: none !important;
+  .desktop-footer,
+  .app-footer {
+    display: block !important;
+    padding-top: 14px;
+    padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px));
+    margin-top: 18px;
   }
 }
 
-/* In-Page App Disclaimer (Appears at bottom of content on all pages <= 950px) */
-.app-disclaimer-note {
-  display: none;
-}
-
-@media (max-width: 950px) {
-  .app-disclaimer-note {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 12px 14px;
-    margin-top: 24px;
-    margin-bottom: 8px;
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow-xs);
-  }
-
-  .app-disclaimer-top {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    width: 100%;
-  }
-
-  .app-disclaimer-icon {
-    color: var(--mute);
-    flex-shrink: 0;
-    margin-top: 2px;
-  }
-
-  .app-disclaimer-text {
-    flex: 1;
-    color: var(--mute);
-    font-size: 12px;
-    line-height: 1.55;
-  }
-}
-
-.footer-disclaimer-row {
+.footer-content {
   display: flex;
-  align-items: flex-start;
-  gap: 14px;
-}
-
-.footer-disclaimer-icon {
-  color: var(--mute);
-  flex-shrink: 0;
-  margin-top: 2px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 8px;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 .footer-disclaimer-text {
-  flex: 1;
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.55;
   color: var(--mute);
-  font-size: 13px;
-  line-height: 1.6;
+  text-align: center;
 }
 
 .footer-official-ref {
@@ -3262,10 +3225,10 @@ footer,
   justify-content: center;
   text-align: center;
   flex-wrap: wrap;
-  gap: 8px;
-  font-size: 12.5px;
-  margin-top: 14px;
-  padding-top: 12px;
+  gap: 6px;
+  font-size: 12px;
+  margin-top: 4px;
+  padding-top: 8px;
   border-top: 1px solid var(--line);
   width: 100%;
 }
@@ -4443,26 +4406,15 @@ table.sum tr.tot td {
 }
 
 /* ==========================================================================
-   Disclaimer Tab & Audit Log Card Styles
+   Disclaimer Tab Status Bar Styles
    ========================================================================== */
-.disclaimer-audit-card {
+.disclaimer-status-bar {
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
-  padding: 16px 20px;
+  padding: 12px 18px;
   margin-top: 14px;
   box-shadow: var(--shadow-xs);
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-:root[data-theme="dark"] .disclaimer-audit-card {
-  background: var(--surface);
-  border-color: var(--line);
-}
-
-.disclaimer-audit-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -4470,14 +4422,13 @@ table.sum tr.tot td {
   gap: 12px;
 }
 
-.disclaimer-audit-status {
+.disclaimer-status-left {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
   gap: 10px;
 }
 
-.disclaimer-audit-badge {
+.disclaimer-status-badge {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -4486,20 +4437,11 @@ table.sum tr.tot td {
   color: var(--ok);
   background: var(--ok-soft);
   border: 1px solid var(--ok-border);
-  padding: 4px 10px;
+  padding: 5px 12px;
   border-radius: var(--radius-pill);
 }
 
-.disclaimer-audit-mode-tag {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--mute);
-  background: var(--sunk);
-  padding: 4px 10px;
-  border-radius: var(--radius-pill);
-}
-
-.disclaimer-audit-reopen-btn {
+.disclaimer-reopen-btn {
   appearance: none;
   background: var(--surface);
   border: 1px solid var(--brand-700);
@@ -4514,34 +4456,19 @@ table.sum tr.tot td {
   transition: all 0.15s ease;
 }
 
-.disclaimer-audit-reopen-btn:hover {
+.disclaimer-reopen-btn:hover {
   background: var(--brand-700);
   color: #FFFFFF;
 }
 
-:root[data-theme="dark"] .disclaimer-audit-reopen-btn {
+:root[data-theme="dark"] .disclaimer-reopen-btn {
   border-color: #7BE0D4;
   color: #7BE0D4;
   background: transparent;
 }
 
-:root[data-theme="dark"] .disclaimer-audit-reopen-btn:hover {
+:root[data-theme="dark"] .disclaimer-reopen-btn:hover {
   background: #7BE0D4;
   color: #062321;
-}
-
-.disclaimer-audit-details {
-  font-size: 13px;
-  line-height: 1.6;
-  color: var(--mute);
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  border-top: 1px solid var(--line);
-  padding-top: 10px;
-}
-
-.disclaimer-audit-details b {
-  color: var(--ink);
 }
 

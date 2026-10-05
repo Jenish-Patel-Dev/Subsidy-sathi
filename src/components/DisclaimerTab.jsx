@@ -23,47 +23,23 @@ export default function DisclaimerTab({ hidden }) {
         </p>
       </div>
 
-      {/* Audit Log Card */}
-      <div className="disclaimer-audit-card">
-        <div className="disclaimer-audit-header">
-          <div className="disclaimer-audit-status">
-            <span className="disclaimer-audit-badge">
-              <CheckCircle2 size={16} aria-hidden="true" />
-              <span>સંમતિ સ્થિતિ: સ્વીકારેલ (Accepted)</span>
-            </span>
-            <span className="disclaimer-audit-mode-tag">
-              {isStandalone ? '📱 Installed PWA Mode' : '🌐 Website Browser Session'}
-            </span>
-          </div>
-
-          <button
-            type="button"
-            className="disclaimer-audit-reopen-btn"
-            onClick={openReviewModal}
-          >
-            <FileText size={15} aria-hidden="true" />
-            <span>નિયમો અને અસ્વીકરણ પૉપઅપમાં વાંચો (View Terms &amp; Disclaimer)</span>
-          </button>
+      {/* Disclaimer Status Bar */}
+      <div className="disclaimer-status-bar">
+        <div className="disclaimer-status-left">
+          <span className="disclaimer-status-badge">
+            <CheckCircle2 size={16} aria-hidden="true" />
+            <span>શરતો અને અસ્વીકરણ સ્વીકારેલ છે</span>
+          </span>
         </div>
 
-        <div className="disclaimer-audit-details">
-          <div>
-            <b>ઓડિટ લૉગ:</b>{' '}
-            <span>
-              {formattedAuditDate
-                ? `Accepted on ${formattedAuditDate} (v${appVersion})`
-                : `આ સત્રમાં સ્વીકારેલ (v${appVersion})`}
-            </span>
-          </div>
-          <div>
-            <b>સ્ટોરેજ પ્રકાર:</b>{' '}
-            <span>
-              {isStandalone
-                ? 'PWA LocalStorage (કાયમી - એપ પુનઃસ્થાપિત ન થાય ત્યાં સુધી સચવાયેલ)'
-                : 'Web SessionStorage (સત્ર આધારિત - ટેબ બંધ થતાં પુનઃ પૂછાશે)'}
-            </span>
-          </div>
-        </div>
+        <button
+          type="button"
+          className="disclaimer-reopen-btn"
+          onClick={openReviewModal}
+        >
+          <FileText size={15} aria-hidden="true" />
+          <span>નિયમો અને અસ્વીકરણ પૉપઅપમાં વાંચો</span>
+        </button>
       </div>
 
       {/* Two-Column Side-by-Side Legal Text */}
