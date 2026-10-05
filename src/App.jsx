@@ -112,6 +112,7 @@ export default function App() {
     useCap: true,
     useInt: true,
     usePow: true,
+    firm: '',
   });
 
   const handleSelectTab = (tabId) => {
@@ -201,11 +202,33 @@ export default function App() {
       useCap: !!formValues.useCap,
       useInt: !!formValues.useInt,
       usePow: !!formValues.usePow,
+      firm: formValues.firm || '',
     };
     const res = compute(inp);
     res.onSelectTab = handleSelectTab;
     return res;
   }, [formValues]);
+
+  const [isPdfGenerating, setIsPdfGenerating] = useState(false);
+  const [pdfStat, setPdfStat] = useState('');
+
+  const handleDownloadPdf = async () => {
+    if (isPdfGenerating) return;
+    setIsPdfGenerating(true);
+    setPdfStat('અહેવાલ બની રહ્યો છે…');
+    try {
+      const { generateSubsidyPdf } = await import('./lib/pdf.js');
+      const out = await generateSubsidyPdf(computedResult, formValues.firm);
+      setPdfStat(`${out.pages} પાનાંનો અહેવાલ તૈયાર. PDF સેવ થઈ.`);
+      setTimeout(() => setPdfStat(''), 4000);
+    } catch (err) {
+      console.error('PDF error:', err);
+      setPdfStat('અહેવાલ બનાવવામાં ભૂલ થઈ. ફરી પ્રયાસ કરો.');
+      setTimeout(() => setPdfStat(''), 4000);
+    } finally {
+      setIsPdfGenerating(false);
+    }
+  };
 
   return (
     <PWAProvider>
@@ -225,8 +248,17 @@ export default function App() {
               <CheckerForm
                 formValues={formValues}
                 onChange={handleFieldChange}
+                onDownloadPdf={handleDownloadPdf}
+                isPdfGenerating={isPdfGenerating}
+                pdfStat={pdfStat}
               />
-              <ResultPanel result={computedResult} onSelectTab={handleSelectTab} />
+              <ResultPanel
+                result={computedResult}
+                onSelectTab={handleSelectTab}
+                onDownloadPdf={handleDownloadPdf}
+                isPdfGenerating={isPdfGenerating}
+                pdfStat={pdfStat}
+              />
             </div>
 
             {/* Bottom Full-Width Section: Applicable Other Subsidies */}

@@ -16,7 +16,13 @@ import {
   Info,
 } from 'lucide-react';
 
-export default function ResultPanel({ result, onSelectTab }) {
+export default function ResultPanel({
+  result,
+  onSelectTab,
+  onDownloadPdf,
+  isPdfGenerating: externalPdfBusy,
+  pdfStat: externalPdfStat,
+}) {
   const { inp = {}, cat, cl, S, R, rows = [], tot = {}, totCeil } = result || {};
 
   const chk = getChecks(result);
@@ -42,25 +48,31 @@ export default function ResultPanel({ result, onSelectTab }) {
       : `વાર્ષિક મર્યાદા EFCI ના ${R.ann}%${S.abs ? `, અને વધુમાં વધુ ₹${S.abs} કરોડ પ્રતિ વર્ષ` : ''}.`;
 
   const steps = getSteps(result);
-  const [isPdfGenerating, setIsPdfGenerating] = React.useState(false);
-  const [pdfStat, setPdfStat] = React.useState('');
+  const [internalPdfBusy, setInternalPdfBusy] = React.useState(false);
+  const [internalPdfStat, setInternalPdfStat] = React.useState('');
+
+  const isPdfGenerating = externalPdfBusy !== undefined ? externalPdfBusy : internalPdfBusy;
+  const pdfStat = externalPdfStat !== undefined ? externalPdfStat : internalPdfStat;
 
   const handleDownloadPdf = async () => {
+    if (onDownloadPdf) {
+      onDownloadPdf();
+      return;
+    }
     if (isPdfGenerating) return;
-    setIsPdfGenerating(true);
-    setPdfStat('અહેવાલ બની રહ્યો છે…');
+    setInternalPdfBusy(true);
+    setInternalPdfStat('અહેવાલ બની રહ્યો છે…');
     try {
       const { generateSubsidyPdf } = await import('../lib/pdf.js');
-      await generateSubsidyPdf(result);
-      setPdfStat('PDF ડાઉનલોડ થઈ ગઈ.');
-      setTimeout(() => setPdfStat(''), 4000);
+      const out = await generateSubsidyPdf(result, inp.firm);
+      setInternalPdfStat(`${out.pages} પાનાંનો અહેવાલ તૈયાર. PDF સેવ થઈ.`);
+      setTimeout(() => setInternalPdfStat(''), 4000);
     } catch (err) {
       console.error('PDF error:', err);
-      // Fallback to window.print() if canvas pdf fails
-      window.print();
-      setPdfStat('');
+      setInternalPdfStat('અહેવાલ બનાવવામાં ભૂલ થઈ. ફરી પ્રયાસ કરો.');
+      setTimeout(() => setInternalPdfStat(''), 4000);
     } finally {
-      setIsPdfGenerating(false);
+      setInternalPdfBusy(false);
     }
   };
 

@@ -3972,6 +3972,13 @@ footer,
 /* ==========================================================================
    Results Panel Enhancements: Top PDF Bar, Discnote, Summary Table & Bonus Note
    ========================================================================== */
+.pdfwrap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+}
+
 .pdfwrap.topbar {
   display: flex;
   flex-wrap: wrap;

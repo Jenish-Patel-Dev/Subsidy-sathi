@@ -14,9 +14,17 @@ import {
   CheckCircle2,
   Info,
   HelpCircle,
+  FileText,
 } from 'lucide-react';
 
-export default function CheckerForm({ formValues, onChange, onInputChange }) {
+export default function CheckerForm({
+  formValues,
+  onChange,
+  onInputChange,
+  onDownloadPdf,
+  isPdfGenerating,
+  pdfStat,
+}) {
   const [activeHelpKey, setActiveHelpKey] = useState(null);
   const [showExNote, setShowExNote] = useState(true);
 
@@ -672,6 +680,47 @@ export default function CheckerForm({ formValues, onChange, onInputChange }) {
         </label>
         <HelpBox fieldKey="usePow" isOpen={!!openHelp.usePow} as="div" />
       </fieldset>
+
+      {/* Fieldset 8: રિપોર્ટ */}
+      <fieldset>
+        <legend>
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+            <FileText size={17} style={{ color: 'var(--brand-700)' }} aria-hidden="true" />
+            <span>રિપોર્ટ</span>
+          </span>
+        </legend>
+        <div className="f">
+          <span className="lh">
+            <span>પેઢી / પ્રોજેક્ટનું નામ (વૈકલ્પિક)</span>
+            <HelpButton fieldKey="firm" isOpen={!!openHelp.firm} onToggle={toggleHelp} />
+          </span>
+          <input
+            type="text"
+            id="firm"
+            maxLength={80}
+            placeholder="દા.ત. શ્રી ગણેશ ટેક્સટાઇલ્સ"
+            value={formValues.firm || ''}
+            onChange={(e) => handleFieldChange('firm', e.target.value)}
+          />
+        </div>
+        <HelpBox fieldKey="firm" isOpen={!!openHelp.firm} as="div" />
+        <div className="pdfwrap" style={{ marginTop: '10px' }}>
+          <button
+            type="button"
+            className="pdfbtn"
+            onClick={onDownloadPdf}
+            disabled={isPdfGenerating}
+          >
+            {isPdfGenerating ? 'અહેવાલ બની રહ્યો છે…' : 'PDF રિપોર્ટ ડાઉનલોડ કરો'}
+          </button>
+          {pdfStat && (
+            <span className="pdfstat" role="status">
+              {pdfStat}
+            </span>
+          )}
+        </div>
+      </fieldset>
+
       {/* Help Information Popup Modal */}
       <HelpModal fieldKey={activeHelpKey} onClose={() => setActiveHelpKey(null)} />
     </form>
