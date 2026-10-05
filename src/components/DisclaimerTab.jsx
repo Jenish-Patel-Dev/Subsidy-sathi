@@ -3,9 +3,21 @@ import { useDisclaimer } from '../context/DisclaimerContext.jsx';
 import { ShieldAlert, CheckCircle2 } from 'lucide-react';
 
 export default function DisclaimerTab({ hidden }) {
-  const { appVersion } = useDisclaimer();
+  const { appVersion, formattedAuditDate } = useDisclaimer();
 
   if (hidden) return null;
+
+  const displayAcceptDate = formattedAuditDate || (
+    new Date().toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    }) + ', ' + new Date().toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true,
+    })
+  );
 
   return (
     <section id="p-disc" data-panel="disc" aria-label="અસ્વીકરણ અને શરતો">
@@ -14,7 +26,7 @@ export default function DisclaimerTab({ hidden }) {
           <h2 className="sec-h" style={{ margin: 0 }}>અસ્વીકરણ (Disclaimer) &amp; શરતો</h2>
           <span className="disclaimer-status-badge">
             <CheckCircle2 size={15} aria-hidden="true" />
-            <span>શરતો અને અસ્વીકરણ સ્વીકારેલ છે</span>
+            <span>શરતો અને અસ્વીકરણ સ્વીકારેલ: {displayAcceptDate}</span>
           </span>
         </div>
         <p className="sec-p" style={{ marginTop: '8px' }}>

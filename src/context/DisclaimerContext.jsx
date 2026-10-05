@@ -42,9 +42,13 @@ export function DisclaimerProvider({ children }) {
         }
 
         if (pwaAccepted) {
+          const effectiveDate = pwaDate || new Date().toISOString();
+          if (!pwaDate) {
+            try { localStorage.setItem(APP_PWA_DATE_KEY, effectiveDate); } catch (e) {}
+          }
           setIsAccepted(true);
           setIsModalOpen(false);
-          setAcceptanceDate(pwaDate);
+          setAcceptanceDate(effectiveDate);
         } else {
           setIsAccepted(false);
           setIsModalOpen(true);
@@ -70,9 +74,13 @@ export function DisclaimerProvider({ children }) {
         }
 
         if (webAccepted) {
+          const effectiveDate = webDate || new Date().toISOString();
+          if (!webDate) {
+            try { sessionStorage.setItem(APP_WEB_SESSION_DATE_KEY, effectiveDate); } catch (e) {}
+          }
           setIsAccepted(true);
           setIsModalOpen(false);
-          setAcceptanceDate(webDate);
+          setAcceptanceDate(effectiveDate);
         } else {
           setIsAccepted(false);
           setIsModalOpen(true);
