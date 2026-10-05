@@ -1,45 +1,26 @@
 import React from 'react';
 import { useDisclaimer } from '../context/DisclaimerContext.jsx';
-import { ShieldAlert, CheckCircle2, FileText } from 'lucide-react';
+import { ShieldAlert, CheckCircle2 } from 'lucide-react';
 
 export default function DisclaimerTab({ hidden }) {
-  const {
-    isAccepted,
-    formattedAuditDate,
-    appVersion,
-    isStandalone,
-    openReviewModal,
-  } = useDisclaimer();
+  const { appVersion } = useDisclaimer();
 
   if (hidden) return null;
 
   return (
     <section id="p-disc" data-panel="disc" aria-label="અસ્વીકરણ અને શરતો">
       <div className="sec-header-wrap">
-        <h2 className="sec-h">અસ્વીકરણ (Disclaimer) &amp; શરતો</h2>
-        <p className="sec-p">
-          છેલ્લે સુધારેલ: 05.10.2026 (v{appVersion}) · નીચેના ત્રણ સત્તાવાર GR પર આધારિત: MSME સહાય GR (25.09.2026),
-          Large/Mega/Ultra Mega GR, તાલુકા વર્ગીકરણ GR (08.09.2026).
-        </p>
-      </div>
-
-      {/* Disclaimer Status Bar */}
-      <div className="disclaimer-status-bar">
-        <div className="disclaimer-status-left">
+        <div className="disclaimer-heading-row">
+          <h2 className="sec-h" style={{ margin: 0 }}>અસ્વીકરણ (Disclaimer) &amp; શરતો</h2>
           <span className="disclaimer-status-badge">
-            <CheckCircle2 size={16} aria-hidden="true" />
+            <CheckCircle2 size={15} aria-hidden="true" />
             <span>શરતો અને અસ્વીકરણ સ્વીકારેલ છે</span>
           </span>
         </div>
-
-        <button
-          type="button"
-          className="disclaimer-reopen-btn"
-          onClick={openReviewModal}
-        >
-          <FileText size={15} aria-hidden="true" />
-          <span>નિયમો અને અસ્વીકરણ પૉપઅપમાં વાંચો</span>
-        </button>
+        <p className="sec-p" style={{ marginTop: '8px' }}>
+          છેલ્લે સુધારેલ: 05.10.2026 (v{appVersion}) · નીચેના ત્રણ સત્તાવાર GR પર આધારિત: MSME સહાય GR (25.09.2026),
+          Large/Mega/Ultra Mega GR, તાલુકા વર્ગીકરણ GR (08.09.2026).
+        </p>
       </div>
 
       {/* Two-Column Side-by-Side Legal Text */}

@@ -1,9 +1,9 @@
 import React from 'react';
 import { ExternalLink } from 'lucide-react';
 
-export default function Footer({ onSelectTab }) {
+export default function Footer({ onSelectTab, hasStickyBar }) {
   return (
-    <footer className="app-footer">
+    <footer className={`app-footer ${hasStickyBar ? 'has-sticky-bar' : ''}`}>
       <div className="wrap">
         <div className="footer-content">
           <p className="footer-disclaimer-text">

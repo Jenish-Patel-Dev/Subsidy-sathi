@@ -122,15 +122,30 @@ export default function App() {
     } catch (e) {
       // ignore
     }
-    window.location.hash = tabId;
-
-    // Smooth scroll to content top if user has scrolled down
-    const mainEl = document.querySelector('main');
-    if (mainEl && window.scrollY > 150) {
-      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      mainEl.scrollIntoView({ behavior: prefersReduced ? 'auto' : 'smooth' });
+    try {
+      window.history.replaceState(null, '', `#${tabId}`);
+    } catch (e) {
+      window.location.hash = tabId;
     }
+
+    // Instantly scroll to the top of the window
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
   };
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && 'scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+  }, []);
+
+  useEffect(() => {
+    // Whenever active tab changes, always scroll instantly to the top
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, [activeTab]);
 
   useEffect(() => {
     const handleHashChange = () => {
@@ -142,6 +157,9 @@ export default function App() {
         } catch (e) {
           // ignore
         }
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
       }
     };
     window.addEventListener('hashchange', handleHashChange);
@@ -259,7 +277,7 @@ export default function App() {
         )}
 
         {/* 6. Footer */}
-        <Footer onSelectTab={handleSelectTab} />
+        <Footer onSelectTab={handleSelectTab} hasStickyBar={activeTab === 'check'} />
 
         {/* 7. Mandatory Disclaimer / Terms Gate & Review Modal */}
         <DisclaimerModal />
