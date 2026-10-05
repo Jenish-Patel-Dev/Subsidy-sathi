@@ -15,7 +15,6 @@ import {
   Info,
   HelpCircle,
   FileText,
-  Download,
 } from 'lucide-react';
 
 export default function CheckerForm({
@@ -705,22 +704,6 @@ export default function CheckerForm({
           />
         </div>
         <HelpBox fieldKey="firm" isOpen={!!openHelp.firm} as="div" />
-        <div className="report-btn-wrap">
-          <button
-            type="button"
-            className="pdfbtn report-download-btn-full"
-            onClick={onDownloadPdf}
-            disabled={isPdfGenerating}
-          >
-            <Download size={17} aria-hidden="true" />
-            <span>{isPdfGenerating ? 'અહેવાલ બની રહ્યો છે…' : 'PDF રિપોર્ટ ડાઉનલોડ કરો'}</span>
-          </button>
-          {pdfStat && (
-            <div className="report-pdfstat" role="status">
-              {pdfStat}
-            </div>
-          )}
-        </div>
       </fieldset>
 
       {/* Help Information Popup Modal */}
