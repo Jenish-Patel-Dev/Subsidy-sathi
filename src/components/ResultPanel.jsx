@@ -103,23 +103,6 @@ export default function ResultPanel({
         </div>
       </div>
 
-      {/* Discnote */}
-      <p className="discnote">
-        આ સરકારી એપ નથી. નીચેની રકમ સૂચક અંદાજ છે, મંજૂરી કે ખાતરી નથી; સત્તાવાર GR અને મંજૂરી સત્તાધિકારીનો નિર્ણય જ આખરી.{' '}
-        <a
-          href="#disc"
-          className="discnote-link"
-          onClick={(e) => {
-            e.preventDefault();
-            if (onSelectTab) onSelectTab('disc');
-            else if (result?.onSelectTab) result.onSelectTab('disc');
-            else window.location.hash = 'disc';
-          }}
-        >
-          અસ્વીકરણ
-        </a>
-      </p>
-
       {/* Panel 1: Hero Overview */}
       <section className="panel hero-card">
         <div className="tags">
