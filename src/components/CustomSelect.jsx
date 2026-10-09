@@ -85,15 +85,12 @@ export default function CustomSelect({
     };
   }, [isOpen]);
 
-  // Focus search input when opening
+  // Reset highlight index when opening
   useEffect(() => {
     if (isOpen) {
       setHighlightedIndex(-1);
-      if (searchable && searchInputRef.current) {
-        setTimeout(() => searchInputRef.current?.focus(), 50);
-      }
     }
-  }, [isOpen, searchable]);
+  }, [isOpen]);
 
   // Select an option
   const handleSelect = (val) => {
