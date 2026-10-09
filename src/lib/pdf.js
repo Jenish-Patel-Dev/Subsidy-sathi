@@ -44,6 +44,23 @@ const strip = (s) =>
     .replace(/\s+/g, ' ')
     .trim();
 
+function formatReportDateTime(date = new Date()) {
+  const day = String(date.getDate()).padStart(2, '0');
+  const monthNames = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December',
+  ];
+  const month = monthNames[date.getMonth()];
+  const year = date.getFullYear();
+  let hours = date.getHours();
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+  hours = hours % 12;
+  hours = hours ? hours : 12;
+  const formattedHours = String(hours).padStart(2, '0');
+  return `${day} ${month} ${year} ${formattedHours}:${minutes} ${ampm}`;
+}
+
 class Doc {
   constructor(title, logoImg = null) {
     this.pages = [];
@@ -170,10 +187,11 @@ class Doc {
       g.lineTo(PW - M, PH - FOOT);
       g.stroke();
 
-      // Row 1: Legal disclaimer & Page numbering
+      // Row 1: Legal disclaimer (left) & Page numbering (right)
       g.fillStyle = C.mute;
       g.font = `400 15px ${FF}`;
       g.textBaseline = 'alphabetic';
+      g.textAlign = 'left';
       g.fillText(
         'આ સરકારી દસ્તાવેજ નથી. ત્રણ GR પર આધારિત સૂચક અંદાજ; મંજૂરી કે ખાતરી નથી. અંતિમ નિર્ણય મંજૂરી સત્તાધિકારીનો.',
         M,
@@ -182,15 +200,15 @@ class Doc {
       g.textAlign = 'right';
       g.fillText(`પાનું ${i + 1} / ${n}`, PW - M, PH - FOOT + 28);
 
-      // Row 2: Developer & Contact info
+      // Row 2: Developer & Contact info (matching left column alignment and muted color)
       g.textAlign = 'left';
-      g.fillStyle = C.ink;
-      g.font = `500 14px ${FF}`;
-      g.fillText('Designed & Developed by Naresh Khambhaliya & Jenish Khambhaliya', M, PH - FOOT + 56);
-      g.textAlign = 'right';
-      g.fillStyle = C.teal2;
-      g.fillText('Contact: jgpatel8080@gmail.com', PW - M, PH - FOOT + 56);
-      g.textAlign = 'left';
+      g.fillStyle = C.mute;
+      g.font = `400 14px ${FF}`;
+      g.fillText(
+        'Designed & Developed by Naresh Khambhaliya & Jenish Khambhaliya · Contact: jgpatel8080@gmail.com',
+        M,
+        PH - FOOT + 56
+      );
     });
   }
   room() {
@@ -436,7 +454,7 @@ export async function generateSubsidyPdf(result, firm = '') {
   const { inp, cat, cl, S, R, tot, rows, totCeil } = r;
   const d = TALUKAS[+inp.dist] || TALUKAS[0];
   const now = new Date();
-  const dt = now.toLocaleDateString('en-GB').replace(/\//g, '.') + ' ' + now.toTimeString().slice(0, 5);
+  const dt = formatReportDateTime(now);
   const doc = new Doc(dt, appLogoImg);
   const firmClean = (firm || inp.firm || '').trim();
   const chk = getChecks(r);
