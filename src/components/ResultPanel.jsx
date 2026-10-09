@@ -63,13 +63,22 @@ export default function ResultPanel({
     setInternalPdfBusy(true);
     setInternalPdfStat('અહેવાલ બની રહ્યો છે…');
     try {
-      const { generateSubsidyPdf } = await import('../lib/pdf.js');
+      const { generateSubsidyPdf, savePdfBlob } = await import('../lib/pdf.js');
       const out = await generateSubsidyPdf(result, inp.firm);
-      setInternalPdfStat(`${out.pages} પાનાંનો અહેવાલ તૈયાર. PDF સેવ થઈ.`);
+      setInternalPdfStat(`${out.pages} પાનાંનો અહેવાલ તૈયાર. સેવ કરવાની પરવાનગી આપો.`);
+      await savePdfBlob(out);
+      setInternalPdfStat('PDF સેવ થઈ.');
       setTimeout(() => setInternalPdfStat(''), 4000);
     } catch (err) {
       console.error('PDF error:', err);
-      setInternalPdfStat('અહેવાલ બનાવવામાં ભૂલ થઈ. ફરી પ્રયાસ કરો.');
+      const code = err && err.code;
+      setInternalPdfStat(
+        code === 'declined'
+          ? 'ડાઉનલોડ રદ કર્યું.'
+          : code === 'rate_limited'
+          ? 'એક ડાઉનલોડ પહેલેથી ખુલ્લું છે. થોડી વાર પછી ફરી દબાવો.'
+          : 'અહેવાલ બનાવવામાં ભૂલ થઈ. ફરી પ્રયાસ કરો.'
+      );
       setTimeout(() => setInternalPdfStat(''), 4000);
     } finally {
       setInternalPdfBusy(false);

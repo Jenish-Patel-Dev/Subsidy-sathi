@@ -217,13 +217,22 @@ export default function App() {
     setIsPdfGenerating(true);
     setPdfStat('અહેવાલ બની રહ્યો છે…');
     try {
-      const { generateSubsidyPdf } = await import('./lib/pdf.js');
+      const { generateSubsidyPdf, savePdfBlob } = await import('./lib/pdf.js');
       const out = await generateSubsidyPdf(computedResult, formValues.firm);
-      setPdfStat(`${out.pages} પાનાંનો અહેવાલ તૈયાર. PDF સેવ થઈ.`);
+      setPdfStat(`${out.pages} પાનાંનો અહેવાલ તૈયાર. સેવ કરવાની પરવાનગી આપો.`);
+      await savePdfBlob(out);
+      setPdfStat('PDF સેવ થઈ.');
       setTimeout(() => setPdfStat(''), 4000);
     } catch (err) {
       console.error('PDF error:', err);
-      setPdfStat('અહેવાલ બનાવવામાં ભૂલ થઈ. ફરી પ્રયાસ કરો.');
+      const code = err && err.code;
+      setPdfStat(
+        code === 'declined'
+          ? 'ડાઉનલોડ રદ કર્યું.'
+          : code === 'rate_limited'
+          ? 'એક ડાઉનલોડ પહેલેથી ખુલ્લું છે. થોડી વાર પછી ફરી દબાવો.'
+          : 'અહેવાલ બનાવવામાં ભૂલ થઈ. ફરી પ્રયાસ કરો.'
+      );
       setTimeout(() => setPdfStat(''), 4000);
     } finally {
       setIsPdfGenerating(false);

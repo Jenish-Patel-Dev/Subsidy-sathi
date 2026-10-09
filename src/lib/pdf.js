@@ -647,17 +647,21 @@ export async function generateSubsidyPdf(result, firm = '') {
 
   const filename = `Subsidy-Sathi-${(inp.tal || 'report').replace(/[^A-Za-z0-9]+/g, '-')}-${now.toISOString().slice(0, 10)}.pdf`;
   const pdfBytes = assemble(imgs);
-  const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+
+  return { bytes: pdfBytes, filename, pages: doc.pages.length };
+}
+
+export async function savePdfBlob({ filename, bytes }) {
+  const blob = new Blob([bytes], { type: 'application/pdf' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
   a.download = filename;
+  a.style.display = 'none';
   document.body.appendChild(a);
   a.click();
   setTimeout(() => {
-    a.remove();
     URL.revokeObjectURL(url);
-  }, 2000);
-
-  return { bytes: pdfBytes, filename, pages: doc.pages.length };
+    a.remove();
+  }, 1500);
 }
