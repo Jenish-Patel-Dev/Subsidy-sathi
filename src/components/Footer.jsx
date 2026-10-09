@@ -1,5 +1,5 @@
 import React from 'react';
-import { ExternalLink, Mail } from 'lucide-react';
+import { ExternalLink } from 'lucide-react';
 
 export default function Footer({ onSelectTab, hasStickyBar }) {
   return (
@@ -34,18 +34,6 @@ export default function Footer({ onSelectTab, hasStickyBar }) {
             </a>
           </div>
 
-          {/* Single-Line Compact Designer & Developer Credits */}
-          <div className="footer-credits-line">
-            <span>Designed &amp; Developed by <strong>Naresh Khambhaliya &amp; Jenish Khambhaliya</strong></span>
-            <span className="footer-credits-sep" aria-hidden="true">·</span>
-            <span className="footer-credits-contact">
-              Contact:{' '}
-              <a href="mailto:jgpatel8080@gmail.com" className="footer-credits-email" title="Email Naresh Khambhaliya &amp; Jenish Khambhaliya">
-                <Mail size={12} aria-hidden="true" />
-                <span>jgpatel8080@gmail.com</span>
-              </a>
-            </span>
-          </div>
         </div>
       </div>
     </footer>
