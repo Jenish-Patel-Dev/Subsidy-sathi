@@ -5,6 +5,7 @@ import { money, rupees, pct } from './format.js';
 
 const PW = 1240;
 const PH = 1754;
+const SCALE = 2; // High-resolution scale: 2480x3508 (~300 DPI A4 print standard) ensures razor-sharp text on zoom
 const M = 76;
 const CW = PW - 2 * M;
 const HEAD = 118;
@@ -52,9 +53,12 @@ class Doc {
   }
   newPage() {
     const c = document.createElement('canvas');
-    c.width = PW;
-    c.height = PH;
+    c.width = Math.round(PW * SCALE);
+    c.height = Math.round(PH * SCALE);
     const g = c.getContext('2d');
+    g.scale(SCALE, SCALE);
+    g.imageSmoothingEnabled = true;
+    g.imageSmoothingQuality = 'high';
     g.fillStyle = '#fff';
     g.fillRect(0, 0, PW, PH);
     this.pages.push(c);
@@ -391,7 +395,7 @@ const toJpeg = (c) =>
       (b) =>
         b ? b.arrayBuffer().then((a) => res({ bytes: new Uint8Array(a), w: c.width, h: c.height }), rej) : rej(new Error('jpeg')),
       'image/jpeg',
-      0.9
+      0.95
     )
   );
 
@@ -399,6 +403,8 @@ export async function generateSubsidyPdf(result, firm = '') {
   try {
     await Promise.all([
       document.fonts.load('400 20px "Noto Sans Gujarati"'),
+      document.fonts.load('500 20px "Noto Sans Gujarati"'),
+      document.fonts.load('600 20px "Noto Sans Gujarati"'),
       document.fonts.load('700 20px "Noto Sans Gujarati"'),
     ]);
     await document.fonts.ready;
