@@ -34,21 +34,17 @@ export default function Footer({ onSelectTab, hasStickyBar }) {
             </a>
           </div>
 
-          {/* Designer & Developer Credits */}
-          <div className="footer-credits">
-            <div className="footer-credits-divider">
-              <span className="footer-credits-title">DESIGNED &amp; DEVELOPED BY</span>
-            </div>
-            <div className="footer-credits-names">
-              Naresh Khambhaliya &amp; Jenish Khambhaliya
-            </div>
-            <div className="footer-credits-contact">
-              <span className="footer-credits-label">Contact:</span>{' '}
-              <a href="mailto:jgpatel8080@gmail.com" className="footer-credits-email" title="Email Naresh Khambhaliya & Jenish Khambhaliya">
-                <Mail size={13} aria-hidden="true" />
+          {/* Single-Line Compact Designer & Developer Credits */}
+          <div className="footer-credits-line">
+            <span>Designed &amp; Developed by <strong>Naresh Khambhaliya &amp; Jenish Khambhaliya</strong></span>
+            <span className="footer-credits-sep" aria-hidden="true">·</span>
+            <span className="footer-credits-contact">
+              Contact:{' '}
+              <a href="mailto:jgpatel8080@gmail.com" className="footer-credits-email" title="Email Naresh Khambhaliya &amp; Jenish Khambhaliya">
+                <Mail size={12} aria-hidden="true" />
                 <span>jgpatel8080@gmail.com</span>
               </a>
-            </div>
+            </span>
           </div>
         </div>
       </div>

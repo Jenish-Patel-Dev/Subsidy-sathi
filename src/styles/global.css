@@ -3251,12 +3251,12 @@ footer,
 .desktop-footer,
 .app-footer {
   color: var(--mute);
-  font-size: 12.5px;
-  line-height: 1.55;
+  font-size: 11.5px;
+  line-height: 1.45;
   border-top: 1px solid var(--line);
   background: var(--surface);
-  padding-block: 16px;
-  margin-top: 24px;
+  padding-block: 8px 10px;
+  margin-top: 14px;
   text-align: center;
 }
 
@@ -3265,13 +3265,13 @@ footer,
   .desktop-footer,
   .app-footer {
     display: block !important;
-    padding-top: 14px;
-    padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px));
-    margin-top: 18px;
+    padding-top: 8px;
+    padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+    margin-top: 12px;
   }
 
   .app-footer.has-sticky-bar {
-    padding-bottom: calc(165px + env(safe-area-inset-bottom, 0px)) !important;
+    padding-bottom: calc(140px + env(safe-area-inset-bottom, 0px)) !important;
   }
 }
 
@@ -3281,15 +3281,15 @@ footer,
   align-items: center;
   justify-content: center;
   text-align: center;
-  gap: 8px;
+  gap: 4px;
   max-width: 900px;
   margin: 0 auto;
 }
 
 .footer-disclaimer-text {
   margin: 0;
-  font-size: 12px;
-  line-height: 1.55;
+  font-size: 11.5px;
+  line-height: 1.45;
   color: var(--mute);
   text-align: center;
 }
@@ -3300,10 +3300,10 @@ footer,
   justify-content: center;
   text-align: center;
   flex-wrap: wrap;
-  gap: 6px;
-  font-size: 12px;
-  margin-top: 4px;
-  padding-top: 8px;
+  gap: 5px;
+  font-size: 11.5px;
+  margin-top: 2px;
+  padding-top: 4px;
   border-top: 1px solid var(--line);
   width: 100%;
 }
@@ -3317,11 +3317,11 @@ footer,
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 5px;
+  gap: 4px;
   color: var(--brand-700);
   font-weight: 600;
   text-decoration: underline;
-  text-underline-offset: 3px;
+  text-underline-offset: 2px;
   transition: color 0.15s ease, opacity 0.15s ease;
   word-break: break-all;
   overflow-wrap: anywhere;
@@ -3345,7 +3345,7 @@ footer,
 
 .app-disclaimer-link-wrap {
   margin-top: 2px;
-  padding-top: 8px;
+  padding-top: 4px;
   border-top: 1px solid var(--line);
   display: flex;
   align-items: center;
@@ -3353,7 +3353,7 @@ footer,
   text-align: center;
   flex-wrap: wrap;
   gap: 6px;
-  font-size: 11.5px;
+  font-size: 11px;
   width: 100%;
 }
 
@@ -3363,78 +3363,47 @@ footer,
 }
 
 /* ==========================================================================
-   Footer Credits & Branding
+   Footer Credits (Single-Line Ultra-Compact)
    ========================================================================== */
-.footer-credits {
+.footer-credits-line {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  margin-top: 6px;
-  padding-top: 10px;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  font-size: 11px;
+  color: var(--mute);
+  margin-top: 2px;
+  padding-top: 4px;
   border-top: 1px dashed var(--line);
   width: 100%;
+  line-height: 1.35;
 }
 
-.footer-credits-divider {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  width: 100%;
-  max-width: 340px;
-}
-
-.footer-credits-divider::before,
-.footer-credits-divider::after {
-  content: "";
-  flex: 1;
-  height: 1px;
-  background: var(--line);
-  opacity: 0.85;
-}
-
-.footer-credits-title {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  color: var(--mute);
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-.footer-credits-names {
-  font-size: 13.5px;
-  font-weight: 700;
+.footer-credits-line strong {
   color: var(--ink);
-  letter-spacing: 0.02em;
+  font-weight: 600;
+}
+
+.footer-credits-sep {
+  opacity: 0.45;
 }
 
 .footer-credits-contact {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  gap: 6px;
-  font-size: 12px;
-  color: var(--mute);
-  margin-top: 1px;
-}
-
-.footer-credits-label {
-  color: var(--mute);
-  font-weight: 500;
+  gap: 4px;
 }
 
 .footer-credits-email {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 4px;
   color: var(--brand-700);
   font-weight: 600;
   text-decoration: underline;
-  text-underline-offset: 3px;
-  transition: all 0.18s ease;
+  text-underline-offset: 2px;
+  transition: all 0.15s ease;
 }
 
 .footer-credits-email:hover {
