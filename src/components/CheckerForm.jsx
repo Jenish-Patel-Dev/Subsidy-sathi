@@ -118,8 +118,6 @@ export default function CheckerForm({
         options: SECTORS.filter((s) => s.kind === 'thrust').map((s) => ({
           value: s.id,
           label: s.g,
-          badge: 'Thrust',
-          badgeType: 'catA',
           searchTerms: `${s.g} thrust થ્રસ્ટ`,
         })),
       },
@@ -128,8 +126,6 @@ export default function CheckerForm({
         options: SECTORS.filter((s) => s.kind === 'selected').map((s) => ({
           value: s.id,
           label: s.g,
-          badge: 'Selected',
-          badgeType: 'catB',
           searchTerms: `${s.g} selected પસંદગી`,
         })),
       },
