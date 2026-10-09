@@ -8,7 +8,7 @@ const PH = 1754;
 const M = 76;
 const CW = PW - 2 * M;
 const HEAD = 118;
-const FOOT = 74;
+const FOOT = 86;
 
 const C = {
   teal: '#0E4B47',
@@ -59,9 +59,23 @@ class Doc {
     g.fillRect(0, 0, PW, PH);
     this.pages.push(c);
     this.g = g;
+    this.watermark();
     this.header();
     this.y = HEAD + 36;
     if (this.onNewPage) this.onNewPage();
+  }
+  watermark() {
+    const g = this.g;
+    g.save();
+    g.translate(PW / 2, PH / 2);
+    // Slope from bottom-left corner to top-right corner (negative angle)
+    g.rotate(Math.atan2(-PH, PW));
+    g.textAlign = 'center';
+    g.textBaseline = 'middle';
+    g.font = `700 70px ${FF}`;
+    g.fillStyle = 'rgba(14, 75, 71, 0.075)';
+    g.fillText('સબસિડી સાથી · SUBSIDY SATHI', 0, 0);
+    g.restore();
   }
   font(size, w) {
     this.g.font = `${w || 400} ${size}px ${FF}`;
@@ -107,24 +121,38 @@ class Doc {
     g.fillStyle = C.teal;
     g.fillRect(0, 0, PW, HEAD);
 
-    // Draw application's official logo
+    g.textBaseline = 'alphabetic';
+
+    // Draw application's official brand name logo
     if (this.logoImg) {
-      this.rr(M, 20, 78, 78, 16, '#FFFFFF');
-      g.drawImage(this.logoImg, M + 7, 27, 64, 64);
+      const logoH = 76;
+      const aspect = (this.logoImg.naturalWidth || this.logoImg.width || 3.17) / (this.logoImg.naturalHeight || this.logoImg.height || 1);
+      const logoW = Math.round(logoH * aspect);
+      const logoY = Math.round((HEAD - logoH) / 2);
+      g.drawImage(this.logoImg, M, logoY, logoW, logoH);
+
+      const textX = M + logoW + 26;
+      g.fillStyle = '#FFFFFF';
+      this.font(23, 700);
+      g.fillText('વિકસિત ગુજરાત ઔદ્યોગિક નીતિ 2026', textX, 58);
+      g.fillStyle = C.head;
+      this.font(17, 500);
+      g.fillText('સહાય અને પ્રોત્સાહન અંદાજ અહેવાલ', textX, 90);
     } else {
       this.icon(M, 27, 64, '#FFFFFF', C.teal, C.teal2);
+      g.fillStyle = '#FFFFFF';
+      this.font(34, 700);
+      g.fillText('સબસિડી સાથી', M + 96, 62);
+      g.fillStyle = C.head;
+      this.font(19, 500);
+      g.fillText('Subsidy Sathi · વિકસિત ગુજરાત ઔદ્યોગિક નીતિ 2026 · સહાય અંદાજ અહેવાલ', M + 96, 94);
     }
 
-    g.textBaseline = 'alphabetic';
-    g.fillStyle = '#fff';
-    this.font(34, 700);
-    g.fillText('સબસિડી સાથી', M + 96, 62);
-    g.fillStyle = C.head;
-    this.font(19, 500);
-    g.fillText('Subsidy Sathi · વિકસિત ગુજરાત ઔદ્યોગિક નીતિ 2026 · સહાય અંદાજ અહેવાલ', M + 96, 94);
+    // Right-aligned report generation time
+    g.fillStyle = '#FFFFFF';
     this.font(18, 500);
     g.textAlign = 'right';
-    g.fillText(this.title, PW - M, 62);
+    g.fillText(this.title, PW - M, 60);
     g.textAlign = 'left';
   }
   footers() {
@@ -132,21 +160,32 @@ class Doc {
     this.pages.forEach((c, i) => {
       const g = c.getContext('2d');
       g.strokeStyle = C.line;
-      g.lineWidth = 2;
+      g.lineWidth = 1.8;
       g.beginPath();
       g.moveTo(M, PH - FOOT);
       g.lineTo(PW - M, PH - FOOT);
       g.stroke();
+
+      // Row 1: Legal disclaimer & Page numbering
       g.fillStyle = C.mute;
-      g.font = `400 16px ${FF}`;
+      g.font = `400 15px ${FF}`;
       g.textBaseline = 'alphabetic';
       g.fillText(
         'આ સરકારી દસ્તાવેજ નથી. ત્રણ GR પર આધારિત સૂચક અંદાજ; મંજૂરી કે ખાતરી નથી. અંતિમ નિર્ણય મંજૂરી સત્તાધિકારીનો.',
         M,
-        PH - FOOT + 32
+        PH - FOOT + 28
       );
       g.textAlign = 'right';
-      g.fillText(`પાનું ${i + 1} / ${n}`, PW - M, PH - FOOT + 32);
+      g.fillText(`પાનું ${i + 1} / ${n}`, PW - M, PH - FOOT + 28);
+
+      // Row 2: Developer & Contact info
+      g.textAlign = 'left';
+      g.fillStyle = C.ink;
+      g.font = `500 14px ${FF}`;
+      g.fillText('Designed & Developed by Naresh Khambhaliya & Jenish Khambhaliya', M, PH - FOOT + 56);
+      g.textAlign = 'right';
+      g.fillStyle = C.teal2;
+      g.fillText('Contact: jgpatel8080@gmail.com', PW - M, PH - FOOT + 56);
       g.textAlign = 'left';
     });
   }
@@ -376,9 +415,9 @@ export async function generateSubsidyPdf(result, firm = '') {
         img.src = src;
       });
 
-    let img = await tryLoad('/favicon.png');
-    if (!img) img = await tryLoad('/logo-dark.png');
+    let img = await tryLoad('/logo-dark.png');
     if (!img) img = await tryLoad('/logo-light.png');
+    if (!img) img = await tryLoad('/favicon.png');
     return img;
   };
 
