@@ -700,6 +700,17 @@ export default function CheckerForm({
           />
         </div>
         <HelpBox fieldKey="firm" isOpen={!!openHelp.firm} as="div" />
+        <div className="pdfwrap" style={{ marginTop: '10px' }}>
+          <button
+            type="button"
+            className="pdfbtn"
+            onClick={onDownloadPdf}
+            disabled={isPdfGenerating}
+          >
+            PDF રિપોર્ટ ડાઉનલોડ કરો
+          </button>
+          {pdfStat && <span className="pdfstat" role="status">{pdfStat}</span>}
+        </div>
       </fieldset>
 
       {/* Help Information Popup Modal */}

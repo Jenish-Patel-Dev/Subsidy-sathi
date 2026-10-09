@@ -14,7 +14,6 @@ import {
   X,
   AlertCircle,
   Info,
-  Download,
 } from 'lucide-react';
 
 export default function ResultPanel({
@@ -89,8 +88,7 @@ export default function ResultPanel({
             onClick={handleDownloadPdf}
             disabled={isPdfGenerating}
           >
-            <Download size={16} aria-hidden="true" />
-            <span>{isPdfGenerating ? 'અહેવાલ બની રહ્યો છે…' : 'PDF રિપોર્ટ ડાઉનલોડ કરો'}</span>
+            PDF રિપોર્ટ ડાઉનલોડ કરો
           </button>
           {pdfStat && <span className="pdfstat" role="status">{pdfStat}</span>}
         </div>
