@@ -14,7 +14,7 @@ import Footer from './components/Footer.jsx';
 import { TALUKAS } from './data/talukas.js';
 import { compute } from './lib/calc.js';
 import { money } from './lib/format.js';
-import { ChevronDown, ShieldAlert, ExternalLink } from 'lucide-react';
+import { ChevronDown, ShieldAlert, ExternalLink, Download } from 'lucide-react';
 import { PWAProvider } from './context/PWAContext.jsx';
 import { DisclaimerProvider } from './context/DisclaimerContext.jsx';
 import DisclaimerModal from './components/DisclaimerModal.jsx';
@@ -308,16 +308,28 @@ export default function App() {
                 {money(computedResult.grand || computedResult.tot.all)}
               </div>
             </div>
-            <button
-              type="button"
-              className="mobile-sticky-btn"
-              onClick={() => {
-                document.getElementById('res')?.scrollIntoView({ behavior: 'smooth' });
-              }}
-            >
-              <span>પરિણામ જુઓ</span>
-              <ChevronDown size={16} aria-hidden="true" />
-            </button>
+            <div className="mobile-sticky-actions">
+              <button
+                type="button"
+                className="mobile-sticky-btn"
+                onClick={() => {
+                  document.getElementById('res')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+              >
+                <span>પરિણામ જુઓ</span>
+                <ChevronDown size={16} aria-hidden="true" />
+              </button>
+              <button
+                type="button"
+                className="mobile-sticky-download-btn"
+                onClick={handleDownloadPdf}
+                disabled={isPdfGenerating}
+                title="PDF અહેવાલ ડાઉનલોડ કરો"
+                aria-label="PDF અહેવાલ ડાઉનલોડ કરો"
+              >
+                <Download size={18} aria-hidden="true" />
+              </button>
+            </div>
           </div>
         )}
 
@@ -330,8 +342,8 @@ export default function App() {
         {/* 8. PWA Update Notification Popup */}
         <PWAUpdateModal />
 
-        {/* 9. Fullscreen App Loader (For refresh & update transitions) */}
-        <AppLoader />
+        {/* 9. Fullscreen App Loader (For PDF generation & refresh transitions) */}
+        <AppLoader isPdfGenerating={isPdfGenerating} pdfStat={pdfStat} />
       </DisclaimerProvider>
     </PWAProvider>
   );
