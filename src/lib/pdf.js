@@ -727,7 +727,6 @@ export async function savePdfBlob({ filename, bytes }) {
 
     if (isNative) {
       const { Filesystem, Directory } = await import('@capacitor/filesystem');
-      const { Share } = await import('@capacitor/share');
 
       // Convert Blob to pure Base64 string via FileReader
       const base64Data = await new Promise((resolve, reject) => {
@@ -744,24 +743,53 @@ export async function savePdfBlob({ filename, bytes }) {
         reader.readAsDataURL(blob);
       });
 
-      // Write PDF to app Cache directory
-      const fileResult = await Filesystem.writeFile({
-        path: filename,
-        data: base64Data,
-        directory: Directory.Cache,
-      });
-
-      // Open native Android Share / Save Sheet
+      // 1. First save PDF directly to device Documents/Data folder so it persists as a permanent .pdf file
+      let savedUri = null;
       try {
-        await Share.share({
-          title: filename,
-          text: 'સબસિડી સાથી અહેવાલ',
-          url: fileResult.uri,
-          dialogTitle: 'અહેવાલ સાચવો અથવા ખોલો',
+        const docResult = await Filesystem.writeFile({
+          path: filename,
+          data: base64Data,
+          directory: Directory.Documents,
+          recursive: true,
         });
-      } catch (shareErr) {
-        // User dismissed the native dialog
-        console.log('Native share dialog closed:', shareErr);
+        savedUri = docResult.uri;
+      } catch (docErr) {
+        console.warn('Saving to Documents directory failed, trying Cache directory:', docErr);
+        const cacheResult = await Filesystem.writeFile({
+          path: filename,
+          data: base64Data,
+          directory: Directory.Cache,
+          recursive: true,
+        });
+        savedUri = cacheResult.uri;
+      }
+
+      // 2. Open the PDF directly in the Android native PDF reader
+      let openedDirectly = false;
+      try {
+        const { FileOpener } = await import('@capacitor-community/file-opener');
+        await FileOpener.open({
+          filePath: savedUri,
+          contentType: 'application/pdf',
+          openWithDefault: false,
+        });
+        openedDirectly = true;
+      } catch (openErr) {
+        console.warn('FileOpener failed or no default PDF app, falling back to Share sheet:', openErr);
+      }
+
+      // 3. If direct opener wasn't handled, fallback to native Share / Save sheet
+      if (!openedDirectly) {
+        try {
+          const { Share } = await import('@capacitor/share');
+          await Share.share({
+            title: filename,
+            files: [savedUri],
+            dialogTitle: 'અહેવાલ ખોલો અથવા સાચવો',
+          });
+        } catch (shareErr) {
+          console.log('Share dismissed or cancelled:', shareErr);
+        }
       }
       return;
     }
