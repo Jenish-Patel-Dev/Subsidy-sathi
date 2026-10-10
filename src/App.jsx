@@ -9,6 +9,7 @@ import OtherSubsidies from './components/OtherSubsidies.jsx';
 import TalukaGrid from './components/TalukaGrid.jsx';
 import Rules from './components/Rules.jsx';
 import DisclaimerTab from './components/DisclaimerTab.jsx';
+import DeveloperCreditsCard from './components/DeveloperCreditsCard.jsx';
 import Footer from './components/Footer.jsx';
 import { TALUKAS } from './data/talukas.js';
 import { compute } from './lib/calc.js';
@@ -274,6 +275,9 @@ export default function App() {
             <div className="checker-full-width">
               <ApplicableOtherSubsidies result={computedResult} />
             </div>
+
+            {/* Designer & Developer Credits Card */}
+            <DeveloperCreditsCard />
           </section>
 
           {/* RATES TAB */}

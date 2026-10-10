@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDisclaimer } from '../context/DisclaimerContext.jsx';
-import { ShieldAlert, CheckCircle2, Mail } from 'lucide-react';
+import { ShieldAlert, CheckCircle2 } from 'lucide-react';
+import DeveloperCreditsCard from './DeveloperCreditsCard.jsx';
 
 export default function DisclaimerTab({ hidden }) {
   const { appVersion, formattedAuditDate } = useDisclaimer();
@@ -183,27 +184,7 @@ export default function DisclaimerTab({ hidden }) {
       </div>
 
       {/* Designer & Developer Credits Card */}
-      <div className="disclaimer-credits-card">
-        <div className="disclaimer-credits-header">
-          <span className="disclaimer-credits-dash" aria-hidden="true"></span>
-          <span className="disclaimer-credits-eyebrow">DESIGNED &amp; DEVELOPED BY</span>
-          <span className="disclaimer-credits-dash" aria-hidden="true"></span>
-        </div>
-        <div className="disclaimer-credits-names">
-          Naresh Khambhaliya &amp; Jenish Khambhaliya
-        </div>
-        <div className="disclaimer-credits-contact">
-          <span className="disclaimer-credits-contact-lbl">Contact:</span>{' '}
-          <a
-            href="mailto:jgpatel8080@gmail.com"
-            className="disclaimer-credits-email"
-            title="Email Naresh Khambhaliya &amp; Jenish Khambhaliya"
-          >
-            <Mail size={14} aria-hidden="true" />
-            <span>jgpatel8080@gmail.com</span>
-          </a>
-        </div>
-      </div>
+      <DeveloperCreditsCard />
     </section>
   );
 }
