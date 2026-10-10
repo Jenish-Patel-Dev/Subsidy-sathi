@@ -6,7 +6,6 @@
 :root {
   color-scheme: light;
   box-sizing: border-box;
-  padding-top: env(safe-area-inset-top, 0px);
   padding-bottom: env(safe-area-inset-bottom, 0px);
 
   /* Primary Palette (Gujarat Industrial Green / Emerald) */
@@ -289,6 +288,7 @@ body {
   line-height: 1.65;
   margin: 0;
   padding: 0;
+  padding-top: calc(68px + env(safe-area-inset-top, 0px));
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overscroll-behavior-y: none;
@@ -343,14 +343,17 @@ img, svg {
 }
 
 /* ==========================================================================
-   Top Navigation Bar (Desktop & Tablet Sticky NavBar + Mobile App Bar)
+   Top Navigation Bar (Fixed Top NavBar & App Bar)
    ========================================================================== */
 .top-navbar {
-  position: sticky;
+  position: fixed;
   top: 0;
-  z-index: 100;
+  left: 0;
+  right: 0;
+  z-index: 1000;
   width: 100%;
-  height: 68px;
+  height: calc(68px + env(safe-area-inset-top, 0px));
+  padding-top: env(safe-area-inset-top, 0px);
   background: rgba(255, 255, 255, 0.88);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -933,8 +936,12 @@ img, svg {
 
 /* Mobile & Tablet Top App Bar adjustments (<= 950px) */
 @media (max-width: 950px) {
+  body {
+    padding-top: calc(64px + env(safe-area-inset-top, 0px));
+  }
+
   .top-navbar {
-    height: 64px;
+    height: calc(64px + env(safe-area-inset-top, 0px));
   }
 
   .desktop-nav {

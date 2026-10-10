@@ -1,26 +1,17 @@
 import React from 'react';
 import { usePWA } from '../context/PWAContext.jsx';
-import { Download, RotateCw } from 'lucide-react';
+import { isStandaloneApp } from '../lib/pwaDetector.js';
+import { Download } from 'lucide-react';
 
 export default function PWAInstallButton() {
-  const { isInstalled, installApp, refreshApp, isRefreshing } = usePWA();
+  const { isInstalled, installApp } = usePWA();
 
-  if (isInstalled) {
-    // Show Refresh / Update Icon Button when app is already installed
-    return (
-      <button
-        type="button"
-        className={`theme-toggle-btn pwa-toggle-btn ${isRefreshing ? 'refreshing' : ''}`}
-        onClick={refreshApp}
-        title="એપ્લિકેશન અપડેટ કરો / નવીનતમ કોડ લોડ કરો"
-        aria-label="એપ્લિકેશન અપડેટ કરો"
-      >
-        <RotateCw size={19} className={isRefreshing ? 'spinning' : ''} aria-hidden="true" />
-      </button>
-    );
+  // If already running inside installed app (Native APK or Standalone PWA), do NOT show install button
+  if (isInstalled || isStandaloneApp()) {
+    return null;
   }
 
-  // Show Install Icon Button when app is not installed
+  // Show Install Icon Button ONLY when visiting via web browser where app is not yet installed
   return (
     <button
       type="button"

@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { isStandaloneApp } from '../lib/pwaDetector.js';
 
 const PWAContext = createContext(null);
 
@@ -9,17 +10,16 @@ export function PWAProvider({ children }) {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [swRegistration, setSwRegistration] = useState(null);
 
-  // Check if currently running in standalone mode (PWA installed)
+  // Check if currently running in standalone / native app mode
   useEffect(() => {
-    const isStandalone =
-      window.matchMedia('(display-mode: standalone)').matches ||
-      window.navigator.standalone === true ||
-      document.referrer.includes('android-app://');
+    const checkInstalled = () => {
+      setIsInstalled(isStandaloneApp());
+    };
 
-    setIsInstalled(isStandalone);
+    checkInstalled();
 
     const matchMediaHandler = (e) => {
-      setIsInstalled(e.matches);
+      setIsInstalled(e.matches || isStandaloneApp());
     };
 
     const mql = window.matchMedia('(display-mode: standalone)');
