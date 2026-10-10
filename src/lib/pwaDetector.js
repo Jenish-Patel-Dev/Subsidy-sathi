@@ -10,8 +10,12 @@ export const isStandaloneApp = () => {
   try {
     if (typeof window === 'undefined') return false;
 
-    // 1. Explicit query parameter from manifest start_url
-    if (window.location.search && window.location.search.includes('mode=pwa')) {
+    // 0. Capacitor / Cordova Native Mobile Container
+    if (window.Capacitor && typeof window.Capacitor.isNativePlatform === 'function' && window.Capacitor.isNativePlatform()) {
+      return true;
+    }
+    // 1. Explicit start_url query param from manifest
+    if (window.location.search && (window.location.search.includes('mode=pwa') || window.location.search.includes('source=pwa'))) {
       return true;
     }
     // 2. iOS Safari Add-to-Home-Screen standalone mode
@@ -22,7 +26,7 @@ export const isStandaloneApp = () => {
     if (document.referrer && document.referrer.includes('android-app://')) {
       return true;
     }
-    // 4. Standard W3C display-mode media query
+    // 4. Standard W3C standalone display-mode media query
     if (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) {
       return true;
     }

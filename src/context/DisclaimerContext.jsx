@@ -1,11 +1,18 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { isStandaloneApp } from '../lib/pwaDetector.js';
 
-export const APP_WEB_SESSION_ACCEPTED_KEY = 'ss_web_session_accepted';
-export const APP_WEB_SESSION_DATE_KEY = 'ss_web_session_date';
-export const APP_PWA_ACCEPTED_KEY = 'ss_pwa_accepted';
-export const APP_PWA_DATE_KEY = 'ss_pwa_date';
-export const APP_TERMS_VERSION_KEY = 'ss_terms_version';
+// 1. Strict Environment-Isolated Storage Keys
+export const APP_PWA_KEY = 'app_standalone_accepted_v1';
+export const APP_WEB_KEY = 'app_web_session_accepted_v1';
+
+// Aliases for full backward compatibility
+export const APP_PWA_ACCEPTED_KEY = APP_PWA_KEY;
+export const APP_WEB_SESSION_ACCEPTED_KEY = APP_WEB_KEY;
+export const APP_PWA_DATE_KEY = 'app_standalone_date_v1';
+export const APP_WEB_SESSION_DATE_KEY = 'app_web_session_date_v1';
+export const APP_TERMS_VERSION_KEY = 'app_terms_version_v1';
+
+export { isStandaloneApp };
 
 const DEFAULT_VERSION = '1.0.0';
 
@@ -20,20 +27,32 @@ export function DisclaimerProvider({ children }) {
   const [appVersion, setAppVersion] = useState(DEFAULT_VERSION);
   const [acceptanceDate, setAcceptanceDate] = useState(null);
 
-  // 1. Initial State Check based on Strict Environment Isolation
-  const checkAcceptance = useCallback((currentVer = DEFAULT_VERSION) => {
-    const standalone = isStandaloneApp();
-    setIsStandalone(standalone);
-
-    if (standalone) {
-      // INSTALLED PWA MODE (Persistent in localStorage)
+  // 2. Clear lingering storage on fresh PWA installation
+  useEffect(() => {
+    const handleInstalled = () => {
       try {
-        const pwaAccepted = localStorage.getItem(APP_PWA_ACCEPTED_KEY) === 'true';
-        const pwaDate = localStorage.getItem(APP_PWA_DATE_KEY);
+        localStorage.removeItem(APP_PWA_KEY);
+        localStorage.removeItem(APP_PWA_DATE_KEY);
+      } catch (e) {}
+    };
+    window.addEventListener('appinstalled', handleInstalled);
+    return () => window.removeEventListener('appinstalled', handleInstalled);
+  }, []);
+
+  // 3. Strict Environment-Isolated Status Check
+  const checkAcceptance = useCallback((currentVer = DEFAULT_VERSION) => {
+    const isApp = isStandaloneApp();
+    setIsStandalone(isApp);
+
+    if (isApp) {
+      // Installed App (PWA / Mobile APK / Standalone): Checks ONLY localStorage
+      try {
+        const storedAccepted = localStorage.getItem(APP_PWA_KEY) === 'true';
+        const storedDate = localStorage.getItem(APP_PWA_DATE_KEY);
         const storedVer = localStorage.getItem(APP_TERMS_VERSION_KEY);
 
-        // Version update gate check
-        if (storedVer && storedVer !== currentVer && pwaAccepted) {
+        // Version update check
+        if (storedVer && storedVer !== currentVer && storedAccepted) {
           setIsUpdatedTerms(true);
           setIsAccepted(false);
           setIsModalOpen(true);
@@ -41,9 +60,9 @@ export function DisclaimerProvider({ children }) {
           return;
         }
 
-        if (pwaAccepted) {
-          const effectiveDate = pwaDate || new Date().toISOString();
-          if (!pwaDate) {
+        if (storedAccepted) {
+          const effectiveDate = storedDate || new Date().toISOString();
+          if (!storedDate) {
             try { localStorage.setItem(APP_PWA_DATE_KEY, effectiveDate); } catch (e) {}
           }
           setIsAccepted(true);
@@ -59,13 +78,13 @@ export function DisclaimerProvider({ children }) {
         setIsModalOpen(true);
       }
     } else {
-      // WEBSITE / BROWSER TAB MODE (SessionStorage only - NEVER touch localStorage!)
+      // Website / Browser Tab: Checks ONLY sessionStorage (NEVER touches localStorage!)
       try {
-        const webAccepted = sessionStorage.getItem(APP_WEB_SESSION_ACCEPTED_KEY) === 'true';
-        const webDate = sessionStorage.getItem(APP_WEB_SESSION_DATE_KEY);
+        const storedAccepted = sessionStorage.getItem(APP_WEB_KEY) === 'true';
+        const storedDate = sessionStorage.getItem(APP_WEB_SESSION_DATE_KEY);
         const storedVer = sessionStorage.getItem(APP_TERMS_VERSION_KEY);
 
-        if (storedVer && storedVer !== currentVer && webAccepted) {
+        if (storedVer && storedVer !== currentVer && storedAccepted) {
           setIsUpdatedTerms(true);
           setIsAccepted(false);
           setIsModalOpen(true);
@@ -73,9 +92,9 @@ export function DisclaimerProvider({ children }) {
           return;
         }
 
-        if (webAccepted) {
-          const effectiveDate = webDate || new Date().toISOString();
-          if (!webDate) {
+        if (storedAccepted) {
+          const effectiveDate = storedDate || new Date().toISOString();
+          if (!storedDate) {
             try { sessionStorage.setItem(APP_WEB_SESSION_DATE_KEY, effectiveDate); } catch (e) {}
           }
           setIsAccepted(true);
@@ -93,7 +112,7 @@ export function DisclaimerProvider({ children }) {
     }
   }, []);
 
-  // 2. Fetch Live Version on App Launch & Check Version Gate
+  // 4. Check version and run initial acceptance check on mount
   useEffect(() => {
     let isMounted = true;
 
@@ -124,38 +143,27 @@ export function DisclaimerProvider({ children }) {
 
     fetchVersion();
 
-    // 3. Listen for appinstalled event to reset PWA acceptance on fresh installation
-    const handleAppInstalled = () => {
-      try {
-        localStorage.removeItem(APP_PWA_ACCEPTED_KEY);
-        localStorage.removeItem(APP_PWA_DATE_KEY);
-      } catch (e) {}
-    };
-
-    window.addEventListener('appinstalled', handleAppInstalled);
-
     return () => {
       isMounted = false;
-      window.removeEventListener('appinstalled', handleAppInstalled);
     };
   }, [checkAcceptance]);
 
-  // 4. Accept Disclaimer Action
+  // 5. Accept Disclaimer Button Action
   const acceptDisclaimer = useCallback(() => {
-    const standalone = isStandaloneApp();
+    const isApp = isStandaloneApp();
     const isoDate = new Date().toISOString();
 
-    if (standalone) {
-      // Save permanently in localStorage for Installed PWA
+    if (isApp) {
+      // Installed App: Permanently saved in localStorage across app restarts
       try {
-        localStorage.setItem(APP_PWA_ACCEPTED_KEY, 'true');
+        localStorage.setItem(APP_PWA_KEY, 'true');
         localStorage.setItem(APP_PWA_DATE_KEY, isoDate);
         localStorage.setItem(APP_TERMS_VERSION_KEY, appVersion);
       } catch (e) {}
     } else {
-      // Save in sessionStorage only for Website session (DO NOT touch localStorage)
+      // Website: Saved ONLY in sessionStorage for this browser tab session (NEVER in localStorage!)
       try {
-        sessionStorage.setItem(APP_WEB_SESSION_ACCEPTED_KEY, 'true');
+        sessionStorage.setItem(APP_WEB_KEY, 'true');
         sessionStorage.setItem(APP_WEB_SESSION_DATE_KEY, isoDate);
         sessionStorage.setItem(APP_TERMS_VERSION_KEY, appVersion);
       } catch (e) {}
@@ -168,13 +176,12 @@ export function DisclaimerProvider({ children }) {
     setAcceptanceDate(isoDate);
   }, [appVersion]);
 
-  // 5. Open Modal in Review Mode (for reviewing anytime from Settings / Tab)
+  // 6. Review Modal Actions (for reviewing terms anytime)
   const openReviewModal = useCallback(() => {
     setIsReviewMode(true);
     setIsModalOpen(true);
   }, []);
 
-  // 6. Close Modal (Only permitted when in Review Mode)
   const closeReviewModal = useCallback(() => {
     if (isReviewMode) {
       setIsModalOpen(false);
@@ -182,7 +189,7 @@ export function DisclaimerProvider({ children }) {
     }
   }, [isReviewMode]);
 
-  // Format acceptance date for audit log display
+  // Format acceptance date for audit display
   const getFormattedAuditDate = useCallback(() => {
     if (!acceptanceDate) return null;
     try {
@@ -207,6 +214,7 @@ export function DisclaimerProvider({ children }) {
         isStandalone,
         isAccepted,
         isModalOpen,
+        isDisclaimerOpen: isModalOpen,
         isReviewMode,
         isUpdatedTerms,
         appVersion,
