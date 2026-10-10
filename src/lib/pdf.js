@@ -716,6 +716,60 @@ export async function generateSubsidyPdf(result, firm = '') {
 
 export async function savePdfBlob({ filename, bytes }) {
   const blob = new Blob([bytes], { type: 'application/pdf' });
+
+  // 1. Native Mobile App Environment (Capacitor Android APK)
+  try {
+    const isNative =
+      typeof window !== 'undefined' &&
+      window.Capacitor &&
+      typeof window.Capacitor.isNativePlatform === 'function' &&
+      window.Capacitor.isNativePlatform();
+
+    if (isNative) {
+      const { Filesystem, Directory } = await import('@capacitor/filesystem');
+      const { Share } = await import('@capacitor/share');
+
+      // Convert Blob to pure Base64 string via FileReader
+      const base64Data = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          const res = reader.result;
+          if (typeof res === 'string') {
+            resolve(res.split(',')[1] || '');
+          } else {
+            reject(new Error('FileReader returned non-string'));
+          }
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+      });
+
+      // Write PDF to app Cache directory
+      const fileResult = await Filesystem.writeFile({
+        path: filename,
+        data: base64Data,
+        directory: Directory.Cache,
+      });
+
+      // Open native Android Share / Save Sheet
+      try {
+        await Share.share({
+          title: filename,
+          text: 'સબસિડી સાથી અહેવાલ',
+          url: fileResult.uri,
+          dialogTitle: 'અહેવાલ સાચવો અથવા ખોલો',
+        });
+      } catch (shareErr) {
+        // User dismissed the native dialog
+        console.log('Native share dialog closed:', shareErr);
+      }
+      return;
+    }
+  } catch (nativeErr) {
+    console.warn('Native PDF save failed, attempting browser download:', nativeErr);
+  }
+
+  // 2. Web Browser & PWA Environment (standard download link)
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
