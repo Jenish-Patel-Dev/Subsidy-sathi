@@ -1,0 +1,73 @@
+name: Build Android App (.aab & .apk)
+
+on:
+  push:
+    branches: [ "main", "master", "dev" ]
+  workflow_dispatch:
+
+jobs:
+  build-android:
+    name: Build Android Production (.aab) & Test (.apk)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js (v22 LTS)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: ☕ Setup Java (JDK 21)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: 🐘 Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: 📦 Install Dependencies
+        run: npm install
+
+      - name: 🏗️ Build Web Assets
+        run: npm run build
+
+      - name: 🔄 Sync Capacitor Android
+        run: npx cap sync android
+
+      - name: ⚙️ Grant execute permission for gradlew
+        run: chmod +x ./android/gradlew
+
+      - name: 📱 Build Test APK (.apk)
+        run: |
+          cd android
+          ./gradlew assembleDebug --no-daemon
+
+      - name: 🚀 Build Play Store App Bundle (.aab)
+        run: |
+          cd android
+          ./gradlew bundleRelease --no-daemon
+
+      - name: 🏷️ Rename Output Files
+        run: |
+          mkdir -p build-artifacts/apk
+          mkdir -p build-artifacts/aab
+          cp android/app/build/outputs/apk/debug/app-debug.apk "build-artifacts/apk/Subsidy-Sathi.apk"
+          cp android/app/build/outputs/bundle/release/*.aab "build-artifacts/aab/Subsidy-Sathi.aab"
+
+      - name: 📤 Upload Installable Test APK (.apk)
+        uses: actions/upload-artifact@v4
+        with:
+          name: Subsidy-Sathi-Test-APK
+          path: build-artifacts/apk/Subsidy-Sathi.apk
+          retention-days: 14
+
+      - name: 📤 Upload Play Store App Bundle (.aab)
+        uses: actions/upload-artifact@v4
+        with:
+          name: Subsidy-Sathi-PlayStore-AAB
+          path: build-artifacts/aab/Subsidy-Sathi.aab
+          retention-days: 14

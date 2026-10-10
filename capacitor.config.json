@@ -1,0 +1,8 @@
+{
+  "appId": "com.tavishinfotech.subsidysathi",
+  "appName": "Subsidy Sathi",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https"
+  }
+}
