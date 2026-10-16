@@ -64,21 +64,21 @@
   --line: rgba(197, 204, 214, 0.55);
   --line-strong: rgba(175, 185, 200, 0.85);
 
-  /* Neumorphic Shadow Scale (Light Theme) */
-  --neu-shadow-dark: #C5CCD6;
-  --neu-shadow-light: #FFFFFF;
+  /* Neumorphic Shadow Scale (Light Theme) - Subtle & Soft */
+  --neu-shadow-dark: rgba(166, 175, 188, 0.35);
+  --neu-shadow-light: rgba(255, 255, 255, 0.85);
 
-  --neu-raised-xs: 2px 2px 5px #C5CCD6, -2px -2px 5px #FFFFFF;
-  --neu-raised-sm: 3px 3px 8px #C5CCD6, -3px -3px 8px #FFFFFF;
-  --neu-raised: 5px 5px 13px #C5CCD6, -5px -5px 13px #FFFFFF;
-  --neu-raised-md: 7px 7px 16px #C5CCD6, -7px -7px 16px #FFFFFF;
-  --neu-raised-lg: 10px 10px 22px #C0C8D2, -10px -10px 22px #FFFFFF;
-  --neu-raised-float: 14px 14px 30px #BDC5D0, -14px -14px 30px #FFFFFF;
+  --neu-raised-xs: 1px 1px 3px rgba(166, 175, 188, 0.22), -1px -1px 3px rgba(255, 255, 255, 0.7);
+  --neu-raised-sm: 2px 2px 5px rgba(166, 175, 188, 0.25), -2px -2px 5px rgba(255, 255, 255, 0.8);
+  --neu-raised: 2px 3px 6px rgba(166, 175, 188, 0.28), -2px -3px 6px rgba(255, 255, 255, 0.85);
+  --neu-raised-md: 3px 4px 9px rgba(166, 175, 188, 0.3), -3px -4px 9px rgba(255, 255, 255, 0.9);
+  --neu-raised-lg: 4px 6px 14px rgba(166, 175, 188, 0.32), -4px -6px 14px rgba(255, 255, 255, 0.9);
+  --neu-raised-float: 6px 8px 18px rgba(166, 175, 188, 0.35), -6px -8px 18px rgba(255, 255, 255, 0.95);
 
-  --neu-inset-xs: inset 1.5px 1.5px 3px #C5CCD6, inset -1.5px -1.5px 3px #FFFFFF;
-  --neu-inset-sm: inset 2.5px 2.5px 5px #C5CCD6, inset -2.5px -2.5px 5px #FFFFFF;
-  --neu-inset: inset 3.5px 3.5px 7px #C5CCD6, inset -3.5px -3.5px 7px #FFFFFF;
-  --neu-inset-deep: inset 5px 5px 10px #B8C1CC, inset -5px -5px 10px #FFFFFF;
+  --neu-inset-xs: inset 1px 1px 2px rgba(166, 175, 188, 0.2), inset -1px -1px 2px rgba(255, 255, 255, 0.6);
+  --neu-inset-sm: inset 1.5px 1.5px 3px rgba(166, 175, 188, 0.22), inset -1.5px -1.5px 3px rgba(255, 255, 255, 0.7);
+  --neu-inset: inset 2px 2px 4px rgba(166, 175, 188, 0.25), inset -2px -2px 4px rgba(255, 255, 255, 0.75);
+  --neu-inset-deep: inset 2.5px 2.5px 5px rgba(166, 175, 188, 0.28), inset -2.5px -2.5px 5px rgba(255, 255, 255, 0.8);
 
   --neu-convex: linear-gradient(145deg, #F3F8FD, #DEE3E9);
   --neu-concave: linear-gradient(145deg, #DEE3E9, #F3F8FD);
@@ -149,21 +149,21 @@
     --line: rgba(255, 255, 255, 0.07);
     --line-strong: rgba(255, 255, 255, 0.14);
 
-    /* Neumorphic Shadow Scale (Dark Theme) */
-    --neu-shadow-dark: #12151B;
-    --neu-shadow-light: #2D3442;
+    /* Neumorphic Shadow Scale (Dark Theme) - Subtle & Soft */
+    --neu-shadow-dark: rgba(0, 0, 0, 0.4);
+    --neu-shadow-light: rgba(255, 255, 255, 0.05);
 
-    --neu-raised-xs: 2px 2px 5px #12151B, -2px -2px 5px #2D3442;
-    --neu-raised-sm: 3px 3px 8px #12151B, -3px -3px 8px #2D3442;
-    --neu-raised: 5px 5px 13px #12151B, -5px -5px 13px #2D3442;
-    --neu-raised-md: 7px 7px 16px #12151B, -7px -7px 16px #2D3442;
-    --neu-raised-lg: 10px 10px 22px #0F1217, -10px -10px 22px #2D3442;
-    --neu-raised-float: 14px 14px 30px #0D0F13, -14px -14px 30px #2F3645;
+    --neu-raised-xs: 1px 1px 3px rgba(0, 0, 0, 0.25), -1px -1px 3px rgba(255, 255, 255, 0.03);
+    --neu-raised-sm: 2px 2px 5px rgba(0, 0, 0, 0.3), -1.5px -1.5px 4px rgba(255, 255, 255, 0.04);
+    --neu-raised: 2px 3px 6px rgba(0, 0, 0, 0.35), -2px -2px 6px rgba(255, 255, 255, 0.04);
+    --neu-raised-md: 3px 4px 8px rgba(0, 0, 0, 0.4), -3px -3px 8px rgba(255, 255, 255, 0.05);
+    --neu-raised-lg: 4px 6px 12px rgba(0, 0, 0, 0.45), -4px -4px 12px rgba(255, 255, 255, 0.05);
+    --neu-raised-float: 6px 8px 16px rgba(0, 0, 0, 0.5), -6px -6px 16px rgba(255, 255, 255, 0.06);
 
-    --neu-inset-xs: inset 1.5px 1.5px 3px #12151B, inset -1.5px -1.5px 3px #2D3442;
-    --neu-inset-sm: inset 2.5px 2.5px 5px #12151B, inset -2.5px -2.5px 5px #2D3442;
-    --neu-inset: inset 3.5px 3.5px 7px #12151B, inset -3.5px -3.5px 7px #2D3442;
-    --neu-inset-deep: inset 5px 5px 10px #0F1116, inset -5px -5px 10px #2A303D;
+    --neu-inset-xs: inset 1px 1px 2px rgba(0, 0, 0, 0.25), inset -1px -1px 2px rgba(255, 255, 255, 0.02);
+    --neu-inset-sm: inset 1.5px 1.5px 3px rgba(0, 0, 0, 0.3), inset -1.5px -1.5px 3px rgba(255, 255, 255, 0.03);
+    --neu-inset: inset 2px 2px 4px rgba(0, 0, 0, 0.35), inset -2px -2px 4px rgba(255, 255, 255, 0.03);
+    --neu-inset-deep: inset 2.5px 2.5px 5px rgba(0, 0, 0, 0.4), inset -2.5px -2.5px 5px rgba(255, 255, 255, 0.04);
 
     --neu-convex: linear-gradient(145deg, #252B37, #1F242D);
     --neu-concave: linear-gradient(145deg, #1F242D, #252B37);
@@ -250,21 +250,21 @@
   --line: rgba(255, 255, 255, 0.07);
   --line-strong: rgba(255, 255, 255, 0.14);
 
-  /* Neumorphic Shadow Scale (Dark Theme) */
-  --neu-shadow-dark: #12151B;
-  --neu-shadow-light: #2D3442;
+  /* Neumorphic Shadow Scale (Dark Theme) - Subtle & Soft */
+  --neu-shadow-dark: rgba(0, 0, 0, 0.4);
+  --neu-shadow-light: rgba(255, 255, 255, 0.05);
 
-  --neu-raised-xs: 2px 2px 5px #12151B, -2px -2px 5px #2D3442;
-  --neu-raised-sm: 3px 3px 8px #12151B, -3px -3px 8px #2D3442;
-  --neu-raised: 5px 5px 13px #12151B, -5px -5px 13px #2D3442;
-  --neu-raised-md: 7px 7px 16px #12151B, -7px -7px 16px #2D3442;
-  --neu-raised-lg: 10px 10px 22px #0F1217, -10px -10px 22px #2D3442;
-  --neu-raised-float: 14px 14px 30px #0D0F13, -14px -14px 30px #2F3645;
+  --neu-raised-xs: 1px 1px 3px rgba(0, 0, 0, 0.25), -1px -1px 3px rgba(255, 255, 255, 0.03);
+  --neu-raised-sm: 2px 2px 5px rgba(0, 0, 0, 0.3), -1.5px -1.5px 4px rgba(255, 255, 255, 0.04);
+  --neu-raised: 2px 3px 6px rgba(0, 0, 0, 0.35), -2px -2px 6px rgba(255, 255, 255, 0.04);
+  --neu-raised-md: 3px 4px 8px rgba(0, 0, 0, 0.4), -3px -3px 8px rgba(255, 255, 255, 0.05);
+  --neu-raised-lg: 4px 6px 12px rgba(0, 0, 0, 0.45), -4px -4px 12px rgba(255, 255, 255, 0.05);
+  --neu-raised-float: 6px 8px 16px rgba(0, 0, 0, 0.5), -6px -6px 16px rgba(255, 255, 255, 0.06);
 
-  --neu-inset-xs: inset 1.5px 1.5px 3px #12151B, inset -1.5px -1.5px 3px #2D3442;
-  --neu-inset-sm: inset 2.5px 2.5px 5px #12151B, inset -2.5px -2.5px 5px #2D3442;
-  --neu-inset: inset 3.5px 3.5px 7px #12151B, inset -3.5px -3.5px 7px #2D3442;
-  --neu-inset-deep: inset 5px 5px 10px #0F1116, inset -5px -5px 10px #2A303D;
+  --neu-inset-xs: inset 1px 1px 2px rgba(0, 0, 0, 0.25), inset -1px -1px 2px rgba(255, 255, 255, 0.02);
+  --neu-inset-sm: inset 1.5px 1.5px 3px rgba(0, 0, 0, 0.3), inset -1.5px -1.5px 3px rgba(255, 255, 255, 0.03);
+  --neu-inset: inset 2px 2px 4px rgba(0, 0, 0, 0.35), inset -2px -2px 4px rgba(255, 255, 255, 0.03);
+  --neu-inset-deep: inset 2.5px 2.5px 5px rgba(0, 0, 0, 0.4), inset -2.5px -2.5px 5px rgba(255, 255, 255, 0.04);
 
   --neu-convex: linear-gradient(145deg, #252B37, #1F242D);
   --neu-concave: linear-gradient(145deg, #1F242D, #252B37);
@@ -461,14 +461,14 @@ img, svg {
   padding-top: env(safe-area-inset-top, 0px);
   background: var(--surface);
   border-bottom: 1px solid var(--line);
-  box-shadow: 0 4px 18px var(--neu-shadow-dark);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
   transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
 :root[data-theme="dark"] .top-navbar {
   background: var(--surface);
   border-bottom-color: var(--line);
-  box-shadow: 0 4px 20px var(--neu-shadow-dark);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.25);
 }
 
 .nav-wrap {
@@ -1308,14 +1308,14 @@ img, svg {
     background: var(--surface);
     border-top: 1px solid var(--line);
     padding-bottom: env(safe-area-inset-bottom, 0px);
-    box-shadow: 0 -4px 18px var(--neu-shadow-dark), 0 -1px 3px var(--neu-shadow-light);
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.04);
     transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
   }
 
   :root[data-theme="dark"] .mobile-bottom-nav {
     background: var(--surface);
     border-top: 1px solid var(--line);
-    box-shadow: 0 -6px 24px var(--neu-shadow-dark);
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
   }
 
   .mobile-bottom-nav-inner {
@@ -1882,7 +1882,7 @@ select {
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
-  box-shadow: var(--neu-raised-lg), 0 24px 60px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
   width: 100%;
   max-width: 560px;
   max-height: 85vh;
@@ -1890,6 +1890,10 @@ select {
   flex-direction: column;
   overflow: hidden;
   animation: modalPopupSlide 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:root[data-theme="dark"] .help-modal-dialog {
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
 }
 
 @keyframes modalPopupSlide {
@@ -3437,12 +3441,16 @@ input[type="search"].taluka-search-input:focus,
     border-radius: var(--radius-lg);
     padding: 10px 16px;
     z-index: 990;
-    box-shadow: var(--neu-raised-lg), 0 8px 24px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
     align-items: center;
     justify-content: space-between;
     gap: 12px;
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
+  }
+
+  :root[data-theme="dark"] .mobile-sticky-bar {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
   }
 
   @media (max-width: 950px) {
@@ -3867,7 +3875,7 @@ footer,
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 14px;
-  box-shadow: var(--neu-raised-lg), 0 16px 40px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
   padding: 8px;
   animation: selectMenuFadeIn 0.18s cubic-bezier(0.16, 1, 0.3, 1);
   backdrop-filter: blur(12px);
@@ -3877,7 +3885,7 @@ footer,
 :root[data-theme="dark"] .custom-select-dropdown {
   background: var(--surface);
   border-color: var(--line);
-  box-shadow: var(--neu-raised-lg), 0 18px 44px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
 }
 
 @keyframes selectMenuFadeIn {
@@ -4195,7 +4203,7 @@ footer,
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 14px;
-  box-shadow: var(--neu-raised-lg), 0 16px 40px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
   padding: 16px;
   animation: selectMenuFadeIn 0.18s cubic-bezier(0.16, 1, 0.3, 1);
   backdrop-filter: blur(12px);
@@ -4205,7 +4213,7 @@ footer,
 :root[data-theme="dark"] .custom-month-popover {
   background: var(--surface);
   border-color: var(--line);
-  box-shadow: var(--neu-raised-lg), 0 18px 44px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
 }
 
 /* Header with Year navigation */
@@ -4620,7 +4628,7 @@ table.sum tr.tot td {
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
-  box-shadow: var(--neu-raised-lg), 0 24px 60px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.15);
   width: 100%;
   max-width: 760px;
   max-height: min(90vh, 760px);
@@ -4633,7 +4641,7 @@ table.sum tr.tot td {
 :root[data-theme="dark"] .disclaimer-modal-dialog {
   background: var(--surface);
   border-color: var(--line);
-  box-shadow: var(--neu-raised-lg), 0 24px 60px rgba(0, 0, 0, 0.65);
+  box-shadow: 0 16px 44px rgba(0, 0, 0, 0.55);
 }
 
 @keyframes modalScaleUp {
